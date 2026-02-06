@@ -63,15 +63,16 @@ body {
 
 
 /* QUESTION */
-
 #question {
   font-size: clamp(22px, 4vw, 32px);
   line-height: 1.4;
   font-weight: 600;
   color: #333;
   text-align: center;
+  
+  /* --- THÊM DÒNG NÀY --- */
+  word-spacing: -0.5px; /* Bạn có thể chỉnh số này to nhỏ tùy thích */
 }
-
 
 .question-box {
   padding: 28px 32px;

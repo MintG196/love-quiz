@@ -27,11 +27,19 @@ function startGame() {
 }
 
 function typeText(element, text, speed = 40, callback) {
-  element.innerText = "";
+  element.innerHTML = "";
   let i = 0;
 
   const interval = setInterval(() => {
-    element.innerText += text.charAt(i);
+    let char = text.charAt(i);
+    
+    if (char === " ") {
+        // MẸO: Dùng thẻ span có margin để tạo khoảng cách, nhưng vẫn giữ dấu cách để xuống dòng
+        element.innerHTML += '<span style="margin-right: 10px;"> </span>';
+    } else {
+        element.innerHTML += char;
+    }
+    
     i++;
 
     if (i >= text.length) {

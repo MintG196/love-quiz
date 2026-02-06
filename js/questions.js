@@ -1,6 +1,6 @@
 const questions = [
   {
-    question: "Khoảnh khắc nào làm anh/em rung động nhất? 💖",
+    question: "Câu 1: Khoảnh khắc nào làm anh/em rung động nhất? 💖",
     answers: [
       "Lần đầu nhắn tin",
       "Buổi hẹn đầu",
@@ -10,7 +10,7 @@ const questions = [
     correct: 3
   },
   {
-    question: "Ai là người chủ động nhắn tin trước? 😳",
+    question: "Câu 2: Ai là người chủ động nhắn tin trước? 😳",
     answers: ["Anh", "Em"],
     correct: 1
   }
