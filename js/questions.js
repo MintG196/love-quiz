@@ -14,4 +14,17 @@ const questions = [
     answers: ["Anh", "Em"],
     correct: 1
   }
+
+  ,
+
+  {
+    question: "Câu 3: Điều gì làm em cảm thấy đặc biệt nhất trong mối quan hệ này?",
+    answers: [
+      "Cùng nhau đi chơi",
+      "Cùng nhau làm việc",
+      "Cùng nhau cười",
+      "Cùng nhau chia sẻ"
+    ],
+    correct: 3
+  }
 ];

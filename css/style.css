@@ -175,6 +175,7 @@ body {
 #intro-screen p {
   font-size: 20px;
   text-align: center;
+  color: #d6336c;
   margin-bottom: 30px;
 }
 #start-btn {

@@ -48,6 +48,13 @@ const resultText = document.getElementById("resultText");
 
 // ================= START GAME =================
 function startGame() {
+  // Validate questions data before starting (support const/let globals)
+  if (typeof questions === 'undefined' || !Array.isArray(questions) || questions.length === 0) {
+    questionEl.innerHTML = "Lỗi: Không có câu hỏi. Vui lòng kiểm tra file js/questions.js";
+    console.error('questions is not defined or not an array / empty', typeof questions === 'undefined' ? undefined : questions);
+    return;
+  }
+
   currentQuestion = 0;
   correctCount = 0;
 
@@ -101,7 +108,18 @@ function autoShrinkText(element) {
 }
 
 function loadQuestion() {
-  const q = questions[currentQuestion];
+  let q;
+  try {
+    q = questions[currentQuestion];
+    if (!q || !q.question || !Array.isArray(q.answers)) {
+      throw new Error('Invalid question format at index ' + currentQuestion);
+    }
+  } catch (err) {
+    console.error('Failed to load question:', err);
+    questionEl.innerHTML = 'Lỗi khi tải câu hỏi. Mở console để xem chi tiết.';
+    answersEl.innerHTML = '';
+    return;
+  }
 
   // reset avatar
   avatar.src = "assets/images/avatar/thinking.png";
