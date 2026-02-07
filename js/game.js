@@ -1,20 +1,46 @@
 let currentQuestion = 0;
-
-// ================= INTRO =================
+let isMusicPlaying = false;
+let correctCount = 0;
+// ================= INTRO & MUSIC =================
 const introScreen = document.getElementById("intro-screen");
 const gameScreen = document.getElementById("game-screen");
 const startBtn = document.getElementById("start-btn");
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("music-toggle");
 
+// Xử lý nút Start
 startBtn.addEventListener("click", () => {
   introScreen.classList.remove("active");
   gameScreen.classList.add("active");
+  
+  // Phát nhạc
+  bgMusic.volume = 0.5; // Âm lượng 50%
+  bgMusic.play().catch(error => {
+    console.log("Trình duyệt chặn autoplay, cần tương tác thêm để phát nhạc");
+  });
+  isMusicPlaying = true;
+  musicToggle.innerText = "🔊";
+  
   startGame();
+});
+
+// Xử lý nút Bật/Tắt nhạc
+musicToggle.addEventListener("click", () => {
+  if (isMusicPlaying) {
+    bgMusic.pause();
+    musicToggle.innerText = "🔇";
+  } else {
+    bgMusic.play();
+    musicToggle.innerText = "🔊";
+  }
+  isMusicPlaying = !isMusicPlaying;
 });
 
 // ================= ELEMENTS =================
 const questionEl = document.getElementById("question");
 const answersEl = document.querySelector(".answers");
 const avatar = document.getElementById("avatar");
+const progressEl = document.getElementById("progress");
 
 const resultScreen = document.getElementById("result-screen");
 const resultImg = document.getElementById("resultImg");
@@ -23,24 +49,31 @@ const resultText = document.getElementById("resultText");
 // ================= START GAME =================
 function startGame() {
   currentQuestion = 0;
+  correctCount = 0;
+
+  updateProgress();
   loadQuestion();
 }
 
-function typeText(element, text, speed = 40, callback) {
+// Hàm chạy chữ (Fix lỗi font pixel dính nhau + lỗi tràn khung)
+function typeText(element, text, speed = 35, callback) {
   element.innerHTML = "";
   let i = 0;
 
   const interval = setInterval(() => {
     let char = text.charAt(i);
     
+    // Nếu là dấu cách, thay bằng khoảng trắng HTML an toàn
     if (char === " ") {
-        // MẸO: Dùng thẻ span có margin để tạo khoảng cách, nhưng vẫn giữ dấu cách để xuống dòng
-        element.innerHTML += '<span style="margin-right: 10px;"> </span>';
+      element.innerHTML += "&nbsp;"; 
     } else {
-        element.innerHTML += char;
+      element.innerHTML += char;
     }
     
     i++;
+
+    // Cuộn xuống nếu text quá dài
+    // element.scrollIntoView({ behavior: "smooth", block: "end" });
 
     if (i >= text.length) {
       clearInterval(interval);
@@ -49,20 +82,21 @@ function typeText(element, text, speed = 40, callback) {
   }, speed);
 }
 
-function typeQuestion(text, element, speed = 40) {
-  element.innerText = ""; // reset trước
-  let index = 0;
+// Hàm tự động shrink font size nếu text bị tràn (backup)
+function autoShrinkText(element) {
+  let fontSize = 24; // font size bắt đầu
+  const minFontSize = 16; // font size tối thiểu (giữ chữ lớn đủ đọc)
+  const container = element.parentElement; // khung chứa
+  const maxHeight = container.clientHeight;
 
-  const typing = setInterval(() => {
-    element.innerText += text[index];
-    index++;
+  element.style.fontSize = fontSize + "px";
 
-    if (index >= text.length) {
-      clearInterval(typing);
-    }
-  }, speed);
+  // Lặp giảm font size nếu text quá cao
+  while (element.scrollHeight > maxHeight && fontSize > minFontSize) {
+    fontSize--;
+    element.style.fontSize = fontSize + "px";
+  }
 }
-
 
 function loadQuestion() {
   const q = questions[currentQuestion];
@@ -71,7 +105,7 @@ function loadQuestion() {
   avatar.src = "assets/images/avatar/thinking.png";
 
   // clear question & answers
-  questionEl.innerText = "";
+  questionEl.innerHTML = ""; // Dùng innerHTML cho sạch
   answersEl.innerHTML = "";
 
   // tạm khóa click
@@ -79,7 +113,10 @@ function loadQuestion() {
   answersEl.style.opacity = "0";
 
   // chạy chữ câu hỏi
-  typeText(questionEl, q.question, 35, () => {
+  typeText(questionEl, q.question, 40, () => {
+    // Sau khi text chạy xong, tự động shrink font nếu text quá dài
+    autoShrinkText(questionEl);
+    
     // sau khi chữ chạy xong mới hiện đáp án
     q.answers.forEach((text, index) => {
       const btn = document.createElement("button");
@@ -106,13 +143,19 @@ function loadQuestion() {
   });
 }
 
-
 // ================= HANDLE ANSWER =================
 function handleAnswer(selectedIndex) {
   const q = questions[currentQuestion];
   const isCorrect = selectedIndex === q.correct;
+
+  if (isCorrect) {
+    correctCount++;
+    updateProgress();
+  }
+
   showResult(isCorrect);
 }
+
 
 // ================= RESULT =================
 function showResult(isCorrect) {
@@ -143,9 +186,15 @@ function nextQuestion() {
   }
 }
 
+function updateProgress() {
+  const total = questions.length;
+  progressEl.innerText = `💖 Đúng: ${correctCount} / ${total}`;
+}
+
+
 // ================= END =================
 function endGame() {
-  questionEl.innerText = "Hết câu hỏi rồi 💕";
+  questionEl.innerHTML = "Hết câu hỏi rồi 💕"; // Dùng innerHTML
   answersEl.innerHTML = "";
   avatar.src = "assets/images/avatar/happy.png";
 }
