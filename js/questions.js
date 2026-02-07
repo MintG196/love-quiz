@@ -1,6 +1,6 @@
 const questions = [
   {
-    question: "Câu 1:Khoảnh khắc nào làm anh/em rung động nhất? 💖",
+    question: "Câu 1: Khoảnh khắc nào làm anh/em rung động nhất? 💖",
     answers: [
       "Lần đầu nhắn tin",
       "Buổi hẹn đầu",
