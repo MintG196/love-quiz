@@ -11,17 +11,22 @@ const musicToggle = document.getElementById("music-toggle");
 // Xử lý nút Start
 startBtn.addEventListener("click", () => {
   introScreen.classList.remove("active");
-  gameScreen.classList.add("active");
-  
-  // Phát nhạc
+  messageScreen.classList.add("active");
+
+  chatContainer.innerHTML = "";
+  chatIndex = 0;
+
+  // Hiển thị ngay lời nhắn đầu tiên để không để trống phần chat
+  addChatBubble(chats[chatIndex]);
+  chatIndex++;
+
+  // Phát nhạc khi người dùng tương tác
   bgMusic.volume = 0.5; // Âm lượng 50%
   bgMusic.play().catch(error => {
     console.log("Trình duyệt chặn autoplay, cần tương tác thêm để phát nhạc");
   });
   isMusicPlaying = true;
   musicToggle.innerText = "🔊";
-  
-  startGame();
 });
 
 // Xử lý nút Bật/Tắt nhạc
@@ -45,6 +50,21 @@ const progressEl = document.getElementById("progress");
 const resultScreen = document.getElementById("result-screen");
 const resultImg = document.getElementById("resultImg");
 const resultText = document.getElementById("resultText");
+
+const messageScreen = document.getElementById("message-screen");
+const chatContainer = document.getElementById("chat-container");
+const chatNextBtn = document.getElementById("chat-next-btn");
+
+const chats = [
+  "Chào em 💖",
+  "Anh làm trò chơi nhỏ này cho em nè.",
+  "Không phải để thử thách đâu 😅",
+  "Chỉ mong em mỉm cười khi chơi thôi 😊",
+  "Giờ mình bắt đầu nhé? 💕"
+];
+
+let chatIndex = 0;
+
 
 // ================= START GAME =================
 function startGame() {
@@ -211,6 +231,24 @@ function updateProgress() {
   progressEl.innerText = `💖 Đúng: ${correctCount} / ${total}`;
 }
 
+function addChatBubble(text) {
+  const bubble = document.createElement("div");
+  bubble.className = "chat-bubble me";
+  bubble.textContent = text;
+  chatContainer.appendChild(bubble);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+chatNextBtn.addEventListener("click", () => {
+  if (chatIndex < chats.length) {
+    addChatBubble(chats[chatIndex]);
+    chatIndex++;
+  } else {
+    messageScreen.classList.remove("active");
+    gameScreen.classList.add("active");
+    startGame(); // hàm game của bạn
+  }
+});
 
 // ================= END =================
 function endGame() {
