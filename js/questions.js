@@ -12,7 +12,7 @@ const questions = [
 
   {
     question:
-      "Câu 3: Điều gì làm em cảm thấy đặc biệt nhất trong mối quan hệ này. nói anh nghe với ná?",
+      "Câu 3: Điều gì làm em cảm thấy đặc biệt nhất trong mối quan hệ này, nói anh nghe với ná?",
     answers: [
       "Cùng nhau đi chơi",
       "Cùng nhau làm việc",
