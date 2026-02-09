@@ -135,11 +135,10 @@ function typeText(element, text, speed = 35, callback) {
 
 // Hàm tự động shrink font size nếu text bị tràn (backup)
 function autoShrinkText(element) {
-  // Detect mobile vs desktop
-  const isMobile = window.innerWidth <= 768;
-  let fontSize = isMobile ? 14 : 24; // Mobile 14px, Desktop 24px
-  const minFontSize = 12; // font size tối thiểu
-  const container = element.parentElement; // khung chứa
+  // Sử dụng font-size từ CSS (#question = 26px)
+  let fontSize = 26;
+  const minFontSize = 12;
+  const container = element.parentElement;
   const maxHeight = container.clientHeight;
 
   element.style.fontSize = fontSize + "px";
