@@ -109,14 +109,17 @@ body {
 
 /* Chữ câu hỏi (Đã fix lỗi dính chữ) */
 #question {
-  font-size: 24px;
-  line-height: 1.5;
-  font-weight: 600;
-  color: white;
+  font-family: "PixelVN", "Baloo 2", sans-serif;
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: normal;
+  color: #ffffff;
   text-align: center;
   margin: 0;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.06em;
 
-  word-spacing: 0.2em;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -185,6 +188,7 @@ body {
   text-align: center;
   color: #d6336c;
   margin-bottom: 30px;
+  animation: textWave 2s ease-in-out 1.2s infinite;
 }
 #start-btn {
   font-size: 24px;
@@ -341,7 +345,10 @@ body {
 }
 
 #intro-screen h1 {
-  animation: logoPop 1.2s ease-out;
+  animation:
+    logoPop 1.2s ease-out,
+    heartBeatText 1.5s ease-in-out 1.2s infinite;
+  text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
 }
 
 @keyframes logoPop {
@@ -352,6 +359,33 @@ body {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes heartBeatText {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
+  }
+  25% {
+    transform: scale(1.08);
+    text-shadow:
+      0 0 25px rgba(255, 100, 150, 1),
+      0 0 15px rgba(255, 150, 180, 0.8);
+  }
+  50% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
+  }
+  75% {
+    transform: scale(1.06);
+    text-shadow:
+      0 0 20px rgba(255, 100, 150, 0.9),
+      0 0 10px rgba(255, 150, 180, 0.7);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
   }
 }
 

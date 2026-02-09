@@ -3,6 +3,12 @@ let isMusicPlaying = true; // Nhạc bật sẵn
 let correctCount = 0;
 let musicStarted = false;
 
+// ================= SOUND EFFECTS =================
+const correctSound = new Audio("assets/music/correct.wav");
+const incorrectSound = new Audio("assets/music/incorrect.wav");
+correctSound.volume = 0.6;
+incorrectSound.volume = 0.6;
+
 // ================= INTRO & MUSIC =================
 const introScreen = document.getElementById("intro-screen");
 const gameScreen = document.getElementById("game-screen");
