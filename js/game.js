@@ -119,19 +119,12 @@ function typeText(element, text, speed = 35, callback) {
   let i = 0;
 
   const interval = setInterval(() => {
-    let char = text.charAt(i);
+    const char = text.charAt(i);
 
-    // Nếu là dấu cách, thay bằng khoảng trắng HTML an toàn
-    if (char === " ") {
-      element.innerHTML += "&nbsp;";
-    } else {
-      element.innerHTML += char;
-    }
+    // Append as a text node so normal spaces can wrap naturally
+    element.appendChild(document.createTextNode(char));
 
     i++;
-
-    // Cuộn xuống nếu text quá dài
-    // element.scrollIntoView({ behavior: "smooth", block: "end" });
 
     if (i >= text.length) {
       clearInterval(interval);
