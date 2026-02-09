@@ -232,9 +232,23 @@ function showResult(isCorrect) {
   resultScreen.classList.remove("hidden");
 
   if (isCorrect) {
+    // play correct sound
+    try {
+      correctSound.currentTime = 0;
+      correctSound.play();
+    } catch (err) {
+      console.log("Không thể phát âm thanh đúng:", err);
+    }
     resultImg.src = "assets/images/avatar/happy.png";
     resultText.innerText = "Đúng ùi, toá giỏi lunnnn 💖";
   } else {
+    // play incorrect sound
+    try {
+      incorrectSound.currentTime = 0;
+      incorrectSound.play();
+    } catch (err) {
+      console.log("Không thể phát âm thanh sai:", err);
+    }
     resultImg.src = "assets/images/avatar/sad.png";
     resultText.innerText = "Ui tiếc quớ, sai mất ùi 🥺";
   }
