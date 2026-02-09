@@ -1,12 +1,33 @@
 let currentQuestion = 0;
-let isMusicPlaying = false;
+let isMusicPlaying = true; // Nhạc bật sẵn
 let correctCount = 0;
+let musicStarted = false;
+
 // ================= INTRO & MUSIC =================
 const introScreen = document.getElementById("intro-screen");
 const gameScreen = document.getElementById("game-screen");
 const startBtn = document.getElementById("start-btn");
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("music-toggle");
+
+// Khởi tạo nhạc
+bgMusic.volume = 0.5; // Âm lượng 50%
+musicToggle.innerText = "🔊"; // Icon nhạc bật
+
+// Play nhạc khi user tương tác lần đầu
+function startMusicOnUserInteraction() {
+  if (!musicStarted) {
+    bgMusic.play().catch((error) => {
+      console.log("Không thể phát nhạc:", error);
+    });
+    musicStarted = true;
+    document.removeEventListener("click", startMusicOnUserInteraction);
+    document.removeEventListener("touchstart", startMusicOnUserInteraction);
+  }
+}
+
+document.addEventListener("click", startMusicOnUserInteraction);
+document.addEventListener("touchstart", startMusicOnUserInteraction);
 
 // Xử lý nút Start
 startBtn.addEventListener("click", () => {
@@ -20,13 +41,10 @@ startBtn.addEventListener("click", () => {
   addChatBubble(chats[chatIndex]);
   chatIndex++;
 
-  // Phát nhạc khi người dùng tương tác
-  bgMusic.volume = 0.5; // Âm lượng 50%
-  bgMusic.play().catch(error => {
-    console.log("Trình duyệt chặn autoplay, cần tương tác thêm để phát nhạc");
+  // Ensure nhạc chạy
+  bgMusic.play().catch((error) => {
+    console.log("Trình duyệt chặn autoplay");
   });
-  isMusicPlaying = true;
-  musicToggle.innerText = "🔊";
 });
 
 // Xử lý nút Bật/Tắt nhạc
@@ -60,18 +78,25 @@ const chats = [
   "Anh làm trò chơi nhỏ này cho em nè.",
   "Không phải để thử thách đâu 😅",
   "Chỉ mong em mỉm cười khi chơi thôi 😊",
-  "Giờ mình bắt đầu nhé? 💕"
+  "Giờ mình bắt đầu nhé? 💕",
 ];
 
 let chatIndex = 0;
 
-
 // ================= START GAME =================
 function startGame() {
   // Validate questions data before starting (support const/let globals)
-  if (typeof questions === 'undefined' || !Array.isArray(questions) || questions.length === 0) {
-    questionEl.innerHTML = "Lỗi: Không có câu hỏi. Vui lòng kiểm tra file js/questions.js";
-    console.error('questions is not defined or not an array / empty', typeof questions === 'undefined' ? undefined : questions);
+  if (
+    typeof questions === "undefined" ||
+    !Array.isArray(questions) ||
+    questions.length === 0
+  ) {
+    questionEl.innerHTML =
+      "Lỗi: Không có câu hỏi. Vui lòng kiểm tra file js/questions.js";
+    console.error(
+      "questions is not defined or not an array / empty",
+      typeof questions === "undefined" ? undefined : questions,
+    );
     return;
   }
 
@@ -89,14 +114,14 @@ function typeText(element, text, speed = 35, callback) {
 
   const interval = setInterval(() => {
     let char = text.charAt(i);
-    
+
     // Nếu là dấu cách, thay bằng khoảng trắng HTML an toàn
     if (char === " ") {
-      element.innerHTML += "&nbsp;"; 
+      element.innerHTML += "&nbsp;";
     } else {
       element.innerHTML += char;
     }
-    
+
     i++;
 
     // Cuộn xuống nếu text quá dài
@@ -132,12 +157,12 @@ function loadQuestion() {
   try {
     q = questions[currentQuestion];
     if (!q || !q.question || !Array.isArray(q.answers)) {
-      throw new Error('Invalid question format at index ' + currentQuestion);
+      throw new Error("Invalid question format at index " + currentQuestion);
     }
   } catch (err) {
-    console.error('Failed to load question:', err);
-    questionEl.innerHTML = 'Lỗi khi tải câu hỏi. Mở console để xem chi tiết.';
-    answersEl.innerHTML = '';
+    console.error("Failed to load question:", err);
+    questionEl.innerHTML = "Lỗi khi tải câu hỏi. Mở console để xem chi tiết.";
+    answersEl.innerHTML = "";
     return;
   }
 
@@ -156,7 +181,7 @@ function loadQuestion() {
   typeText(questionEl, q.question, 40, () => {
     // Sau khi text chạy xong, tự động shrink font nếu text quá dài
     autoShrinkText(questionEl);
-    
+
     // sau khi chữ chạy xong mới hiện đáp án
     q.answers.forEach((text, index) => {
       const btn = document.createElement("button");
@@ -196,17 +221,16 @@ function handleAnswer(selectedIndex) {
   showResult(isCorrect);
 }
 
-
 // ================= RESULT =================
 function showResult(isCorrect) {
   resultScreen.classList.remove("hidden");
 
   if (isCorrect) {
     resultImg.src = "assets/images/avatar/happy.png";
-    resultText.innerText = "Đúng rồi 💖";
+    resultText.innerText = "Đúng ùi, toá giỏi lunnnn 💖";
   } else {
     resultImg.src = "assets/images/avatar/sad.png";
-    resultText.innerText = "Sai mất rồi 🥺";
+    resultText.innerText = "Ui tiếc quớ, sai mất ùi 🥺";
   }
 
   setTimeout(() => {

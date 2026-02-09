@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" autoplay loop>
       <source src="assets/music/bg.mp3" type="audio/mpeg" />
     </audio>
 
@@ -25,14 +25,12 @@
       </p>
 
       <button id="start-btn" class="pixel-box">Start 💕</button>
-
     </div>
 
     <!-- CHAT INTRO SCREEN -->
     <div id="message-screen" class="screen">
       <div id="chat-container"></div>
-     <button id="chat-next-btn" class="pixel-box">Tiếp 💕</button>
-
+      <button id="chat-next-btn" class="pixel-box">Tiếp 💕</button>
     </div>
 
     <div id="game-screen" class="screen">
@@ -46,9 +44,8 @@
         />
 
         <div class="question-box pixel-box">
-  <h2 id="question"></h2>
-</div>
-
+          <h2 id="question"></h2>
+        </div>
 
         <div class="answers"></div>
       </div>

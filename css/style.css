@@ -89,7 +89,7 @@ body {
 
 /* --- 5. KHUNG CÂU HỎI --- */
 .question-box {
-  background: rgba(255, 255, 255, 0.9);
+  background: #ff8c94;
   padding: 25px 30px;
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(255, 120, 150, 0.35);
@@ -112,7 +112,7 @@ body {
   font-size: 24px;
   line-height: 1.5;
   font-weight: 600;
-  color: #333;
+  color: white;
   text-align: center;
   margin: 0;
 
@@ -292,7 +292,7 @@ body {
   max-width: 80%;
   font-size: 15px;
   line-height: 1.5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   animation: bubbleIn 0.25s ease;
 }
 
@@ -325,9 +325,15 @@ body {
 }
 
 @keyframes introFloat {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 #intro-screen {
@@ -350,10 +356,18 @@ body {
 }
 
 @keyframes heartBeat {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.06); }
-  60% { transform: scale(1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.06);
+  }
+  60% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 #start-btn {
@@ -364,5 +378,3 @@ body {
   transform: scale(1.08);
   box-shadow: 0 0 20px rgba(255, 100, 150, 0.6);
 }
-
-
