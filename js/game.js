@@ -316,8 +316,97 @@ chatNextBtn.addEventListener("click", () => {
 // ================= END =================
 function endGame() {
   questionEl.innerHTML = "";
-  typeText(questionEl, endingMessage, 35);
-
   answersEl.innerHTML = "";
   avatar.src = "assets/images/avatar/happy.png";
+
+  showLoveQuestion(); // Hiện câu đặc biệt trước
 }
+
+
+function showLoveQuestion() {
+  questionEl.innerHTML = "Em có yêu anh không? 💌";
+  answersEl.innerHTML = "";
+  answersEl.className = "answers";
+  answersEl.style.position = "relative";
+  answersEl.style.height = "150px";
+
+  // Tạo nút Có
+  const yesBtn = document.createElement("button");
+  yesBtn.innerText = "Có 💖";
+  yesBtn.style.position = "absolute";
+  yesBtn.style.left = "20%";
+  yesBtn.style.top = "50%";
+  yesBtn.style.transform = "translate(-50%, -50%)";
+  yesBtn.style.transition = "all 0.3s ease";
+
+  // Tạo nút Không
+  const noBtn = document.createElement("button");
+  noBtn.innerText = "Không 😝";
+  noBtn.style.position = "absolute";
+  noBtn.style.left = "70%";
+  noBtn.style.top = "50%";
+  noBtn.style.transform = "translate(-50%, -50%)";
+  noBtn.style.transition = "all 0.2s ease";
+
+  answersEl.appendChild(yesBtn);
+  answersEl.appendChild(noBtn);
+
+  let yesScale = 1;
+
+  // Khi bấm Không
+  noBtn.addEventListener("click", () => {
+  const containerRect = answersEl.getBoundingClientRect();
+  const yesRect = yesBtn.getBoundingClientRect();
+
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+
+  const maxX = containerRect.width - btnWidth;
+  const maxY = containerRect.height - btnHeight;
+
+  let newX, newY;
+  let safeDistance = 120; // khoảng cách tối thiểu tránh nút Có
+
+  do {
+    newX = Math.random() * maxX;
+    newY = Math.random() * maxY;
+
+    // Tính vị trí giả lập của nút Không
+    const fakeNoRect = {
+      left: containerRect.left + newX,
+      top: containerRect.top + newY,
+      right: containerRect.left + newX + btnWidth,
+      bottom: containerRect.top + newY + btnHeight,
+    };
+
+    var overlap =
+      !(fakeNoRect.right < yesRect.left ||
+        fakeNoRect.left > yesRect.right ||
+        fakeNoRect.bottom < yesRect.top ||
+        fakeNoRect.top > yesRect.bottom);
+
+  } while (overlap);
+
+  noBtn.style.left = newX + "px";
+  noBtn.style.top = newY + "px";
+
+  // Nút Có to dần
+  yesScale += 0.2;
+  yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+});
+
+
+  // Khi bấm Có
+ yesBtn.addEventListener("click", () => {
+  questionEl.innerHTML = "";
+  answersEl.innerHTML = "";
+
+  typeText(questionEl, "Anh biết mà 😚", 40, () => {
+    setTimeout(() => {
+      typeText(questionEl, endingMessage, 35);
+    }, 800);
+  });
+});
+
+}
+
