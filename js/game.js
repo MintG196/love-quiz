@@ -1,5 +1,5 @@
 let currentQuestion = 0;
-let isMusicPlaying = true; // Nhạc bật sẵn
+let isMusicPlaying = true;
 let correctCount = 0;
 let musicStarted = false;
 
@@ -16,16 +16,12 @@ const startBtn = document.getElementById("start-btn");
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("music-toggle");
 
-// Khởi tạo nhạc
-bgMusic.volume = 0.5; // Âm lượng 50%
-musicToggle.innerText = "🔊"; // Icon nhạc bật
+bgMusic.volume = 0.5;
+musicToggle.innerText = "🔊";
 
-// Play nhạc khi user tương tác lần đầu
 function startMusicOnUserInteraction() {
   if (!musicStarted) {
-    bgMusic.play().catch((error) => {
-      console.log("Không thể phát nhạc:", error);
-    });
+    bgMusic.play().catch(() => {});
     musicStarted = true;
     document.removeEventListener("click", startMusicOnUserInteraction);
     document.removeEventListener("touchstart", startMusicOnUserInteraction);
@@ -35,7 +31,6 @@ function startMusicOnUserInteraction() {
 document.addEventListener("click", startMusicOnUserInteraction);
 document.addEventListener("touchstart", startMusicOnUserInteraction);
 
-// Xử lý nút Start
 startBtn.addEventListener("click", () => {
   introScreen.classList.remove("active");
   messageScreen.classList.add("active");
@@ -43,17 +38,12 @@ startBtn.addEventListener("click", () => {
   chatContainer.innerHTML = "";
   chatIndex = 0;
 
-  // Hiển thị ngay lời nhắn đầu tiên để không để trống phần chat
   addChatBubble(chats[chatIndex]);
   chatIndex++;
 
-  // Ensure nhạc chạy
-  bgMusic.play().catch((error) => {
-    console.log("Trình duyệt chặn autoplay");
-  });
+  bgMusic.play().catch(() => {});
 });
 
-// Xử lý nút Bật/Tắt nhạc
 musicToggle.addEventListener("click", () => {
   if (isMusicPlaying) {
     bgMusic.pause();
@@ -91,39 +81,49 @@ let chatIndex = 0;
 
 // ================= START GAME =================
 function startGame() {
-  // Validate questions data before starting (support const/let globals)
   if (
     typeof questions === "undefined" ||
     !Array.isArray(questions) ||
     questions.length === 0
   ) {
     questionEl.innerHTML =
-      "Lỗi: Không có câu hỏi. Vui lòng kiểm tra file js/questions.js";
-    console.error(
-      "questions is not defined or not an array / empty",
-      typeof questions === "undefined" ? undefined : questions,
-    );
+      "Lỗi: Không có câu hỏi. Kiểm tra file js/questions.js";
     return;
   }
 
   currentQuestion = 0;
-  correctCount = 0;
+correctCount = 0;
 
-  updateProgress();
-  loadQuestion();
+// Reset Love Meter về 0%
+progressEl.innerHTML = `
+  <div style="margin-bottom:5px;">❤️ Love Meter: 0%</div>
+  <div style="
+    width:160px;
+    height:12px;
+    background:#ffd6e0;
+    border-radius:10px;
+    overflow:hidden;
+    margin:0 auto;
+  ">
+    <div style="
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg,#ff4d6d,#ff8fae);
+    "></div>
+  </div>
+`;
+
+loadQuestion();
+
 }
 
-// Hàm chạy chữ (Fix lỗi font pixel dính nhau + lỗi tràn khung)
+// ================= TYPE EFFECT =================
 function typeText(element, text, speed = 35, callback) {
   element.innerHTML = "";
   let i = 0;
 
   const interval = setInterval(() => {
-    const char = text.charAt(i);
-
-    // Append as a text node so normal spaces can wrap naturally
-    element.appendChild(document.createTextNode(char));
-
+    element.appendChild(document.createTextNode(text.charAt(i)));
     i++;
 
     if (i >= text.length) {
@@ -133,77 +133,85 @@ function typeText(element, text, speed = 35, callback) {
   }, speed);
 }
 
-// Hàm tự động shrink font size nếu text bị tràn (backup)
-function autoShrinkText(element) {
-  // Sử dụng font-size từ CSS (#question = 26px)
-  let fontSize = 26;
-  const minFontSize = 12;
-  const container = element.parentElement;
-  const maxHeight = container.clientHeight;
-
-  element.style.fontSize = fontSize + "px";
-
-  // Lặp giảm font size nếu text quá cao
-  while (element.scrollHeight > maxHeight && fontSize > minFontSize) {
-    fontSize--;
-    element.style.fontSize = fontSize + "px";
-  }
-}
-
+// ================= LOAD QUESTION =================
 function loadQuestion() {
-  let q;
-  try {
-    q = questions[currentQuestion];
-    if (!q || !q.question || !Array.isArray(q.answers)) {
-      throw new Error("Invalid question format at index " + currentQuestion);
-    }
-  } catch (err) {
-    console.error("Failed to load question:", err);
-    questionEl.innerHTML = "Lỗi khi tải câu hỏi. Mở console để xem chi tiết.";
-    answersEl.innerHTML = "";
-    return;
-  }
+  const q = questions[currentQuestion];
 
-  // reset avatar
   avatar.src = "assets/images/avatar/thinking.png";
 
-  // clear question & answers
-  questionEl.innerHTML = ""; // Dùng innerHTML cho sạch
+  questionEl.innerHTML = "";
   answersEl.innerHTML = "";
-
-  // tạm khóa click
   answersEl.style.pointerEvents = "none";
   answersEl.style.opacity = "0";
 
-  // chạy chữ câu hỏi
-  typeText(questionEl, q.question, 40, () => {
-    // Sau khi text chạy xong, tự động shrink font nếu text quá dài
-    autoShrinkText(questionEl);
+  // Nếu câu hỏi có HTML (ví dụ có ảnh)
+  if (q.question.includes("<")) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = q.question;
 
-    // sau khi chữ chạy xong mới hiện đáp án
-    q.answers.forEach((text, index) => {
-      const btn = document.createElement("button");
-      btn.innerText = text;
+    const img = tempDiv.querySelector("img");
+    const text = tempDiv.textContent.trim();
 
-      btn.addEventListener("click", () => {
-        handleAnswer(index);
-      });
-
-      answersEl.appendChild(btn);
-    });
-
-    // layout 2 hoặc 4 đáp án
-    if (q.answers.length === 2) {
-      answersEl.className = "answers two";
-    } else {
-      answersEl.className = "answers four";
+    if (img) {
+      questionEl.appendChild(img);
     }
 
-    // mở click + fade in
-    answersEl.style.pointerEvents = "auto";
-    answersEl.style.opacity = "1";
-    answersEl.classList.add("fade");
-  });
+    const textContainer = document.createElement("div");
+    questionEl.appendChild(textContainer);
+
+    typeText(textContainer, text, 40, showAnswers);
+  } else {
+    typeText(questionEl, q.question, 40, showAnswers);
+  }
+}
+
+// ================= SHOW ANSWERS =================
+function showAnswers() {
+  const q = questions[currentQuestion];
+
+  answersEl.innerHTML = "";
+  answersEl.style.pointerEvents = "none";
+  answersEl.style.opacity = "1";
+
+  if (q.answers.length === 2) {
+    answersEl.className = "answers two";
+  } else {
+    answersEl.className = "answers four";
+  }
+
+  let index = 0;
+
+  function showNextAnswer() {
+    if (index >= q.answers.length) {
+      answersEl.style.pointerEvents = "auto";
+      return;
+    }
+
+    const btn = document.createElement("button");
+    btn.innerHTML = q.answers[index];
+
+    btn.style.opacity = "0";
+    btn.style.transform = "translateY(10px)";
+    btn.style.transition = "all 0.3s ease";
+
+    const answerIndex = index; // 👈 FIX
+
+    btn.addEventListener("click", () => {
+      handleAnswer(answerIndex);
+    });
+
+    answersEl.appendChild(btn);
+
+    setTimeout(() => {
+      btn.style.opacity = "1";
+      btn.style.transform = "translateY(0)";
+    }, 50);
+
+    index++;
+    setTimeout(showNextAnswer, 180);
+  }
+
+  showNextAnswer();
 }
 
 // ================= HANDLE ANSWER =================
@@ -211,36 +219,25 @@ function handleAnswer(selectedIndex) {
   const q = questions[currentQuestion];
   const isCorrect = selectedIndex === q.correct;
 
-  if (isCorrect) {
-    correctCount++;
-    updateProgress();
-  }
+  // Love meter tăng mỗi câu, không phụ thuộc đúng sai
+  updateProgress();
 
   showResult(isCorrect);
 }
+
 
 // ================= RESULT =================
 function showResult(isCorrect) {
   resultScreen.classList.remove("hidden");
 
   if (isCorrect) {
-    // play correct sound
-    try {
-      correctSound.currentTime = 0;
-      correctSound.play();
-    } catch (err) {
-      console.log("Không thể phát âm thanh đúng:", err);
-    }
+    correctSound.currentTime = 0;
+    correctSound.play().catch(() => {});
     resultImg.src = "assets/images/avatar/happy.png";
     resultText.innerText = "Đúng ùi, toá giỏi lunnnn 💖";
   } else {
-    // play incorrect sound
-    try {
-      incorrectSound.currentTime = 0;
-      incorrectSound.play();
-    } catch (err) {
-      console.log("Không thể phát âm thanh sai:", err);
-    }
+    incorrectSound.currentTime = 0;
+    incorrectSound.play().catch(() => {});
     resultImg.src = "assets/images/avatar/sad.png";
     resultText.innerText = "Ui tiếc quớ, sai mất ùi 🥺";
   }
@@ -263,10 +260,40 @@ function nextQuestion() {
 }
 
 function updateProgress() {
-  const total = questions.length;
-  progressEl.innerText = `💖 Đúng: ${correctCount} / ${total}`;
+  const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
+
+  progressEl.innerHTML = `
+    <div style="margin-bottom:5px;">❤️ Love Meter: ${percent}%</div>
+    <div style="
+      width:160px;
+      height:12px;
+      background:#ffd6e0;
+      border-radius:10px;
+      overflow:hidden;
+      margin:0 auto;
+    ">
+      <div style="
+        width:${percent}%;
+        height:100%;
+        background:linear-gradient(90deg,#ff4d6d,#ff8fae);
+        transition:width 0.4s ease;
+      "></div>
+    </div>
+  `;
+
+  // Khi đầy 100%
+  if (percent === 100) {
+    setTimeout(() => {
+      progressEl.innerHTML += `
+        <div style="margin-top:6px;font-size:14px;">
+          💖 Full yêu rồi nèeee 💕
+        </div>
+      `;
+    }, 300);
+  }
 }
 
+// ================= CHAT =================
 function addChatBubble(text) {
   const bubble = document.createElement("div");
   bubble.className = "chat-bubble me";
@@ -282,13 +309,15 @@ chatNextBtn.addEventListener("click", () => {
   } else {
     messageScreen.classList.remove("active");
     gameScreen.classList.add("active");
-    startGame(); // hàm game của bạn
+    startGame();
   }
 });
 
 // ================= END =================
 function endGame() {
-  questionEl.innerHTML = "Hết câu hỏi rồi 💕"; // Dùng innerHTML
+  questionEl.innerHTML = "";
+  typeText(questionEl, endingMessage, 35);
+
   answersEl.innerHTML = "";
   avatar.src = "assets/images/avatar/happy.png";
 }

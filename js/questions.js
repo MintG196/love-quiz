@@ -1,6 +1,7 @@
+
 const questions = [
   {
-    question: "Câu 1: Khoảnh khắc nào làm em rung động nhất? 💖",
+    question: '<img src="assets/images/ui/pixel-box.png" class="question-img">',
     answers: ["Lần đầu nhắn tin", "Buổi hẹn đầu", "Lúc làm hoà", "Tất cả 💕"],
     correct: 3,
   },
