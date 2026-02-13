@@ -75,7 +75,37 @@ const questions = [
 
   {
     question: "Câu 9: Hai đứa mình gặp nhau lần đầu tiên vào ngày mấy?",
-    answers: ["02/09/2025", "31/08/2025", "30/08/2025", "10/09/2025"],
+    answers: ["02/09/2025", "19/06/2025", "30/08/2025", "10/09/2025"],
+    correct: 2,
+  },
+
+  {
+    question:
+      "Câu 10: Tại sao lúc đón anh đến lâu rồi mà phải lúc sau anh mới xuất hiện trước mặt em :>?",
+    answers: [
+      "Anh đi vệ sinh",
+      "Anh đi mua quà cho em",
+      "Anh bị sững lại vì vẻ đẹp của em và ngắm em từ xa",
+      "Anh sợ em không nhận ra anh",
+    ],
+    correct: 2,
+  },
+  {
+    question: "Câu 11: Anh đã tỏ tình với em lần thứ mấy thì thành công hế?",
+    answers: ["1 phát ăn luôn", "2 lần", "36 lần", "Lần thứ 4"],
+    correct: 3,
+  },
+  {
+    question:
+      "Câu 12: Món ăn mà hai đứa mình ăn trong hình đó làaaa? <img src='assets/images/questpics/bunrieu.jpg' class='question-img'>",
+    answers: ["Bún đậu mắm tôm", "Phở bò", "Bún riêu tóp mỡ giò", "Bún bò Huế"],
+    correct: 2,
+  },
+
+  {
+    question:
+      "Câu 13: Món ăn mà mình ăn nhiều nhất trong lần đầu gặp nhau là zì zạ?",
+    answers: ["Bánh Đa Trộn", "Cơm Rang Dưa Bò", "Phở Gà", "Mì Cay"],
     correct: 3,
   },
 ];
