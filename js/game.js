@@ -301,136 +301,177 @@ function endGame() {
 }
 
 // ================= LOVE QUESTION (LOGIC MỚI: NÚT NHỎ + NÉ TRÁNH) =================
+// ================= LOVE QUESTION (LOGIC MỚI: CHỮ CHẠY + 5 LẦN ẤN) =================
 function showLoveQuestion() {
-  questionEl.innerHTML = "Em có yêu anh không? 💌";
+  // 1. Xóa nội dung cũ
+  questionEl.innerHTML = "";
   answersEl.innerHTML = "";
+  
+  // Reset style của khung chứa đáp án để không bị dính style grid của câu trước
   answersEl.className = "answers";
+  answersEl.style.display = "flex"; // Dùng flex để dễ căn chỉnh
+  answersEl.style.justifyContent = "center";
   answersEl.style.position = "relative";
-  answersEl.style.height = "300px";
+  answersEl.style.height = "300px"; // Giữ chiều cao để nút chạy nhảy
+  answersEl.style.marginTop = "20px"; // Cách câu hỏi ra một chút cho thoáng
 
-  // Hàm style nút nhỏ gọn
-  function makeButtonSmall(btn) {
-    btn.style.width = "auto"; 
-    btn.style.minWidth = "100px";
-    btn.style.padding = "8px 15px";
-    btn.style.fontSize = "1.2rem";
-    btn.style.position = "absolute";
-    btn.style.transition = "all 0.2s ease";
-  }
-
-  // Nút CÓ
-  const yesBtn = document.createElement("button");
-  yesBtn.innerText = "Có 💖";
-  makeButtonSmall(yesBtn);
-  yesBtn.style.left = "40%"; 
-  yesBtn.style.top = "50%";
-  yesBtn.style.transform = "translate(-50%, -50%)";
-  yesBtn.style.zIndex = "100";
-
-  // Nút KHÔNG
-  const noBtn = document.createElement("button");
-  noBtn.innerText = "Không 😝";
-  makeButtonSmall(noBtn);
-  noBtn.style.left = "70%";
-  noBtn.style.top = "50%";
-  noBtn.style.transform = "translate(-50%, -50%)";
-  noBtn.style.zIndex = "50";
-
-  answersEl.appendChild(yesBtn);
-  answersEl.appendChild(noBtn);
-
-  let yesScale = 1;
-  let noClickCount = 0;
-
-  // Xử lý nút KHÔNG (Né tránh + Biến mất)
-  noBtn.addEventListener("click", () => {
-    noClickCount++;
+  // 2. Hiệu ứng chữ chạy (Giống các câu trước)
+  typeText(questionEl, "Em có yêu anh không? 💌", 50, () => {
     
-    // Nút CÓ to ra
-    yesScale += 0.2; 
-    yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
-
-    // Sau 3 lần thì biến mất
-    if (noClickCount >= 3) {
-      noBtn.style.display = "none";
-    } else {
-      // Bé dần đi
-      const currentNoScale = 1 - (noClickCount * 0.2);
-      noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`;
-
-      // --- Logic tìm vị trí mới không bị đè ---
-      const containerRect = answersEl.getBoundingClientRect();
-      const yesRect = yesBtn.getBoundingClientRect();
-      const btnWidth = noBtn.offsetWidth;
-      const btnHeight = noBtn.offsetHeight;
-
-      let newLeft, newTop, isOverlapping = true, attempts = 0;
-
-      while (isOverlapping && attempts < 50) {
-        attempts++;
-        newLeft = Math.random() * (containerRect.width - btnWidth);
-        newTop = Math.random() * (containerRect.height - btnHeight);
-
-        const noRect = {
-          left: containerRect.left + newLeft,
-          right: containerRect.left + newLeft + btnWidth,
-          top: containerRect.top + newTop,
-          bottom: containerRect.top + newTop + btnHeight
-        };
-
-        const safetyMargin = 20;
-        const overlap = !(
-            noRect.right < yesRect.left - safetyMargin || 
-            noRect.left > yesRect.right + safetyMargin || 
-            noRect.bottom < yesRect.top - safetyMargin || 
-            noRect.top > yesRect.bottom + safetyMargin
-        );
-
-        if (!overlap) isOverlapping = false;
-      }
-      noBtn.style.left = newLeft + "px";
-      noBtn.style.top = newTop + "px";
+    // --- CHỈ KHI CHỮ CHẠY XONG MỚI HIỆN NÚT ---
+    
+    // Hàm style nút nhỏ gọn
+    function makeButtonSmall(btn) {
+      btn.style.width = "auto"; 
+      btn.style.minWidth = "100px";
+      btn.style.padding = "10px 20px";
+      btn.style.fontSize = "1.2rem";
+      btn.style.position = "absolute"; // Để di chuyển tự do
+      btn.style.transition = "all 0.2s ease";
+      
+      // Style 3D nhẹ cho đồng bộ
+      btn.style.boxShadow = "0 4px 0 #c22f55";
+      btn.style.border = "2px solid #fff";
     }
-  });
 
-  // Xử lý nút CÓ (Chiến thắng)
-  yesBtn.addEventListener("click", () => {
-    questionEl.innerHTML = "";
-    answersEl.innerHTML = "";
+    // Nút CÓ
+    const yesBtn = document.createElement("button");
+    yesBtn.innerText = "Có 💖";
+    makeButtonSmall(yesBtn);
+    // Đặt vị trí ban đầu cân đối hơn
+    yesBtn.style.left = "35%"; 
+    yesBtn.style.top = "40%"; 
+    yesBtn.style.transform = "translate(-50%, -50%)";
+    yesBtn.style.zIndex = "100";
 
-    typeText(questionEl, "Anh biết mà 😚", 50, () => {
-      setTimeout(() => {
-        typeText(questionEl, endingMessage, 35, () => {
-          const nextBtn = document.createElement("button");
-          nextBtn.innerText = "Tiếp ➡️";
-          nextBtn.style.marginTop = "30px";
-          nextBtn.style.fontSize = "1.1rem";
-          nextBtn.style.padding = "10px 32px";
-          
-          // Style 3D
-          nextBtn.style.background = "#ffb6c1";
-          nextBtn.style.border = "4px solid #fff";
-          nextBtn.style.borderRadius = "12px";
-          nextBtn.style.color = "#fff";
-          nextBtn.style.cursor = "pointer";
-          nextBtn.style.boxShadow = "0 6px 0 #c22f55"; 
-          nextBtn.style.transition = "transform 0.1s";
-          
-          nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
-          nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
-          nextBtn.onmousedown = () => {
-             nextBtn.style.transform = "translateY(4px)";
-             nextBtn.style.boxShadow = "0 2px 0 #c22f55";
+    // Nút KHÔNG
+    const noBtn = document.createElement("button");
+    noBtn.innerText = "Không 😝";
+    makeButtonSmall(noBtn);
+    // Đặt vị trí ban đầu cân đối với nút Có
+    noBtn.style.left = "65%";
+    noBtn.style.top = "40%";
+    noBtn.style.transform = "translate(-50%, -50%)";
+    noBtn.style.zIndex = "50";
+
+    answersEl.appendChild(yesBtn);
+    answersEl.appendChild(noBtn);
+
+    // Hiệu ứng xuất hiện (Fade in)
+    yesBtn.style.opacity = "0";
+    noBtn.style.opacity = "0";
+    setTimeout(() => {
+        yesBtn.style.opacity = "1";
+        noBtn.style.opacity = "1";
+    }, 100);
+
+    let yesScale = 1;
+    let noClickCount = 0;
+
+    // --- XỬ LÝ NÚT KHÔNG (NÉ TRÁNH 5 LẦN) ---
+    noBtn.addEventListener("click", () => {
+      noClickCount++;
+      
+      // Nút CÓ to ra
+      yesScale += 0.15; // Tăng chậm lại chút vì số lần ấn nhiều hơn
+      yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+      yesBtn.style.zIndex = "100"; // Luôn đảm bảo nút Có đè lên trên
+
+      // Sau 5 lần thì biến mất
+      if (noClickCount >= 5) {
+        noBtn.style.display = "none";
+      } else {
+        // Bé dần đi (Tính toán để lần thứ 4 vẫn còn nhìn thấy)
+        const currentNoScale = 1 - (noClickCount * 0.15);
+        noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`;
+
+        // --- Logic tìm vị trí mới không bị đè ---
+        const containerRect = answersEl.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
+        const btnWidth = noBtn.offsetWidth * currentNoScale; // Tính kích thước thật sau khi scale
+        const btnHeight = noBtn.offsetHeight * currentNoScale;
+
+        let newLeft, newTop, isOverlapping = true, attempts = 0;
+
+        while (isOverlapping && attempts < 50) {
+          attempts++;
+          // Random trong khung
+          newLeft = Math.random() * (containerRect.width - btnWidth - 40) + 20; 
+          newTop = Math.random() * (containerRect.height - btnHeight - 40) + 20;
+
+          const noRect = {
+            left: containerRect.left + newLeft,
+            right: containerRect.left + newLeft + btnWidth,
+            top: containerRect.top + newTop,
+            bottom: containerRect.top + newTop + btnHeight
           };
-          
-          nextBtn.onclick = () => {
-            if (typeof showEndingScene === 'function') showEndingScene();
-          };
-          
-          questionEl.appendChild(document.createElement("br"));
-          questionEl.appendChild(nextBtn);
-        });
-      }, 800);
+
+          const safetyMargin = 30; // Khoảng cách an toàn
+          const overlap = !(
+              noRect.right < yesRect.left - safetyMargin || 
+              noRect.left > yesRect.right + safetyMargin || 
+              noRect.bottom < yesRect.top - safetyMargin || 
+              noRect.top > yesRect.bottom + safetyMargin
+          );
+
+          if (!overlap) isOverlapping = false;
+        }
+        noBtn.style.left = newLeft + "px";
+        noBtn.style.top = newTop + "px";
+      }
     });
-  });
+
+    // --- XỬ LÝ NÚT CÓ (CHIẾN THẮNG) ---
+    yesBtn.addEventListener("click", () => {
+      // Ẩn nút Không ngay lập tức cho gọn
+      noBtn.style.display = "none"; 
+      
+      questionEl.innerHTML = "";
+      answersEl.innerHTML = "";
+      
+      // Chạy chữ kết thúc
+      typeText(questionEl, "Anh biết mà 😚", 50, () => {
+        setTimeout(() => {
+          typeText(questionEl, endingMessage, 35, () => {
+            const nextBtn = document.createElement("button");
+            nextBtn.innerText = "Tiếp ➡️";
+            nextBtn.style.marginTop = "30px";
+            nextBtn.style.fontSize = "1.1rem";
+            nextBtn.style.padding = "10px 32px";
+            
+            // Style 3D
+            nextBtn.style.background = "#ffb6c1";
+            nextBtn.style.border = "4px solid #fff";
+            nextBtn.style.borderRadius = "12px";
+            nextBtn.style.color = "#fff";
+            nextBtn.style.cursor = "pointer";
+            nextBtn.style.boxShadow = "0 6px 0 #c22f55"; 
+            nextBtn.style.transition = "transform 0.1s";
+            
+            nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
+            nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
+            nextBtn.onmousedown = () => {
+               nextBtn.style.transform = "translateY(4px)";
+               nextBtn.style.boxShadow = "0 2px 0 #c22f55";
+            };
+            
+            nextBtn.onclick = () => {
+              if (typeof showEndingScene === 'function') showEndingScene();
+            };
+            
+            // Tạo div bao quanh nút để căn giữa chuẩn hơn
+            const btnContainer = document.createElement("div");
+            btnContainer.style.width = "100%";
+            btnContainer.style.display = "flex";
+            btnContainer.style.justifyContent = "center";
+            btnContainer.appendChild(nextBtn);
+            
+            questionEl.appendChild(document.createElement("br"));
+            questionEl.appendChild(btnContainer);
+          });
+        }, 800);
+      });
+    });
+
+  }); // Kết thúc callback của typeText
 }
