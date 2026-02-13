@@ -52,6 +52,7 @@ function showEndingScene() {
 		// Xóa màu nền, xóa bóng, xóa padding để ảnh hiển thị tự nhiên
 		box.style.background = "transparent"; 
 		box.style.boxShadow = "none";
+        box.style.border = "none";
 		box.style.padding = "0";
 		// Nếu muốn ảnh to ra, có thể set width 100% (tuỳ chọn)
 		// box.style.width = "100%"; 
