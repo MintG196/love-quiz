@@ -280,18 +280,72 @@ function nextQuestion() {
   }
 }
 
+// ================= PROGRESS (LOGIC MỚI: CHÌA KHÓA TRÁI TIM) =================
 function updateProgress() {
   const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
-  progressEl.innerHTML = `
-    <div style="margin-bottom:5px;">❤️ Love Meter: ${percent}%</div>
-    <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
-      <div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae); transition:width 0.4s ease;"></div>
-    </div>
-  `;
-  if (percent === 100) {
-    setTimeout(() => {
-      progressEl.innerHTML += `<div style="margin-top:6px;font-size:14px;">💖 Full yêu rồi nèeee 💕</div>`;
-    }, 300);
+
+  // 1. Chưa đầy -> Hiện thanh loading
+  if (percent < 100 && currentQuestion < questions.length) {
+    progressEl.innerHTML = `
+      <div style="margin-bottom:5px;">❤️ Love Meter: ${percent}%</div>
+      <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
+        <div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae); transition:width 0.4s ease;"></div>
+      </div>
+    `;
+  } 
+  // 2. Đã đầy 100% -> Hiện Nút Mở Khóa Ending
+  else {
+    if (!progressEl.querySelector(".unlock-heart-btn")) {
+      progressEl.innerHTML = ""; 
+      progressEl.style.background = "transparent"; 
+      progressEl.style.boxShadow = "none"; 
+      progressEl.style.border = "none";
+
+      const heartBtn = document.createElement("button");
+      heartBtn.className = "unlock-heart-btn"; // Class mới
+      heartBtn.innerHTML = "💌"; // Biểu tượng thư tình hoặc trái tim 💖
+      heartBtn.style.fontSize = "40px";
+      heartBtn.style.background = "none";
+      heartBtn.style.border = "none";
+      heartBtn.style.cursor = "pointer";
+      heartBtn.style.animation = "heartBeat 1.2s infinite";
+      heartBtn.style.filter = "drop-shadow(0 0 10px #ff4d6d)";
+      
+      // Bấm vào -> Chuyển sang màn hình Ending luôn
+      heartBtn.onclick = () => {
+        // Tạo hiệu ứng tim bay lên lần cuối cho đẹp
+        for (let i = 0; i < 8; i++) {
+          const miniHeart = document.createElement("div");
+          miniHeart.className = "mini-heart-pop";
+          miniHeart.innerText = "💖";
+          const rect = heartBtn.getBoundingClientRect();
+          const randomX = (Math.random() - 0.5) * 60;
+          miniHeart.style.left = (rect.left + rect.width / 2 + randomX) + "px";
+          miniHeart.style.top = (rect.top) + "px";
+          document.body.appendChild(miniHeart);
+          setTimeout(() => miniHeart.remove(), 1000);
+        }
+
+        // Đợi 0.8s cho tim bay xong thì chuyển cảnh
+        setTimeout(() => {
+            if (typeof showEndingScene === 'function') {
+                showEndingScene(); // Gọi màn hình kết thúc
+            }
+        }, 800);
+      };
+
+      progressEl.appendChild(heartBtn);
+      
+      const text = document.createElement("div");
+      text.innerText = "Đã mở khóa trái tim! Bấm vào đi 🥺";
+      text.style.fontSize = "14px";
+      text.style.color = "#ff4f81";
+      text.style.fontWeight = "bold";
+      text.style.marginTop = "5px";
+      text.style.textShadow = "1px 1px 0 #fff";
+      text.style.animation = "float 1s infinite"; 
+      progressEl.appendChild(text);
+    }
   }
 }
 
