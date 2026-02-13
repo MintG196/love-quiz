@@ -330,6 +330,17 @@ function showLoveQuestion() {
             noBtn.style.display = "none"; 
             yesBtn.style.display = "none";
             questionEl.innerHTML = "";
+
+            // --- THÊM ĐOẠN NÀY: Đẩy Love Meter lên 100% ngay lập tức ---
+            const meter = document.getElementById("progress");
+            if (meter) {
+                meter.innerHTML = `
+                    <div style="margin-bottom:5px;">❤️ Love Meter: 100%</div>
+                    <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
+                        <div style="width:100%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae); transition:width 0.4s ease;"></div>
+                    </div>
+                `;
+            }
             
             const replyDiv = document.createElement("div");
             replyDiv.style.fontSize = "24px";

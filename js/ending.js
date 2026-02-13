@@ -113,8 +113,8 @@ function showEndingScene() {
     // Lời nhắn kết thúc
     const msg = document.createElement("div");
     msg.innerHTML =
-        '<div style="font-size: 1.5rem; color: #ff4f81; margin: 20px 0 10px 0; font-weight: bold; text-shadow: 2px 2px 0px #fff;">Mãi bên nhau em nhé 💑</div>' +
-        '<div style="font-size: 1.1rem; color: white; text-shadow: 0 0 4px #ff4f81, 0 0 8px #ff4f81;">Cảm ơn em đã là một phần quan trọng trong cuộc đời anh!</div>';
+        '<div style="font-size: 1.5rem; color: #ff4f81; margin: 20px 0 10px 0; font-weight: bold; text-shadow: 2px 2px 0px #fff;">Happy Valentine My Baby</div>' +
+        '<div style="font-size: 1.1rem; color: white; text-shadow: 0 0 4px #ff4f81, 0 0 8px #ff4f81;">Cảm ơn em đã là một phần quan trọng trong cuộc đời anh, mong rằng mình sẽ mãi đồng hành với nhau thật lâu ná!</div>';
     msg.style.textAlign = "center";
     msg.style.marginBottom = "20px";
 
@@ -149,7 +149,7 @@ Shin thúiiii 💖
 Cảm ơn Shin đã chơi hết trò chơi nhỏ này của anh.
 Đây là cái game anh đã ấp ủ từ lâu để dành tặng riêng cho em, nên anh đã cố gắng 
 làm nó thật đặc biệt và ý nghĩa nhất có thể, nên nếu có gì thiếu sót thì mong em vẫn vui vẻ đón nhận và tận hưởng cái game này nhóooo
-Nếu sau này mình có cãi nhau,
+Và nếu sau này mình có cãi nhau,
 hãy nhớ hôm nay em đã mỉm cười khi chơi game này ná.
 Anh thương em nhiều lắm, ngoan xinh iu của anhhh 💕
 `;
