@@ -278,7 +278,7 @@ function showLoveQuestion() {
     answersEl.style.height = "300px"; 
     answersEl.style.marginTop = "20px"; 
 
-    typeText(questionEl, "Em có yêu anh không? 💌", 50, () => {
+    typeText(questionEl, "Câu hỏi cuối cùng náaa: Em có yêu anh nhìu nhìu hông? 💌", 50, () => {
         
         function makeButtonSmall(btn) {
             btn.style.width = "auto"; btn.style.minWidth = "100px";
