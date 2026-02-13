@@ -497,3 +497,57 @@ body {
     height: 300px; 
   }
 }
+
+/* --- TRÁI TIM GIỮA MÀN HÌNH (Unlock Heart) --- */
+.center-heart-btn {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); /* Ban đầu ẩn đi */
+  font-size: 80px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 3000;
+  filter: drop-shadow(0 0 20px #ff4d6d);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.center-heart-btn.show {
+  transform: translate(-50%, -50%) scale(1);
+  animation: heartBeat 1.2s infinite; /* Đập thình thịch */
+}
+
+/* --- KHUNG LỜI NHẮN (MESSAGE BOX) --- */
+.message-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8); /* Nền tối làm nổi bật chữ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3100;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.message-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.message-paper {
+  background: #fff0f5;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 20px;
+  border: 4px solid #ffb6c1;
+  box-shadow: 0 0 30px rgba(255, 182, 193, 0.6);
+  text-align: center;
+  transform: translateY(20px);
+  transition: transform 0.5s;
+}
+.message-overlay.show .message-paper {
+  transform: translateY(0);
+}

@@ -283,72 +283,16 @@ function nextQuestion() {
 // ================= PROGRESS (LOGIC MỚI: CHÌA KHÓA TRÁI TIM) =================
 function updateProgress() {
   const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
-
-  // 1. Chưa đầy -> Hiện thanh loading
-  if (percent < 100 && currentQuestion < questions.length) {
-    progressEl.innerHTML = `
-      <div style="margin-bottom:5px;">❤️ Love Meter: ${percent}%</div>
-      <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
-        <div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae); transition:width 0.4s ease;"></div>
-      </div>
-    `;
-  } 
-  // 2. Đã đầy 100% -> Hiện Nút Mở Khóa Ending
-  else {
-    if (!progressEl.querySelector(".unlock-heart-btn")) {
-      progressEl.innerHTML = ""; 
-      progressEl.style.background = "transparent"; 
-      progressEl.style.boxShadow = "none"; 
-      progressEl.style.border = "none";
-
-      const heartBtn = document.createElement("button");
-      heartBtn.className = "unlock-heart-btn"; // Class mới
-      heartBtn.innerHTML = "💌"; // Biểu tượng thư tình hoặc trái tim 💖
-      heartBtn.style.fontSize = "40px";
-      heartBtn.style.background = "none";
-      heartBtn.style.border = "none";
-      heartBtn.style.cursor = "pointer";
-      heartBtn.style.animation = "heartBeat 1.2s infinite";
-      heartBtn.style.filter = "drop-shadow(0 0 10px #ff4d6d)";
-      
-      // Bấm vào -> Chuyển sang màn hình Ending luôn
-      heartBtn.onclick = () => {
-        // Tạo hiệu ứng tim bay lên lần cuối cho đẹp
-        for (let i = 0; i < 8; i++) {
-          const miniHeart = document.createElement("div");
-          miniHeart.className = "mini-heart-pop";
-          miniHeart.innerText = "💖";
-          const rect = heartBtn.getBoundingClientRect();
-          const randomX = (Math.random() - 0.5) * 60;
-          miniHeart.style.left = (rect.left + rect.width / 2 + randomX) + "px";
-          miniHeart.style.top = (rect.top) + "px";
-          document.body.appendChild(miniHeart);
-          setTimeout(() => miniHeart.remove(), 1000);
-        }
-
-        // Đợi 0.8s cho tim bay xong thì chuyển cảnh
-        setTimeout(() => {
-            if (typeof showEndingScene === 'function') {
-                showEndingScene(); // Gọi màn hình kết thúc
-            }
-        }, 800);
-      };
-
-      progressEl.appendChild(heartBtn);
-      
-      const text = document.createElement("div");
-      text.innerText = "Đã mở khóa trái tim! Bấm vào đi 🥺";
-      text.style.fontSize = "14px";
-      text.style.color = "#ff4f81";
-      text.style.fontWeight = "bold";
-      text.style.marginTop = "5px";
-      text.style.textShadow = "1px 1px 0 #fff";
-      text.style.animation = "float 1s infinite"; 
-      progressEl.appendChild(text);
-    }
-  }
+  
+  // Chỉ đơn giản là hiện thanh loading thôi, không biến hình gì ở đây cả
+  // Vì "biến hình" sẽ dành cho màn chốt hạ ở giữa màn hình
+  progressEl.innerHTML = `
+    <div style="margin-bottom:5px;">❤️ Love Meter: ${percent}%</div>
+    <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
+      <div style="width:${Math.min(percent, 100)}%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae); transition:width 0.4s ease;"></div>
+    </div>
+  `;
 }
-
 // ================= END GAME =================
 function endGame() {
   questionEl.innerHTML = "";
@@ -359,176 +303,209 @@ function endGame() {
 
 // ================= LOVE QUESTION (LOGIC MỚI: NÚT NHỎ + NÉ TRÁNH) =================
 // ================= LOVE QUESTION (LOGIC MỚI: CHỮ CHẠY + 5 LẦN ẤN) =================
+// ================= LOVE QUESTION & FINAL FLOW =================
+
 function showLoveQuestion() {
-  // 1. Xóa nội dung cũ
   questionEl.innerHTML = "";
   answersEl.innerHTML = "";
   
-  // Reset style của khung chứa đáp án để không bị dính style grid của câu trước
+  // Style lại khung
   answersEl.className = "answers";
-  answersEl.style.display = "flex"; // Dùng flex để dễ căn chỉnh
+  answersEl.style.display = "flex"; 
   answersEl.style.justifyContent = "center";
   answersEl.style.position = "relative";
-  answersEl.style.height = "300px"; // Giữ chiều cao để nút chạy nhảy
-  answersEl.style.marginTop = "20px"; // Cách câu hỏi ra một chút cho thoáng
+  answersEl.style.height = "300px"; 
+  answersEl.style.marginTop = "20px"; 
 
-  // 2. Hiệu ứng chữ chạy (Giống các câu trước)
+  // Chữ chạy câu hỏi
   typeText(questionEl, "Em có yêu anh không? 💌", 50, () => {
     
-    // --- CHỈ KHI CHỮ CHẠY XONG MỚI HIỆN NÚT ---
-    
-    // Hàm style nút nhỏ gọn
+    // Tạo nút Có/Không (Code cũ giữ nguyên logic)
     function makeButtonSmall(btn) {
-      btn.style.width = "auto"; 
-      btn.style.minWidth = "100px";
-      btn.style.padding = "10px 20px";
-      btn.style.fontSize = "1.2rem";
-      btn.style.position = "absolute"; // Để di chuyển tự do
-      btn.style.transition = "all 0.2s ease";
-      
-      // Style 3D nhẹ cho đồng bộ
-      btn.style.boxShadow = "0 4px 0 #c22f55";
-      btn.style.border = "2px solid #fff";
+      btn.style.width = "auto"; btn.style.minWidth = "100px";
+      btn.style.padding = "10px 20px"; btn.style.fontSize = "1.2rem";
+      btn.style.position = "absolute"; btn.style.transition = "all 0.2s ease";
+      btn.style.boxShadow = "0 4px 0 #c22f55"; btn.style.border = "2px solid #fff";
     }
 
-    // Nút CÓ
     const yesBtn = document.createElement("button");
     yesBtn.innerText = "Có 💖";
     makeButtonSmall(yesBtn);
-    // Đặt vị trí ban đầu cân đối hơn
-    yesBtn.style.left = "35%"; 
-    yesBtn.style.top = "40%"; 
-    yesBtn.style.transform = "translate(-50%, -50%)";
-    yesBtn.style.zIndex = "100";
+    yesBtn.style.left = "35%"; yesBtn.style.top = "40%"; 
+    yesBtn.style.transform = "translate(-50%, -50%)"; yesBtn.style.zIndex = "100";
 
-    // Nút KHÔNG
     const noBtn = document.createElement("button");
     noBtn.innerText = "Không 😝";
     makeButtonSmall(noBtn);
-    // Đặt vị trí ban đầu cân đối với nút Có
-    noBtn.style.left = "65%";
-    noBtn.style.top = "40%";
-    noBtn.style.transform = "translate(-50%, -50%)";
-    noBtn.style.zIndex = "50";
+    noBtn.style.left = "65%"; noBtn.style.top = "40%";
+    noBtn.style.transform = "translate(-50%, -50%)"; noBtn.style.zIndex = "50";
 
     answersEl.appendChild(yesBtn);
     answersEl.appendChild(noBtn);
 
-    // Hiệu ứng xuất hiện (Fade in)
-    yesBtn.style.opacity = "0";
-    noBtn.style.opacity = "0";
-    setTimeout(() => {
-        yesBtn.style.opacity = "1";
-        noBtn.style.opacity = "1";
-    }, 100);
+    // Fade in nút
+    yesBtn.style.opacity = "0"; noBtn.style.opacity = "0";
+    setTimeout(() => { yesBtn.style.opacity = "1"; noBtn.style.opacity = "1"; }, 100);
 
+    // Logic nút KHÔNG (Né tránh - Giữ nguyên)
     let yesScale = 1;
     let noClickCount = 0;
-
-    // --- XỬ LÝ NÚT KHÔNG (NÉ TRÁNH 5 LẦN) ---
     noBtn.addEventListener("click", () => {
       noClickCount++;
-      
-      // Nút CÓ to ra
-      yesScale += 0.15; // Tăng chậm lại chút vì số lần ấn nhiều hơn
+      yesScale += 0.15; 
       yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
-      yesBtn.style.zIndex = "100"; // Luôn đảm bảo nút Có đè lên trên
-
-      // Sau 5 lần thì biến mất
+      
       if (noClickCount >= 5) {
         noBtn.style.display = "none";
       } else {
-        // Bé dần đi (Tính toán để lần thứ 4 vẫn còn nhìn thấy)
         const currentNoScale = 1 - (noClickCount * 0.15);
         noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`;
-
-        // --- Logic tìm vị trí mới không bị đè ---
+        // ... (Logic random vị trí giữ nguyên như cũ) ...
         const containerRect = answersEl.getBoundingClientRect();
-        const yesRect = yesBtn.getBoundingClientRect();
-        const btnWidth = noBtn.offsetWidth * currentNoScale; // Tính kích thước thật sau khi scale
+        const btnWidth = noBtn.offsetWidth * currentNoScale; 
         const btnHeight = noBtn.offsetHeight * currentNoScale;
-
-        let newLeft, newTop, isOverlapping = true, attempts = 0;
-
-        while (isOverlapping && attempts < 50) {
-          attempts++;
-          // Random trong khung
-          newLeft = Math.random() * (containerRect.width - btnWidth - 40) + 20; 
-          newTop = Math.random() * (containerRect.height - btnHeight - 40) + 20;
-
-          const noRect = {
-            left: containerRect.left + newLeft,
-            right: containerRect.left + newLeft + btnWidth,
-            top: containerRect.top + newTop,
-            bottom: containerRect.top + newTop + btnHeight
-          };
-
-          const safetyMargin = 30; // Khoảng cách an toàn
-          const overlap = !(
-              noRect.right < yesRect.left - safetyMargin || 
-              noRect.left > yesRect.right + safetyMargin || 
-              noRect.bottom < yesRect.top - safetyMargin || 
-              noRect.top > yesRect.bottom + safetyMargin
-          );
-
-          if (!overlap) isOverlapping = false;
-        }
-        noBtn.style.left = newLeft + "px";
-        noBtn.style.top = newTop + "px";
+        const newLeft = Math.random() * (containerRect.width - btnWidth - 40) + 20; 
+        const newTop = Math.random() * (containerRect.height - btnHeight - 40) + 20;
+        noBtn.style.left = newLeft + "px"; noBtn.style.top = newTop + "px";
       }
     });
 
-    // --- XỬ LÝ NÚT CÓ (CHIẾN THẮNG) ---
+    // --- LOGIC NÚT CÓ (QUAN TRỌNG: GỌI TRÁI TIM GIỮA MÀN HÌNH) ---
     yesBtn.addEventListener("click", () => {
-      // Ẩn nút Không ngay lập tức cho gọn
+      // 1. Ẩn hết nút và câu hỏi
       noBtn.style.display = "none"; 
-      
+      yesBtn.style.display = "none";
       questionEl.innerHTML = "";
       answersEl.innerHTML = "";
       
-      // Chạy chữ kết thúc
-      typeText(questionEl, "Anh biết mà 😚", 50, () => {
+      // 2. Chữ "Anh biết mà" hiện ra
+      const replyDiv = document.createElement("div");
+      replyDiv.style.fontSize = "24px";
+      replyDiv.style.color = "#fff";
+      replyDiv.style.fontWeight = "bold";
+      questionEl.appendChild(replyDiv);
+
+      typeText(replyDiv, "Anh biết mà 😚... Chờ xíu nha...", 50, () => {
+        // 3. Sau khi chữ chạy xong -> Hiện trái tim to đùng giữa màn hình
         setTimeout(() => {
-          typeText(questionEl, endingMessage, 35, () => {
-            const nextBtn = document.createElement("button");
-            nextBtn.innerText = "Tiếp ➡️";
-            nextBtn.style.marginTop = "30px";
-            nextBtn.style.fontSize = "1.1rem";
-            nextBtn.style.padding = "10px 32px";
-            
-            // Style 3D
-            nextBtn.style.background = "#ffb6c1";
-            nextBtn.style.border = "4px solid #fff";
-            nextBtn.style.borderRadius = "12px";
-            nextBtn.style.color = "#fff";
-            nextBtn.style.cursor = "pointer";
-            nextBtn.style.boxShadow = "0 6px 0 #c22f55"; 
-            nextBtn.style.transition = "transform 0.1s";
-            
-            nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
-            nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
-            nextBtn.onmousedown = () => {
-               nextBtn.style.transform = "translateY(4px)";
-               nextBtn.style.boxShadow = "0 2px 0 #c22f55";
-            };
-            
-            nextBtn.onclick = () => {
-              if (typeof showEndingScene === 'function') showEndingScene();
-            };
-            
-            // Tạo div bao quanh nút để căn giữa chuẩn hơn
-            const btnContainer = document.createElement("div");
-            btnContainer.style.width = "100%";
-            btnContainer.style.display = "flex";
-            btnContainer.style.justifyContent = "center";
-            btnContainer.appendChild(nextBtn);
-            
-            questionEl.appendChild(document.createElement("br"));
-            questionEl.appendChild(btnContainer);
-          });
-        }, 800);
+            spawnCenterHeart(); 
+        }, 500);
       });
     });
+  }); 
+}
 
-  }); // Kết thúc callback của typeText
+// --- HÀM TẠO TRÁI TIM GIỮA MÀN HÌNH ---
+function spawnCenterHeart() {
+    // Xóa câu hỏi cũ đi cho sạch
+    const gameBox = document.querySelector(".question-box");
+    if(gameBox) gameBox.style.opacity = "0"; // Làm mờ khung câu hỏi đi để tập trung vào tim
+
+    const heartBtn = document.createElement("button");
+    heartBtn.className = "center-heart-btn";
+    heartBtn.innerHTML = "💖";
+    
+    // Thêm dòng chữ nhắc nhở dưới trái tim
+    const hintText = document.createElement("div");
+    hintText.innerText = "Bấm vào tim anh đi 🥺";
+    hintText.style.position = "fixed";
+    hintText.style.top = "60%";
+    hintText.style.left = "50%";
+    hintText.style.transform = "translate(-50%, -50%)";
+    hintText.style.color = "white";
+    hintText.style.fontSize = "20px";
+    hintText.style.fontWeight = "bold";
+    hintText.style.textShadow = "0 2px 4px rgba(0,0,0,0.5)";
+    hintText.style.opacity = "0";
+    hintText.style.transition = "opacity 0.5s";
+    hintText.style.zIndex = "2999";
+
+    document.body.appendChild(heartBtn);
+    document.body.appendChild(hintText);
+
+    // Animation xuất hiện
+    setTimeout(() => {
+        heartBtn.classList.add("show");
+        hintText.style.opacity = "1";
+    }, 100);
+
+    // Sự kiện bấm vào tim
+    heartBtn.onclick = () => {
+        // Ẩn tim và chữ gợi ý
+        heartBtn.style.transform = "translate(-50%, -50%) scale(1.5)";
+        heartBtn.style.opacity = "0";
+        hintText.style.opacity = "0";
+        
+        // Hiện hiệu ứng tim bay tung toé
+        for (let i = 0; i < 15; i++) {
+             const mini = document.createElement("div");
+             mini.className = "flying-heart"; // Tận dụng class có sẵn
+             mini.style.left = "50%";
+             mini.style.top = "50%";
+             document.body.appendChild(mini);
+             setTimeout(()=> mini.remove(), 1500);
+        }
+
+        // CHUYỂN SANG HIỆN LỜI NHẮN (MESSAGE)
+        setTimeout(() => {
+            heartBtn.remove();
+            hintText.remove();
+            showFinalMessage(); 
+        }, 500);
+    };
+}
+
+// --- HÀM HIỆN KHUNG LỜI NHẮN ---
+function showFinalMessage() {
+    const overlay = document.createElement("div");
+    overlay.className = "message-overlay";
+    
+    const paper = document.createElement("div");
+    paper.className = "message-paper";
+    
+    // Nội dung lời nhắn
+    const content = document.createElement("div");
+    content.style.fontSize = "1.2rem";
+    content.style.lineHeight = "1.6";
+    content.style.color = "#333";
+    content.style.marginBottom = "20px";
+    // Chỗ này bạn sửa nội dung tùy ý nhé
+    content.innerHTML = `
+        <h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2>
+        <div id="type-writer-content"></div> 
+    `;
+
+    const nextBtn = document.createElement("button");
+    nextBtn.innerText = "Tiếp theo ➡️";
+    nextBtn.className = "pixel-box"; // Tận dụng class nút cũ
+    nextBtn.style.padding = "10px 30px";
+    nextBtn.style.fontSize = "16px";
+    nextBtn.style.marginTop = "10px";
+    nextBtn.style.opacity = "0"; // Ẩn nút đi đợi chữ chạy xong
+    nextBtn.style.transition = "opacity 0.5s";
+    
+    nextBtn.onclick = () => {
+        overlay.classList.remove("show");
+        setTimeout(() => {
+            overlay.remove();
+            if (typeof showEndingScene === 'function') showEndingScene();
+        }, 500);
+    };
+
+    paper.appendChild(content);
+    paper.appendChild(nextBtn);
+    overlay.appendChild(paper);
+    document.body.appendChild(overlay);
+
+    // Hiện popup
+    setTimeout(() => overlay.classList.add("show"), 50);
+
+    // Chạy chữ nội dung thư
+    const messageText = endingMessage; // Lấy từ biến endingMessage ở đầu file, hoặc viết cứng vào đây
+    const typeContainer = paper.querySelector("#type-writer-content");
+    
+    typeText(typeContainer, messageText, 40, () => {
+        // Chữ chạy xong thì hiện nút Tiếp
+        nextBtn.style.opacity = "1";
+    });
 }
