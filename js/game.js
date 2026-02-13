@@ -20,7 +20,7 @@ const musicToggle = document.getElementById("music-toggle");
 const messageScreen = document.getElementById("message-screen");
 const chatContainer = document.getElementById("chat-container");
 const chatNextBtn = document.getElementById("chat-next-btn");
-const introAvatar = document.getElementById("intro-avatar"); // Ảnh nhân vật intro
+const introAvatar = document.getElementById("intro-avatar");
 
 // Phần Game
 const questionEl = document.getElementById("question");
@@ -60,14 +60,13 @@ musicToggle.addEventListener("click", () => {
   isMusicPlaying = !isMusicPlaying;
 });
 
-// ================= CHAT INTRO LOGIC (MỚI) =================
-// Danh sách chat + Tên ảnh tương ứng
+// ================= CHAT INTRO LOGIC =================
 const chats = [
-  { text: "Chào em 💖", img: "thinking" },           // Ảnh 1: Suy nghĩ
-  { text: "Anh làm trò chơi nhỏ này cho em nè.", img: "khoanhtay" }, // Ảnh 2: Khoanh tay
-  { text: "Không phải để thử thách đâu 😅", img: "happy1" },      // Ảnh 3: Cười
-  { text: "Chỉ mong em mỉm cười khi chơi thôi 😊", img: "happy1" }, // Ảnh 4: Vẫn cười
-  { text: "Giờ mình bắt đầu nhé? 💕", img: "heart" }             // Ảnh 5: Tim
+  { text: "Chào em 💖", img: "thinking" },
+  { text: "Anh làm trò chơi nhỏ này cho em nè.", img: "khoanhtay" },
+  { text: "Không phải để thử thách đâu 😅", img: "happy1" },
+  { text: "Chỉ mong em mỉm cười khi chơi thôi 😊", img: "happy1" },
+  { text: "Giờ mình bắt đầu nhé? 💕", img: "heart" }
 ];
 
 let chatIndex = 0;
@@ -82,31 +81,26 @@ function addChatBubble(text) {
 
 function updateIntroAvatar(imgName) {
   if (introAvatar) {
-    // Đảm bảo bạn có file ảnh đúng tên trong assets/images/avatar/
     introAvatar.src = `assets/images/avatar/${imgName}.png`;
   }
 }
 
-// Khi bấm nút START ở màn hình chào
+// START BUTTON
 startBtn.addEventListener("click", () => {
   introScreen.classList.remove("active");
   messageScreen.classList.add("active");
-
   chatContainer.innerHTML = "";
   chatIndex = 0;
-
-  // Hiện câu đầu tiên + Ảnh đầu tiên
   if (chats.length > 0) {
     const first = chats[0];
     addChatBubble(first.text);
     updateIntroAvatar(first.img);
     chatIndex = 1;
   }
-
   bgMusic.play().catch(() => {});
 });
 
-// Khi bấm nút TIẾP ở màn hình chat
+// CHAT NEXT BUTTON
 chatNextBtn.addEventListener("click", () => {
   if (chatIndex < chats.length) {
     const current = chats[chatIndex];
@@ -114,13 +108,11 @@ chatNextBtn.addEventListener("click", () => {
     updateIntroAvatar(current.img);
     chatIndex++;
   } else {
-    // Hết chat -> Vào game chính
     messageScreen.classList.remove("active");
     gameScreen.classList.add("active");
     startGame();
   }
 });
-
 
 // ================= START GAME =================
 function startGame() {
@@ -128,21 +120,15 @@ function startGame() {
     questionEl.innerHTML = "Lỗi: Không có câu hỏi. Kiểm tra file js/questions.js";
     return;
   }
-  // --- THÊM DÒNG NÀY ĐỂ HIỆN LẠI LOVE METER ---
   progressEl.style.display = "block"; 
-  // --------------------------------------------
-
   currentQuestion = 0;
   correctCount = 0;
-
-  // Reset Love Meter về 0%
   progressEl.innerHTML = `
     <div style="margin-bottom:5px;">❤️ Love Meter: 0%</div>
     <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
       <div style="width:0%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae);"></div>
     </div>
   `;
-
   loadQuestion();
 }
 
@@ -163,10 +149,7 @@ function typeText(element, text, speed = 35, callback) {
 // ================= LOAD QUESTION =================
 function loadQuestion() {
   const q = questions[currentQuestion];
-
-  // Mặc định khi suy nghĩ
   avatar.src = "assets/images/avatar/thinking.png";
-
   questionEl.innerHTML = "";
   answersEl.innerHTML = "";
   answersEl.style.pointerEvents = "none";
@@ -177,7 +160,6 @@ function loadQuestion() {
     tempDiv.innerHTML = q.question;
     const img = tempDiv.querySelector("img");
     const text = tempDiv.textContent.trim();
-
     if (img) questionEl.appendChild(img);
     const textContainer = document.createElement("div");
     questionEl.appendChild(textContainer);
@@ -193,12 +175,8 @@ function showAnswers() {
   answersEl.innerHTML = "";
   answersEl.style.pointerEvents = "none";
   answersEl.style.opacity = "1";
-
-  if (q.answers.length === 2) {
-    answersEl.className = "answers two";
-  } else {
-    answersEl.className = "answers four";
-  }
+  if (q.answers.length === 2) answersEl.className = "answers two";
+  else answersEl.className = "answers four";
 
   let index = 0;
   function showNextAnswer() {
@@ -211,18 +189,12 @@ function showAnswers() {
     btn.style.opacity = "0";
     btn.style.transform = "translateY(10px)";
     btn.style.transition = "all 0.3s ease";
-
     const answerIndex = index;
-    btn.addEventListener("click", () => {
-      handleAnswer(answerIndex);
-    });
-
+    btn.addEventListener("click", () => handleAnswer(answerIndex));
     answersEl.appendChild(btn);
     setTimeout(() => {
-      btn.style.opacity = "1";
-      btn.style.transform = "translateY(0)";
+      btn.style.opacity = "1"; btn.style.transform = "translateY(0)";
     }, 50);
-
     index++;
     setTimeout(showNextAnswer, 180);
   }
@@ -237,55 +209,35 @@ function handleAnswer(selectedIndex) {
   showResult(isCorrect);
 }
 
-// ================= RESULT (ĐÃ SỬA ĐỒNG BỘ AVATAR) =================
+// ================= RESULT =================
 function showResult(isCorrect) {
   resultScreen.classList.remove("hidden");
-  
-  // Lấy thẻ avatar chính bên trái
   const mainAvatar = document.getElementById("avatar");
-
   if (isCorrect) {
-    correctSound.currentTime = 0;
-    correctSound.play().catch(() => {});
-    
-    // Popup vui -> Avatar trái cũng vui
+    correctSound.currentTime = 0; correctSound.play().catch(() => {});
     resultImg.src = "assets/images/avatar/happy.png";
     if(mainAvatar) mainAvatar.src = "assets/images/avatar/happy.png";
-    
     resultText.innerText = "Đúng ùi, toá giỏi lunnnn 💖";
   } else {
-    incorrectSound.currentTime = 0;
-    incorrectSound.play().catch(() => {});
-    
-    // Popup buồn -> Avatar trái cũng buồn
+    incorrectSound.currentTime = 0; incorrectSound.play().catch(() => {});
     resultImg.src = "assets/images/avatar/sad.png";
     if(mainAvatar) mainAvatar.src = "assets/images/avatar/sad.png";
-    
     resultText.innerText = "Ui tiếc quớ, sai mất ùi 🥺";
   }
-
   setTimeout(() => {
-    resultScreen.classList.add("hidden");
-    nextQuestion(); 
+    resultScreen.classList.add("hidden"); nextQuestion(); 
   }, 1500);
 }
 
 // ================= NEXT & PROGRESS =================
 function nextQuestion() {
   currentQuestion++;
-  if (currentQuestion < questions.length) {
-    loadQuestion();
-  } else {
-    endGame();
-  }
+  if (currentQuestion < questions.length) loadQuestion();
+  else endGame();
 }
 
-// ================= PROGRESS (LOGIC MỚI: CHÌA KHÓA TRÁI TIM) =================
 function updateProgress() {
   const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
-  
-  // Chỉ đơn giản là hiện thanh loading thôi, không biến hình gì ở đây cả
-  // Vì "biến hình" sẽ dành cho màn chốt hạ ở giữa màn hình
   progressEl.innerHTML = `
     <div style="margin-bottom:5px;">❤️ Love Meter: ${percent}%</div>
     <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
@@ -293,7 +245,7 @@ function updateProgress() {
     </div>
   `;
 }
-// ================= END GAME =================
+
 function endGame() {
   questionEl.innerHTML = "";
   answersEl.innerHTML = "";
@@ -301,33 +253,20 @@ function endGame() {
   showLoveQuestion();
 }
 
-// ================= LOVE QUESTION (LOGIC MỚI: NÚT NHỎ + NÉ TRÁNH) =================
-// ================= LOVE QUESTION (LOGIC MỚI: CHỮ CHẠY + 5 LẦN ẤN) =================
-// ================= LOVE QUESTION & FINAL FLOW =================
-
-// ================= LOVE QUESTION (PHIÊN BẢN BIẾN HÌNH MORPHING) =================
+// ================= SHOW LOVE QUESTION (MORPHING) =================
 function showLoveQuestion() {
-    questionEl.innerHTML = "";
-    answersEl.innerHTML = "";
-    
-    // Reset style khung chứa
-    answersEl.className = "answers";
-    answersEl.style.display = "flex"; 
-    answersEl.style.justifyContent = "center";
-    answersEl.style.position = "relative";
-    answersEl.style.height = "300px"; 
-    answersEl.style.marginTop = "20px"; 
+    questionEl.innerHTML = ""; answersEl.innerHTML = "";
+    answersEl.className = "answers"; answersEl.style.display = "flex"; 
+    answersEl.style.justifyContent = "center"; answersEl.style.position = "relative";
+    answersEl.style.height = "300px"; answersEl.style.marginTop = "20px"; 
 
-    // 1. Chữ chạy câu hỏi
     typeText(questionEl, "Em có yêu anh không? 💌", 50, () => {
-        
         function makeButtonSmall(btn) {
             btn.style.width = "auto"; btn.style.minWidth = "100px";
             btn.style.padding = "10px 20px"; btn.style.fontSize = "1.2rem";
             btn.style.position = "absolute"; btn.style.transition = "all 0.2s ease";
             btn.style.boxShadow = "0 4px 0 #c22f55"; btn.style.border = "2px solid #fff";
         }
-
         const yesBtn = document.createElement("button");
         yesBtn.innerText = "Có 💖";
         makeButtonSmall(yesBtn);
@@ -340,20 +279,13 @@ function showLoveQuestion() {
         noBtn.style.left = "65%"; noBtn.style.top = "40%";
         noBtn.style.transform = "translate(-50%, -50%)"; noBtn.style.zIndex = "50";
 
-        answersEl.appendChild(yesBtn);
-        answersEl.appendChild(noBtn);
-
-        // Fade in nút
+        answersEl.appendChild(yesBtn); answersEl.appendChild(noBtn);
         yesBtn.style.opacity = "0"; noBtn.style.opacity = "0";
         setTimeout(() => { yesBtn.style.opacity = "1"; noBtn.style.opacity = "1"; }, 100);
 
-        let yesScale = 1;
-        let noClickCount = 0;
-
-        // --- XỬ LÝ NÚT KHÔNG (GIỮ NGUYÊN LOGIC NÉ TRÁNH) ---
+        let yesScale = 1; let noClickCount = 0;
         noBtn.addEventListener("click", () => {
-            noClickCount++;
-            yesScale += 0.15; 
+            noClickCount++; yesScale += 0.15; 
             yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
             if (noClickCount >= 5) {
                 noBtn.style.display = "none";
@@ -369,49 +301,28 @@ function showLoveQuestion() {
             }
         });
 
-        // --- [QUAN TRỌNG] LOGIC NÚT CÓ: ANIMATION BIẾN HÌNH ---
         yesBtn.addEventListener("click", () => {
-            // Ẩn nội dung câu hỏi
-            noBtn.style.display = "none";
-            yesBtn.style.display = "none";
-            questionEl.innerHTML = "";
-            
-            // Hiện chữ dẫn dắt
+            noBtn.style.display = "none"; yesBtn.style.display = "none"; questionEl.innerHTML = "";
             const replyDiv = document.createElement("div");
-            replyDiv.style.fontSize = "24px";
-            replyDiv.style.color = "#fff";
-            replyDiv.style.fontWeight = "bold";
+            replyDiv.style.fontSize = "24px"; replyDiv.style.color = "#fff"; replyDiv.style.fontWeight = "bold";
             questionEl.appendChild(replyDiv);
-
             typeText(replyDiv, "Yêu thế cơ á? ❤️ Để anh xem nào...", 50, () => {
                 setTimeout(() => {
                     const meter = document.getElementById("progress");
                     if (!meter) return;
-
-                    // A. Bay vào giữa
-                    meter.classList.add("meter-to-center");
-                    meter.innerHTML = "⏳"; 
-                    
-                    // B. Co lại thành hình tròn trắng
+                    meter.classList.add("meter-to-center"); meter.innerHTML = "⏳"; 
                     setTimeout(() => {
                         meter.classList.add("meter-morph");
-                        
-                        // C. Biến thành Trái tim khổng lồ
                         setTimeout(() => {
                             meter.innerHTML = "💖";
                             meter.classList.add("heart-glow");
                             meter.style.cursor = "pointer";
-                            
-                            // Hiệu ứng nhịp đập khi xuất hiện
                             meter.animate([
                                 { transform: 'translate(-50%, -50%) scale(1)' },
                                 { transform: 'translate(-50%, -50%) scale(1.5)' },
                                 { transform: 'translate(-50%, -50%) scale(1)' }
                             ], { duration: 500 });
-
-                            // D. Click vào tim để xem Message
                             meter.onclick = () => {
-                                // Hiệu ứng nổ tim (spawn mini hearts)
                                 const rect = meter.getBoundingClientRect();
                                 for (let i = 0; i < 15; i++) {
                                     const h = document.createElement("div");
@@ -421,13 +332,10 @@ function showLoveQuestion() {
                                     document.body.appendChild(h);
                                     setTimeout(() => h.remove(), 2000);
                                 }
-                                
                                 meter.style.opacity = "0";
                                 meter.style.transform = "translate(-50%, -50%) scale(2)";
-                                
                                 setTimeout(() => {
-                                    meter.remove();
-                                    showFinalMessage(); // Hiện khung lời nhắn (Message Box)
+                                    meter.remove(); showFinalMessage(); 
                                 }, 500);
                             };
                         }, 800);
@@ -438,93 +346,28 @@ function showLoveQuestion() {
     }); 
 }
 
-// --- HÀM TẠO TRÁI TIM GIỮA MÀN HÌNH ---
-function spawnCenterHeart() {
-    // Xóa câu hỏi cũ đi cho sạch
-    const gameBox = document.querySelector(".question-box");
-    if(gameBox) gameBox.style.opacity = "0"; // Làm mờ khung câu hỏi đi để tập trung vào tim
-
-    const heartBtn = document.createElement("button");
-    heartBtn.className = "center-heart-btn";
-    heartBtn.innerHTML = "💖";
-    
-    // Thêm dòng chữ nhắc nhở dưới trái tim
-    const hintText = document.createElement("div");
-    hintText.innerText = "Bấm vào tim anh đi 🥺";
-    hintText.style.position = "fixed";
-    hintText.style.top = "60%";
-    hintText.style.left = "50%";
-    hintText.style.transform = "translate(-50%, -50%)";
-    hintText.style.color = "white";
-    hintText.style.fontSize = "20px";
-    hintText.style.fontWeight = "bold";
-    hintText.style.textShadow = "0 2px 4px rgba(0,0,0,0.5)";
-    hintText.style.opacity = "0";
-    hintText.style.transition = "opacity 0.5s";
-    hintText.style.zIndex = "2999";
-
-    document.body.appendChild(heartBtn);
-    document.body.appendChild(hintText);
-
-    // Animation xuất hiện
-    setTimeout(() => {
-        heartBtn.classList.add("show");
-        hintText.style.opacity = "1";
-    }, 100);
-
-    // Sự kiện bấm vào tim
-    heartBtn.onclick = () => {
-        // Ẩn tim và chữ gợi ý
-        heartBtn.style.transform = "translate(-50%, -50%) scale(1.5)";
-        heartBtn.style.opacity = "0";
-        hintText.style.opacity = "0";
-        
-        // Hiện hiệu ứng tim bay tung toé
-        for (let i = 0; i < 15; i++) {
-             const mini = document.createElement("div");
-             mini.className = "flying-heart"; // Tận dụng class có sẵn
-             mini.style.left = "50%";
-             mini.style.top = "50%";
-             document.body.appendChild(mini);
-             setTimeout(()=> mini.remove(), 1500);
-        }
-
-        // CHUYỂN SANG HIỆN LỜI NHẮN (MESSAGE)
-        setTimeout(() => {
-            heartBtn.remove();
-            hintText.remove();
-            showFinalMessage(); 
-        }, 500);
-    };
-}
-
-// --- HÀM HIỆN KHUNG LỜI NHẮN ---
+// ================= SHOW FINAL MESSAGE =================
 function showFinalMessage() {
     const overlay = document.createElement("div");
     overlay.className = "message-overlay";
-    
     const paper = document.createElement("div");
     paper.className = "message-paper";
     
-    // Nội dung lời nhắn
     const content = document.createElement("div");
     content.style.fontSize = "1.2rem";
     content.style.lineHeight = "1.6";
     content.style.color = "#333";
     content.style.marginBottom = "20px";
-    // Chỗ này bạn sửa nội dung tùy ý nhé
-    content.innerHTML = `
-        <h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2>
-        <div id="type-writer-content"></div> 
-    `;
+    content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2><div id="type-writer-content"></div>`;
 
     const nextBtn = document.createElement("button");
     nextBtn.innerText = "Tiếp theo ➡️";
-    nextBtn.className = "pixel-box"; // Tận dụng class nút cũ
-    nextBtn.style.padding = "10px 30px";
-    nextBtn.style.fontSize = "16px";
-    nextBtn.style.marginTop = "10px";
-    nextBtn.style.opacity = "0"; // Ẩn nút đi đợi chữ chạy xong
+    
+    // --- [SỬA LẠI] DÙNG CLASS pink-btn ĐỂ GIỐNG NÚT CHAT ---
+    nextBtn.className = "pink-btn"; 
+    
+    nextBtn.style.marginTop = "20px";
+    nextBtn.style.opacity = "0"; 
     nextBtn.style.transition = "opacity 0.5s";
     
     nextBtn.onclick = () => {
@@ -535,20 +378,13 @@ function showFinalMessage() {
         }, 500);
     };
 
-    paper.appendChild(content);
-    paper.appendChild(nextBtn);
-    overlay.appendChild(paper);
-    document.body.appendChild(overlay);
-
-    // Hiện popup
+    paper.appendChild(content); paper.appendChild(nextBtn);
+    overlay.appendChild(paper); document.body.appendChild(overlay);
     setTimeout(() => overlay.classList.add("show"), 50);
 
-    // Chạy chữ nội dung thư
-    const messageText = endingMessage; // Lấy từ biến endingMessage ở đầu file, hoặc viết cứng vào đây
+    const messageText = endingMessage; 
     const typeContainer = paper.querySelector("#type-writer-content");
-    
     typeText(typeContainer, messageText, 40, () => {
-        // Chữ chạy xong thì hiện nút Tiếp
         nextBtn.style.opacity = "1";
     });
 }
