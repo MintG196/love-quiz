@@ -551,3 +551,29 @@ body {
 .message-overlay.show .message-paper {
   transform: translateY(0);
 }
+/* Animation bay từ góc vào giữa */
+.meter-to-center {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 250px !important; /* To ra một chút khi bay vào giữa */
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+  z-index: 3000 !important;
+}
+
+/* Hiệu ứng biến thành hình tròn/trái tim */
+.meter-morph {
+  border-radius: 50% !important;
+  height: 250px !important; /* Biến thành hình vuông/tròn trước khi thành tim */
+  background: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 80px !important;
+}
+
+/* Hiệu ứng hào quang tỏa ra khi biến hình xong */
+.heart-glow {
+  box-shadow: 0 0 50px #ff4d6d, 0 0 100px #ff8fae !important;
+}
