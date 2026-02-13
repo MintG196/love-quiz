@@ -1,4 +1,3 @@
-
 const questions = [
   {
     question: '<img src="assets/images/ui/pixel-box.png" class="question-img">',

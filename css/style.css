@@ -424,3 +424,96 @@ body {
     padding: 20px;
   }
 }
+
+/* =========================================
+   LAYOUT MỚI CHO MÀN HÌNH CHAT (SPLIT SCREEN)
+   ========================================= */
+
+/* Khung bao quanh để chia cột */
+.intro-layout {
+  display: flex;
+  width: 100%;
+  max-width: 1000px; /* Giới hạn chiều rộng để không bị bè ra quá trên màn to */
+  height: 80vh;      /* Chiếm 80% chiều cao màn hình */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center;
+  gap: 20px; /* Khoảng cách giữa 2 cột */
+  padding: 0 40px;
+}
+
+/* --- CỘT TRÁI: CHỨA AVATAR --- */
+.intro-left {
+  flex: 1; /* Chiếm 1 phần không gian */
+  display: flex;
+  justify-content: center; /* Căn giữa avatar trong cột trái */
+  align-items: center;
+}
+
+#intro-avatar {
+  /* Reset lại các thuộc tính cũ */
+  position: static; 
+  width: 100%;       /* Co giãn theo cột */
+  max-width: 320px;  /* To tối đa 320px (To đẹp như game) */
+  min-width: 200px;  /* Không bé quá */
+  height: auto;
+  object-fit: contain;
+  
+  /* Hiệu ứng bay nhẹ */
+  animation: float 2.5s ease-in-out infinite;
+  
+  /* Đổ bóng cho nhân vật nổi bật */
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+}
+
+/* --- CỘT PHẢI: CHỨA CHAT --- */
+.intro-right {
+  flex: 1.5; /* Chiếm 1.5 phần (Rộng hơn cột trái xíu) */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Căn giữa nút bấm và khung chat */
+  justify-content: center;
+}
+
+/* Chỉnh lại khung chat cho vừa vặn cột phải */
+#chat-container {
+  width: 100%; 
+  max-width: 550px; /* Giới hạn độ rộng để dễ đọc */
+  height: 400px;    /* Chiều cao cố định cho đẹp */
+  margin-bottom: 20px;
+  
+  /* Trang trí lại khung chứa chat một chút cho đỡ trống */
+  background: rgba(255, 255, 255, 0.3); /* Nền trắng mờ */
+  border-radius: 20px;
+  border: 4px solid #fff;
+  box-shadow: inset 0 0 20px rgba(255, 182, 193, 0.5);
+}
+
+/* --- RESPONSIVE MOBILE (Giao diện điện thoại) --- */
+@media (max-width: 768px) {
+  .intro-layout {
+    flex-direction: column; /* Xếp chồng lên nhau */
+    height: auto;
+    padding: 20px;
+    gap: 10px;
+  }
+
+  .intro-left {
+    flex: none;
+    height: 180px; /* Chiều cao khu vực avatar */
+    width: 100%;
+    align-items: flex-end; /* Avatar nằm dưới */
+  }
+
+  #intro-avatar {
+    max-width: 150px; /* Trên đt thì nhỏ lại chút */
+  }
+
+  .intro-right {
+    flex: none;
+    width: 100%;
+  }
+
+  #chat-container {
+    height: 300px; /* Chat ngắn lại chút trên đt */
+  }
+}
