@@ -128,6 +128,9 @@ function startGame() {
     questionEl.innerHTML = "Lỗi: Không có câu hỏi. Kiểm tra file js/questions.js";
     return;
   }
+  // --- THÊM DÒNG NÀY ĐỂ HIỆN LẠI LOVE METER ---
+  progressEl.style.display = "block"; 
+  // --------------------------------------------
 
   currentQuestion = 0;
   correctCount = 0;

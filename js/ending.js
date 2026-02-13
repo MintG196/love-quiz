@@ -1,5 +1,9 @@
 // Hàm hiện màn hình "Lời gửi riêng" với nút Tiếp
 function showLoveLetterScene() {
+    // --- THÊM DÒNG NÀY ĐỂ ẨN LOVE METER ---
+    const progressEl = document.getElementById("progress");
+    if (progressEl) progressEl.style.display = "none";
+    // ---------------------------------------
 	const questionEl = document.getElementById("question");
 	const answersEl = document.querySelector(".answers");
 	if (questionEl) questionEl.innerHTML = "";
@@ -40,25 +44,27 @@ function showLoveLetterScene() {
 
 // Hàm hiện ending scene sinh động
 function showEndingScene() {
-    // 1. Lấy các element
+    // --- [QUAN TRỌNG] TÌM VÀ ẨN LOVE METER NGAY LẬP TỨC ---
+    const progressEl = document.getElementById("progress");
+    if (progressEl) {
+        progressEl.style.display = "none"; 
+        progressEl.innerHTML = ""; // Xóa sạch nội dung bên trong cho chắc
+    }
+    // ------------------------------------------------------
+
+    // 1. Lấy các element khác
     const questionEl = document.getElementById("question");
     const answersEl = document.querySelector(".answers");
     const avatarEl = document.getElementById("avatar");
     const gameEl = document.getElementById("game");
 
-    // --- MỚI: Ẩn nhân vật & Reset căn lề màn hình ---
-    if (avatarEl) {
-        avatarEl.style.display = "none"; // Ẩn nhân vật
-    }
-    if (gameEl) {
-        gameEl.style.paddingLeft = "20px"; // Trả lại căn giữa, bỏ khoảng trống bên trái
-    }
-    // ------------------------------------------------
+    // Ẩn nhân vật & Reset căn lề màn hình
+    if (avatarEl) avatarEl.style.display = "none"; 
+    if (gameEl) gameEl.style.paddingLeft = "20px"; 
 
-    // --- Xóa khung hồng/viền trắng ---
+    // Xóa khung hồng/viền trắng của câu hỏi cũ
     if (questionEl && questionEl.parentElement) {
         const box = questionEl.parentElement;
-        
         box.style.background = "transparent"; 
         box.style.boxShadow = "none";
         box.style.border = "none"; 
@@ -78,7 +84,7 @@ function showEndingScene() {
     endingDiv.style.justifyContent = "center";
     endingDiv.style.marginTop = "20px"; 
 
-    // Ảnh cặp đôi mới
+    // Ảnh cặp đôi
     const img = document.createElement("img");
     img.src = "assets/images/couple/couple.jpg";
     img.alt = "Couple";
