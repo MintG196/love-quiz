@@ -341,7 +341,7 @@ function showLoveQuestion() {
                     setTimeout(() => {
                         meter.classList.add("meter-morph");
                         
-                        // 3. THAY THẾ BẰNG TRÁI TIM MỚI
+                        // 3. THAY THẾ BẰNG TRÁI TIM MỚI (Ve Sầu Thoát Xác)
                         setTimeout(() => {
                             // Xóa thanh cũ đi
                             meter.remove(); 
@@ -418,4 +418,40 @@ function showFinalMessage() {
     typeText(typeContainer, messageText, 40, () => {
         nextBtn.style.opacity = "1";
     });
+}
+
+// ================= CHỨC NĂNG CHƠI LẠI (RESET GAME) =================
+function restartGame() {
+    // 1. Reset biến game
+    currentQuestion = 0;
+    chatIndex = 0;
+
+    // 2. Ẩn màn hình game
+    gameScreen.classList.remove("active");
+    
+    // 3. Xóa các lớp phủ (Lời nhắn, Tim bay...)
+    document.querySelectorAll(".message-overlay").forEach(el => el.remove());
+    const heartsContainer = document.getElementById("hearts-container");
+    if (heartsContainer) heartsContainer.remove();
+
+    // 4. Dừng hiệu ứng tim bay ở Ending (Quan trọng!)
+    if (window._heartInterval) {
+        clearInterval(window._heartInterval);
+        window._heartInterval = null;
+    }
+
+    // 5. Reset giao diện
+    chatContainer.innerHTML = "";
+    if (introAvatar) introAvatar.src = "assets/images/avatar/thinking.png";
+
+    // Reset Avatar game (vì ở Ending nó bị ẩn đi)
+    if (avatar) {
+        avatar.style.display = "block"; 
+        avatar.src = "assets/images/avatar/thinking.png";
+    }
+    const gameDiv = document.getElementById("game");
+    if (gameDiv) gameDiv.style.paddingLeft = ""; 
+
+    // 6. Quay về màn hình Intro
+    introScreen.classList.add("active");
 }

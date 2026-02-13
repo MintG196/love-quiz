@@ -19,12 +19,12 @@ const questions = [
   {
     question: "Câu 3: Anh đã làm gì để được chơi game cùng em?",
     answers: [
-      "Đổi tên và camp em mỗi ngày",
-      "Spam tin nhắn",
       "Doạ dẫm bắt em chơi cùng",
+      "Spam tin nhắn",
+      "Đổi tên và camp em mỗi ngày",
       "Hack nick em để tự vào tổ đội",
     ],
-    correct: 0,
+    correct: 2,
   },
 
   {
@@ -54,22 +54,28 @@ const questions = [
   {
     question: "Câu 7: Lần đầu tiên em dỗi anh là khi nào?",
     answers: [
-      "Lúc anh đi Cát Bà",
       "Lúc em đi Đà Nẵng",
+      "Lúc anh đi Cát Bà",
       "Lúc anh đi Huế",
       "Lúc em ra Hà Nội",
     ],
-    correct: 0,
+    correct: 1,
   },
 
   {
     question: "Câu 8: Và lí do chính làaaaaa?",
     answers: [
-      "Em tưởng anh không muốn nhắn tin với em và nói đi ngủ",
+      "Anh quên rep tin nhắn em",
       "Anh không chúc em ngủ ngon",
       "Anh làm đau bản thân anh",
-      "Anh quên rep tin nhắn em",
+      "Em tưởng anh không muốn nhắn tin với em và nói đi ngủ",
     ],
-    correct: 0,
+    correct: 3,
+  },
+
+  {
+    question: "Câu 9: Hai đứa mình gặp nhau lần đầu tiên vào ngày mấy?",
+    answers: ["02/09/2025", "31/08/2025", "30/08/2025", "10/09/2025"],
+    correct: 3,
   },
 ];

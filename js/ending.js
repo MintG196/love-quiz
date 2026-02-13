@@ -1,15 +1,15 @@
 // Hàm hiện màn hình "Lời gửi riêng" với nút Tiếp
 function showLoveLetterScene() {
-    // --- THÊM DÒNG NÀY ĐỂ ẨN LOVE METER ---
+    // Ẩn love meter nếu còn sót
     const progressEl = document.getElementById("progress");
     if (progressEl) progressEl.style.display = "none";
-    // ---------------------------------------
+    
 	const questionEl = document.getElementById("question");
 	const answersEl = document.querySelector(".answers");
 	if (questionEl) questionEl.innerHTML = "";
 	if (answersEl) answersEl.innerHTML = "";
 
-	// Nội dung lời gửi riêng, bạn có thể sửa lại đoạn này
+	// Nội dung lời gửi riêng
 	const loveLetter = `
 		<div style="font-size:1.2rem;color:#ff4f81;font-weight:bold;margin-bottom:10px;">Lời gửi riêng cho em 💌</div>
 		<div style="font-size:1.1rem;color:#333;max-width:400px;margin:0 auto;">
@@ -24,18 +24,8 @@ function showLoveLetterScene() {
 	// Nút Tiếp
 	const nextBtn = document.createElement("button");
 	nextBtn.innerText = "Tiếp theo náaa";
+	nextBtn.className = "pink-btn"; // Dùng class nút hồng
 	nextBtn.style.marginTop = "30px";
-	nextBtn.style.fontSize = "1.1rem";
-	nextBtn.style.padding = "10px 32px";
-	nextBtn.style.background = "#ffb6c1";
-	nextBtn.style.border = "none";
-	nextBtn.style.borderRadius = "12px";
-	nextBtn.style.color = "#fff";
-	nextBtn.style.cursor = "pointer";
-	nextBtn.style.boxShadow = "0 2px 8px #ffb6c1a0";
-	nextBtn.style.transition = "background 0.2s";
-	nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
-	nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
 	nextBtn.onclick = showEndingScene;
 
 	questionEl.appendChild(letterDiv);
@@ -44,12 +34,9 @@ function showLoveLetterScene() {
 
 // Hàm hiện ending scene sinh động
 function showEndingScene() {
-    // --- SỬA ĐOẠN NÀY: XÓA SỔ LOVE METER NẾU CÒN SÓT ---
+    // Xóa sổ love meter (chốt chặn cuối cùng)
     const progressEl = document.getElementById("progress");
-    if (progressEl) {
-        progressEl.remove(); // Xóa khỏi trang web luôn
-    }
-    // ------------------------------------------------------
+    if (progressEl) progressEl.remove(); 
 
     // 1. Lấy các element khác
     const questionEl = document.getElementById("question");
@@ -57,11 +44,11 @@ function showEndingScene() {
     const avatarEl = document.getElementById("avatar");
     const gameEl = document.getElementById("game");
 
-    // Ẩn nhân vật & Reset căn lề màn hình
+    // Ẩn nhân vật & Reset căn lề
     if (avatarEl) avatarEl.style.display = "none"; 
     if (gameEl) gameEl.style.paddingLeft = "20px"; 
 
-    // Xóa khung hồng/viền trắng của câu hỏi cũ
+    // Xóa khung hồng của câu hỏi cũ
     if (questionEl && questionEl.parentElement) {
         const box = questionEl.parentElement;
         box.style.background = "transparent"; 
@@ -93,7 +80,7 @@ function showEndingScene() {
     img.style.opacity = "0";
     img.style.transition = "opacity 1.2s";
 
-    // Hiệu ứng trái tim bay
+    // Hiệu ứng trái tim bay (Background)
     let heartsContainer = document.getElementById("hearts-container");
     if (!heartsContainer) {
         heartsContainer = document.createElement("div");
@@ -131,14 +118,32 @@ function showEndingScene() {
     msg.style.textAlign = "center";
     msg.style.marginBottom = "20px";
 
+    // --- THÊM NÚT CHƠI LẠI ---
+    const replayBtn = document.createElement("button");
+    replayBtn.innerText = "Chơi lại từ đầu 🔄";
+    replayBtn.className = "pink-btn"; // Dùng class nút hồng
+    
+    replayBtn.onclick = () => {
+        if (typeof restartGame === 'function') {
+            restartGame(); // Gọi hàm reset bên game.js
+        } else {
+            location.reload(); // Phòng hờ reload trang
+        }
+    };
+    // -------------------------
+
     endingDiv.appendChild(img);
     endingDiv.appendChild(msg);
+    endingDiv.appendChild(replayBtn); // Thêm nút vào màn hình
+
     if (questionEl) questionEl.appendChild(endingDiv);
 
     setTimeout(() => {
         img.style.opacity = "1";
     }, 400);
 }
+
+// Nội dung lời nhắn (dùng chung)
 const endingMessage = `
 Em à 💖
 
