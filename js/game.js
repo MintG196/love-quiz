@@ -403,7 +403,29 @@ function showLoveQuestion() {
 
   typeText(questionEl, "Anh biết mà 😚", 40, () => {
     setTimeout(() => {
-      typeText(questionEl, endingMessage, 35);
+      // Hiện endingMessage, sau đó hiện nút Tiếp
+      typeText(questionEl, endingMessage, 35, () => {
+        // Thêm nút Tiếp
+        const nextBtn = document.createElement("button");
+        nextBtn.innerText = "Tiếp ➡️";
+        nextBtn.style.marginTop = "30px";
+        nextBtn.style.fontSize = "1.1rem";
+        nextBtn.style.padding = "10px 32px";
+        nextBtn.style.background = "#ffb6c1";
+        nextBtn.style.border = "none";
+        nextBtn.style.borderRadius = "12px";
+        nextBtn.style.color = "#fff";
+        nextBtn.style.cursor = "pointer";
+        nextBtn.style.boxShadow = "0 2px 8px #ffb6c1a0";
+        nextBtn.style.transition = "background 0.2s";
+        nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
+        nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
+        nextBtn.onclick = () => {
+          if (typeof showEndingScene === 'function') showEndingScene();
+        };
+        questionEl.appendChild(document.createElement("br"));
+        questionEl.appendChild(nextBtn);
+      });
     }, 800);
   });
 });
