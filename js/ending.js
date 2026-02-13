@@ -44,11 +44,10 @@ function showLoveLetterScene() {
 
 // Hàm hiện ending scene sinh động
 function showEndingScene() {
-    // --- [QUAN TRỌNG] TÌM VÀ ẨN LOVE METER NGAY LẬP TỨC ---
+    // --- SỬA ĐOẠN NÀY: XÓA SỔ LOVE METER NẾU CÒN SÓT ---
     const progressEl = document.getElementById("progress");
     if (progressEl) {
-        progressEl.style.display = "none"; 
-        progressEl.innerHTML = ""; // Xóa sạch nội dung bên trong cho chắc
+        progressEl.remove(); // Xóa khỏi trang web luôn
     }
     // ------------------------------------------------------
 

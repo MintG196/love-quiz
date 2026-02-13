@@ -322,7 +322,7 @@ body {
   box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
 }
 
-/* --- STYLE NÚT TIẾP HỒNG (DÙNG CHUNG) --- */
+/* STYLE NÚT TIẾP HỒNG (DÙNG CHUNG) */
 #chat-next-btn, .pink-btn {
   margin: 10px auto 20px;
   padding: 12px 30px;
@@ -462,31 +462,4 @@ body {
   animation: superPulse 1.2s infinite ease-in-out !important;
   cursor: pointer !important;
   z-index: 9999 !important;
-}
-
-/* --- ANIMATION CHO DÒNG CHỮ GỢI Ý --- */
-@keyframes textPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-.click-hint {
-  position: fixed; z-index: 10000;
-  color: #ff4f81; background: white;
-  font-size: 18px; font-weight: bold;
-  padding: 10px 20px; border-radius: 50px;
-  border: 3px solid #ff4f81;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  animation: textPulse 0.8s infinite ease-in-out;
-  pointer-events: none; white-space: nowrap;
-}
-
-@media (min-width: 769px) {
-  .click-hint { top: 50%; left: calc(50% + 160px); transform-origin: left center; }
-  .click-hint::before { content: "⬅️ "; }
-}
-@media (max-width: 768px) {
-  .click-hint { top: calc(50% + 150px); left: 50%; transform: translate(-50%, 0); }
-  .click-hint::before { content: "⬆️ "; }
 }

@@ -253,7 +253,7 @@ function endGame() {
   showLoveQuestion();
 }
 
-// ================= SHOW LOVE QUESTION (ĐÃ FIX: VE SẦU THOÁT XÁC) =================
+// ================= SHOW LOVE QUESTION (ĐÃ FIX LỖI TIM KHÔNG BIẾN MẤT) =================
 function showLoveQuestion() {
     questionEl.innerHTML = "";
     answersEl.innerHTML = "";
@@ -341,26 +341,22 @@ function showLoveQuestion() {
                     setTimeout(() => {
                         meter.classList.add("meter-morph");
                         
-                        // 3. THAY THẾ BẰNG TRÁI TIM MỚI (Tránh xung đột hiệu ứng)
+                        // 3. THAY THẾ BẰNG TRÁI TIM MỚI
                         setTimeout(() => {
-                            // Ẩn thanh cũ
-                            meter.style.display = "none";
+                            // --- SỬA Ở ĐÂY: XÓA VĨNH VIỄN THANH CŨ ---
+                            // Lúc trước là meter.style.display = "none"; (Không ẩn được do CSS)
+                            meter.remove(); 
+                            // -----------------------------------------
 
                             // Tạo nút tim mới
                             const realHeart = document.createElement("button");
-                            realHeart.className = "super-heart-beat"; // Class mới trong CSS
+                            realHeart.className = "super-heart-beat"; 
                             realHeart.innerHTML = "💖";
                             document.body.appendChild(realHeart);
 
-                            // Tạo chữ gợi ý
-                            const hintText = document.createElement("div");
-                            hintText.innerText = "Em ấn vào đây đi";
-                            hintText.className = "click-hint"; 
-                            document.body.appendChild(hintText);
-
                             realHeart.onclick = () => {
-                                hintText.remove(); // Xóa gợi ý
-                                realHeart.style.display = "none"; // Ẩn tim
+                                // Xóa luôn nút tim mới khi bấm
+                                realHeart.remove(); 
 
                                 // Hiệu ứng nổ tim
                                 const rect = realHeart.getBoundingClientRect();
@@ -398,7 +394,7 @@ function showFinalMessage() {
     content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2><div id="type-writer-content"></div>`;
 
     const nextBtn = document.createElement("button");
-    nextBtn.innerText = "Tiếp theo ➡️";
+    nextBtn.innerText = "Tiếp theo náaa";
     nextBtn.className = "pink-btn"; 
     
     nextBtn.style.marginTop = "20px";
