@@ -40,99 +40,99 @@ function showLoveLetterScene() {
 
 // Hàm hiện ending scene sinh động
 function showEndingScene() {
-	// 1. Lấy các element
-	const questionEl = document.getElementById("question");
-	const answersEl = document.querySelector(".answers");
+    // 1. Lấy các element
+    const questionEl = document.getElementById("question");
+    const answersEl = document.querySelector(".answers");
+    const avatarEl = document.getElementById("avatar");
+    const gameEl = document.getElementById("game");
 
-	// --- ĐOẠN CODE MỚI THÊM VÀO ĐỂ BỎ KHUNG HỒNG ---
-	// Lấy thẻ cha của questionEl (chính là thẻ div.question-box có màu hồng)
-	if (questionEl && questionEl.parentElement) {
-		const box = questionEl.parentElement;
-		
-		// Xóa màu nền, xóa bóng, xóa padding để ảnh hiển thị tự nhiên
-		box.style.background = "transparent"; 
-		box.style.boxShadow = "none";
-        box.style.border = "none";
-		box.style.padding = "0";
-		// Nếu muốn ảnh to ra, có thể set width 100% (tuỳ chọn)
-		// box.style.width = "100%"; 
-		// box.style.maxWidth = "100%";
-	}
-	// -------------------------------------------------
+    // --- MỚI: Ẩn nhân vật & Reset căn lề màn hình ---
+    if (avatarEl) {
+        avatarEl.style.display = "none"; // Ẩn nhân vật
+    }
+    if (gameEl) {
+        gameEl.style.paddingLeft = "20px"; // Trả lại căn giữa, bỏ khoảng trống bên trái
+    }
+    // ------------------------------------------------
 
-	// Xóa nội dung cũ bên trong
-	if (questionEl) questionEl.innerHTML = "";
-	if (answersEl) answersEl.innerHTML = "";
+    // --- Xóa khung hồng/viền trắng ---
+    if (questionEl && questionEl.parentElement) {
+        const box = questionEl.parentElement;
+        
+        box.style.background = "transparent"; 
+        box.style.boxShadow = "none";
+        box.style.border = "none"; 
+        box.style.padding = "0";
+    }
 
-	// Tạo khung scene
-	const endingDiv = document.createElement("div");
-	endingDiv.id = "ending-scene";
-	endingDiv.style.display = "flex";
-	endingDiv.style.flexDirection = "column";
-	endingDiv.style.alignItems = "center";
-	endingDiv.style.justifyContent = "center";
-	
-	// Điều chỉnh lại margin top một chút vì đã bỏ padding của box cha
-	endingDiv.style.marginTop = "20px"; 
+    // Xóa nội dung cũ
+    if (questionEl) questionEl.innerHTML = "";
+    if (answersEl) answersEl.innerHTML = "";
 
-	// Ảnh cặp đôi mới
-	const img = document.createElement("img");
-	img.src = "assets/images/couple/couple.jpg";
-	img.alt = "Couple";
-	img.style.width = "220px"; // Bạn có thể tăng lên nếu muốn to hơn, ví dụ 280px
-	img.style.borderRadius = "20px";
-	img.style.boxShadow = "0 4px 24px #ffb6c1";
-	img.style.opacity = "0";
-	img.style.transition = "opacity 1.2s";
+    // Tạo khung scene
+    const endingDiv = document.createElement("div");
+    endingDiv.id = "ending-scene";
+    endingDiv.style.display = "flex";
+    endingDiv.style.flexDirection = "column";
+    endingDiv.style.alignItems = "center";
+    endingDiv.style.justifyContent = "center";
+    endingDiv.style.marginTop = "20px"; 
 
-	// Hiệu ứng trái tim bay (Giữ nguyên)
-	let heartsContainer = document.getElementById("hearts-container");
-	if (!heartsContainer) {
-		heartsContainer = document.createElement("div");
-		heartsContainer.id = "hearts-container";
-		heartsContainer.style.position = "fixed";
-		heartsContainer.style.left = 0;
-		heartsContainer.style.top = 0;
-		heartsContainer.style.width = "100vw";
-		heartsContainer.style.height = "100vh";
-		heartsContainer.style.pointerEvents = "none";
-		heartsContainer.style.zIndex = 9999;
-		document.body.appendChild(heartsContainer);
-	}
+    // Ảnh cặp đôi mới
+    const img = document.createElement("img");
+    img.src = "assets/images/couple/couple.jpg";
+    img.alt = "Couple";
+    img.style.width = "220px";
+    img.style.borderRadius = "20px";
+    img.style.boxShadow = "0 4px 24px #ffb6c1";
+    img.style.opacity = "0";
+    img.style.transition = "opacity 1.2s";
 
-	function spawnHeart() {
-		const heart = document.createElement("div");
-		heart.className = "flying-heart";
-		heart.style.left = Math.random() * 100 + "vw";
-		heart.style.animationDelay = Math.random() * 1.5 + "s";
-		heartsContainer.appendChild(heart);
-		setTimeout(() => heart.remove(), 4600);
-	}
+    // Hiệu ứng trái tim bay
+    let heartsContainer = document.getElementById("hearts-container");
+    if (!heartsContainer) {
+        heartsContainer = document.createElement("div");
+        heartsContainer.id = "hearts-container";
+        heartsContainer.style.position = "fixed";
+        heartsContainer.style.left = 0;
+        heartsContainer.style.top = 0;
+        heartsContainer.style.width = "100vw";
+        heartsContainer.style.height = "100vh";
+        heartsContainer.style.pointerEvents = "none";
+        heartsContainer.style.zIndex = 9999;
+        document.body.appendChild(heartsContainer);
+    }
 
-	if (!window._heartInterval) {
-		window._heartInterval = setInterval(() => {
-			spawnHeart();
-		}, 150);
-	}
+    function spawnHeart() {
+        const heart = document.createElement("div");
+        heart.className = "flying-heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDelay = Math.random() * 1.5 + "s";
+        heartsContainer.appendChild(heart);
+        setTimeout(() => heart.remove(), 4600);
+    }
 
-	// Lời nhắn kết thúc
-	const msg = document.createElement("div");
-	msg.innerHTML =
-		'<div style="font-size: 1.5rem; color: #ff4f81; margin: 20px 0 10px 0; font-weight: bold; text-shadow: 2px 2px 0px #fff;">Mãi bên nhau em nhé 💑</div>' +
-		'<div style="font-size: 1.1rem; color: white; text-shadow: 0 0 4px #ff4f81, 0 0 8px #ff4f81;">Cảm ơn em đã là một phần quan trọng trong cuộc đời anh!</div>';
-	// Lưu ý: Vì bỏ nền hồng nên chữ màu trắng có thể khó đọc trên nền web. 
-	// Mình đã thêm text-shadow (viền chữ) ở trên để chữ nổi bật hơn.
-	
-	msg.style.textAlign = "center";
-	msg.style.marginBottom = "20px";
+    if (!window._heartInterval) {
+        window._heartInterval = setInterval(() => {
+            spawnHeart();
+        }, 150);
+    }
 
-	endingDiv.appendChild(img);
-	endingDiv.appendChild(msg);
-	if (questionEl) questionEl.appendChild(endingDiv);
+    // Lời nhắn kết thúc
+    const msg = document.createElement("div");
+    msg.innerHTML =
+        '<div style="font-size: 1.5rem; color: #ff4f81; margin: 20px 0 10px 0; font-weight: bold; text-shadow: 2px 2px 0px #fff;">Mãi bên nhau em nhé 💑</div>' +
+        '<div style="font-size: 1.1rem; color: white; text-shadow: 0 0 4px #ff4f81, 0 0 8px #ff4f81;">Cảm ơn em đã là một phần quan trọng trong cuộc đời anh!</div>';
+    msg.style.textAlign = "center";
+    msg.style.marginBottom = "20px";
 
-	setTimeout(() => {
-		img.style.opacity = "1";
-	}, 400);
+    endingDiv.appendChild(img);
+    endingDiv.appendChild(msg);
+    if (questionEl) questionEl.appendChild(endingDiv);
+
+    setTimeout(() => {
+        img.style.opacity = "1";
+    }, 400);
 }
 const endingMessage = `
 Em à 💖
