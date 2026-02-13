@@ -129,8 +129,23 @@ const questions = [
   },
 
   {
-    question: "Câu 15: Anh từng bảo anh thích em yêu em là vì cái gì nhờ (Lí do thực sự í)?",
-    answers: ["Vì em xinh", "Vì em ngon", "Vì bản thân, con người của em", "Vì anh thích bừa"],
+    question:
+      "Câu 15: Anh từng bảo anh thích em yêu em là vì cái gì nhờ (Lí do thực sự í)?",
+    answers: [
+      "Vì em xinh",
+      "Vì em ngon",
+      "Vì bản thân, con người của em",
+      "Vì anh thích bừa",
+    ],
     correct: 2,
-  }
+  },
+
+  {
+    type: "input",
+    question:
+      "Câu 16: Ảnh nào là ngôi nhà đầu tiên của chúng ta trong Minecraft? (Em điền 1 hoặc 2 nhó) <br><img src='assets/images/questpics/anhA.jpg' class='question-img'><br><img src='assets/images/questpics/anhB.jpg' class='question-img'>",
+    correct: ["2", "anhB", "ảnh B", "Ảnh B", "B.jpg", "anhB.jpg"],
+  },
+
+  
 ];
