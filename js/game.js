@@ -256,40 +256,114 @@ function updateProgress() {
   `;
 }
 
+// ================= KẾT THÚC CÂU HỎI TRẮC NGHIỆM =================
 function endGame() {
   questionEl.innerHTML = "";
   answersEl.innerHTML = "";
   avatar.src = "assets/images/avatar/happy.png";
-  showLoveQuestion();
+  showLoveQuestion(); // Chuyển sang màn hình tỏ tình gốc
 }
 
+// ================= MÀN HÌNH "EM CÓ YÊU ANH KHÔNG" (KHÔI PHỤC BẢN GỐC) =================
 function showLoveQuestion() {
-    questionEl.innerHTML = "Em có yêu anh không? 💌";
-    const yesBtn = document.createElement("button");
-    yesBtn.innerText = "Có 💖";
-    yesBtn.className = "pink-btn";
+    questionEl.innerHTML = "";
+    answersEl.innerHTML = "";
     
-    yesBtn.onclick = () => {
-        const meter = document.getElementById("progress");
-        meter.classList.add("meter-to-center");
-        setTimeout(() => {
-            meter.classList.add("meter-morph");
-            setTimeout(() => {
-                meter.innerHTML = "💖";
-                meter.classList.add("super-heart-beat");
-                meter.onclick = () => {
-                    meter.remove();
-                    const soulHeart = document.createElement("div");
-                    soulHeart.className = "flying-heart";
-                    soulHeart.style.left = "50%"; soulHeart.style.top = "50%";
-                    soulHeart.style.marginLeft = "-16px"; soulHeart.style.marginTop = "-16px";
-                    document.body.appendChild(soulHeart);
-                    setTimeout(() => showFinalMessage(), 1000);
-                };
-            }, 800);
-        }, 800);
-    };
-    answersEl.appendChild(yesBtn);
+    // Reset lại style cho khung answers để nút chạy nhảy được
+    answersEl.className = "answers";
+    answersEl.style.display = "flex"; 
+    answersEl.style.justifyContent = "center";
+    answersEl.style.position = "relative";
+    answersEl.style.height = "300px"; 
+    answersEl.style.marginTop = "20px"; 
+
+    typeText(questionEl, "Em có yêu anh không? 💌", 50, () => {
+        
+        function makeButtonSmall(btn) {
+            btn.style.width = "auto"; btn.style.minWidth = "100px";
+            btn.style.padding = "10px 20px"; btn.style.fontSize = "1.2rem";
+            btn.style.position = "absolute"; btn.style.transition = "all 0.2s ease";
+            btn.style.boxShadow = "0 4px 0 #c22f55"; btn.style.border = "2px solid #fff";
+            btn.className = "pink-btn"; // Dùng style nút hồng
+        }
+
+        const yesBtn = document.createElement("button");
+        yesBtn.innerText = "Có 💖";
+        makeButtonSmall(yesBtn);
+        yesBtn.style.left = "35%"; yesBtn.style.top = "40%"; 
+        yesBtn.style.transform = "translate(-50%, -50%)"; yesBtn.style.zIndex = "100";
+
+        const noBtn = document.createElement("button");
+        noBtn.innerText = "Không 😝";
+        makeButtonSmall(noBtn);
+        noBtn.style.left = "65%"; noBtn.style.top = "40%";
+        noBtn.style.transform = "translate(-50%, -50%)"; noBtn.style.zIndex = "50";
+
+        answersEl.appendChild(yesBtn);
+        answersEl.appendChild(noBtn);
+
+        // Hiệu ứng nút Không chạy trốn
+        let yesScale = 1;
+        let noClickCount = 0;
+        noBtn.addEventListener("click", () => {
+            noClickCount++;
+            yesScale += 0.2; 
+            yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+            
+            if (noClickCount >= 5) {
+                noBtn.style.display = "none";
+            } else {
+                const currentNoScale = 1 - (noClickCount * 0.15);
+                noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`;
+                const containerRect = answersEl.getBoundingClientRect();
+                const btnWidth = noBtn.offsetWidth * currentNoScale; 
+                const btnHeight = noBtn.offsetHeight * currentNoScale;
+                const newLeft = Math.random() * (containerRect.width - btnWidth - 40) + 20; 
+                const newTop = Math.random() * (containerRect.height - btnHeight - 40) + 20;
+                noBtn.style.left = newLeft + "px"; noBtn.style.top = newTop + "px";
+            }
+        });
+
+        // Xử lý khi ấn CÓ
+        yesBtn.addEventListener("click", () => {
+            noBtn.style.display = "none"; 
+            yesBtn.style.display = "none";
+            questionEl.innerHTML = "";
+            
+            const replyDiv = document.createElement("div");
+            replyDiv.style.fontSize = "24px";
+            replyDiv.style.color = "#fff";
+            replyDiv.style.fontWeight = "bold";
+            questionEl.appendChild(replyDiv);
+
+            typeText(replyDiv, "Yêu thế cơ á? ❤️ Để anh xem nào...", 50, () => {
+                setTimeout(() => {
+                    const meter = document.getElementById("progress");
+                    if (!meter) return;
+
+                    meter.classList.add("meter-to-center");
+                    meter.innerHTML = "⏳"; 
+
+                    setTimeout(() => {
+                        meter.classList.add("meter-morph");
+                        setTimeout(() => {
+                            meter.innerHTML = "💖";
+                            meter.className = "super-heart-beat"; 
+                            meter.onclick = () => {
+                                meter.remove();
+                                const soulHeart = document.createElement("div");
+                                soulHeart.className = "flying-heart";
+                                soulHeart.style.left = "50%"; soulHeart.style.top = "50%";
+                                soulHeart.style.marginLeft = "-16px"; soulHeart.style.marginTop = "-16px";
+                                document.body.appendChild(soulHeart);
+                                setTimeout(() => showFinalMessage(), 1000);
+                            };
+                        }, 800);
+                    }, 800);
+                }, 500);
+            });
+        });
+    });
 }
 
 function showFinalMessage() {
@@ -297,26 +371,50 @@ function showFinalMessage() {
     overlay.className = "message-overlay show";
     const paper = document.createElement("div");
     paper.className = "message-paper";
-    paper.innerHTML = `<h2 style="color:#ff4f81;">Gửi em yêu 💌</h2><p>${endingMessage}</p>`;
     
+    const content = document.createElement("div");
+    content.style.fontSize = "1.2rem";
+    content.style.lineHeight = "1.6";
+    content.style.color = "#333";
+    content.style.marginBottom = "20px";
+    content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2><div id="type-writer-content"></div>`;
+
     const nextBtn = document.createElement("button");
     nextBtn.innerText = "Tiếp theo ➡️";
-    nextBtn.className = "pink-btn";
+    nextBtn.className = "pink-btn"; 
+    nextBtn.style.opacity = "0"; 
+    nextBtn.style.transition = "opacity 0.5s";
+    
     nextBtn.onclick = () => {
-        overlay.remove();
-        showEndingScene();
+        overlay.classList.remove("show");
+        setTimeout(() => {
+            overlay.remove();
+            if (typeof showEndingScene === 'function') showEndingScene();
+        }, 500);
     };
-    paper.appendChild(nextBtn);
-    overlay.appendChild(paper);
-    document.body.appendChild(overlay);
+
+    paper.appendChild(content); paper.appendChild(nextBtn);
+    overlay.appendChild(paper); document.body.appendChild(overlay);
+
+    const typeContainer = paper.querySelector("#type-writer-content");
+    typeText(typeContainer, endingMessage, 40, () => {
+        nextBtn.style.opacity = "1";
+    });
 }
 
 function restartGame() {
     currentQuestion = 0;
+    chatIndex = 0;
     gameScreen.classList.remove("active");
     document.querySelectorAll(".message-overlay").forEach(el => el.remove());
     if (window._heartInterval) { clearInterval(window._heartInterval); window._heartInterval = null; }
     const heartsContainer = document.getElementById("hearts-container");
     if (heartsContainer) heartsContainer.remove();
+    
+    chatContainer.innerHTML = "";
+    if (avatar) {
+        avatar.style.display = "block"; 
+        avatar.src = "assets/images/avatar/thinking.png";
+    }
     introScreen.classList.add("active");
 }
