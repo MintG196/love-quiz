@@ -23,7 +23,7 @@ function showLoveLetterScene() {
 
 	// Nút Tiếp
 	const nextBtn = document.createElement("button");
-	nextBtn.innerText = "Tiếp ➡️";
+	nextBtn.innerText = "Tiếp theo náaa";
 	nextBtn.style.marginTop = "30px";
 	nextBtn.style.fontSize = "1.1rem";
 	nextBtn.style.padding = "10px 32px";

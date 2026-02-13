@@ -253,20 +253,27 @@ function endGame() {
   showLoveQuestion();
 }
 
-// ================= SHOW LOVE QUESTION (MORPHING) =================
+// ================= SHOW LOVE QUESTION (ĐÃ FIX: VE SẦU THOÁT XÁC) =================
 function showLoveQuestion() {
-    questionEl.innerHTML = ""; answersEl.innerHTML = "";
-    answersEl.className = "answers"; answersEl.style.display = "flex"; 
-    answersEl.style.justifyContent = "center"; answersEl.style.position = "relative";
-    answersEl.style.height = "300px"; answersEl.style.marginTop = "20px"; 
+    questionEl.innerHTML = "";
+    answersEl.innerHTML = "";
+    
+    answersEl.className = "answers";
+    answersEl.style.display = "flex"; 
+    answersEl.style.justifyContent = "center";
+    answersEl.style.position = "relative";
+    answersEl.style.height = "300px"; 
+    answersEl.style.marginTop = "20px"; 
 
     typeText(questionEl, "Em có yêu anh không? 💌", 50, () => {
+        
         function makeButtonSmall(btn) {
             btn.style.width = "auto"; btn.style.minWidth = "100px";
             btn.style.padding = "10px 20px"; btn.style.fontSize = "1.2rem";
             btn.style.position = "absolute"; btn.style.transition = "all 0.2s ease";
             btn.style.boxShadow = "0 4px 0 #c22f55"; btn.style.border = "2px solid #fff";
         }
+
         const yesBtn = document.createElement("button");
         yesBtn.innerText = "Có 💖";
         makeButtonSmall(yesBtn);
@@ -279,14 +286,20 @@ function showLoveQuestion() {
         noBtn.style.left = "65%"; noBtn.style.top = "40%";
         noBtn.style.transform = "translate(-50%, -50%)"; noBtn.style.zIndex = "50";
 
-        answersEl.appendChild(yesBtn); answersEl.appendChild(noBtn);
+        answersEl.appendChild(yesBtn);
+        answersEl.appendChild(noBtn);
+
         yesBtn.style.opacity = "0"; noBtn.style.opacity = "0";
         setTimeout(() => { yesBtn.style.opacity = "1"; noBtn.style.opacity = "1"; }, 100);
 
-        let yesScale = 1; let noClickCount = 0;
+        // Logic nút KHÔNG
+        let yesScale = 1;
+        let noClickCount = 0;
         noBtn.addEventListener("click", () => {
-            noClickCount++; yesScale += 0.15; 
+            noClickCount++;
+            yesScale += 0.15; 
             yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+            
             if (noClickCount >= 5) {
                 noBtn.style.display = "none";
             } else {
@@ -301,42 +314,66 @@ function showLoveQuestion() {
             }
         });
 
+        // --- LOGIC NÚT CÓ ---
         yesBtn.addEventListener("click", () => {
-            noBtn.style.display = "none"; yesBtn.style.display = "none"; questionEl.innerHTML = "";
+            noBtn.style.display = "none"; 
+            yesBtn.style.display = "none";
+            questionEl.innerHTML = "";
+            answersEl.innerHTML = "";
+            
             const replyDiv = document.createElement("div");
-            replyDiv.style.fontSize = "24px"; replyDiv.style.color = "#fff"; replyDiv.style.fontWeight = "bold";
+            replyDiv.style.fontSize = "24px";
+            replyDiv.style.color = "#fff";
+            replyDiv.style.fontWeight = "bold";
             questionEl.appendChild(replyDiv);
+
             typeText(replyDiv, "Yêu thế cơ á? ❤️ Để anh xem nào...", 50, () => {
+                
+                // 1. Bay vào giữa
                 setTimeout(() => {
                     const meter = document.getElementById("progress");
                     if (!meter) return;
-                    meter.classList.add("meter-to-center"); meter.innerHTML = "⏳"; 
+
+                    meter.classList.add("meter-to-center");
+                    meter.innerHTML = "⏳"; 
+
+                    // 2. Biến hình tròn
                     setTimeout(() => {
                         meter.classList.add("meter-morph");
+                        
+                        // 3. THAY THẾ BẰNG TRÁI TIM MỚI (Tránh xung đột hiệu ứng)
                         setTimeout(() => {
-                            meter.innerHTML = "💖";
-                            meter.classList.add("heart-glow");
-                            meter.style.cursor = "pointer";
-                            meter.animate([
-                                { transform: 'translate(-50%, -50%) scale(1)' },
-                                { transform: 'translate(-50%, -50%) scale(1.5)' },
-                                { transform: 'translate(-50%, -50%) scale(1)' }
-                            ], { duration: 500 });
-                            meter.onclick = () => {
-                                const rect = meter.getBoundingClientRect();
-                                for (let i = 0; i < 15; i++) {
-                                    const h = document.createElement("div");
-                                    h.className = "flying-heart";
-                                    h.style.left = (rect.left + rect.width/2) + "px";
-                                    h.style.top = (rect.top + rect.height/2) + "px";
-                                    document.body.appendChild(h);
-                                    setTimeout(() => h.remove(), 2000);
+                            // Ẩn thanh cũ
+                            meter.style.display = "none";
+
+                            // Tạo nút tim mới
+                            const realHeart = document.createElement("button");
+                            realHeart.className = "super-heart-beat"; // Class mới trong CSS
+                            realHeart.innerHTML = "💖";
+                            document.body.appendChild(realHeart);
+
+                            // Tạo chữ gợi ý
+                            const hintText = document.createElement("div");
+                            hintText.innerText = "Em ấn vào đây đi";
+                            hintText.className = "click-hint"; 
+                            document.body.appendChild(hintText);
+
+                            realHeart.onclick = () => {
+                                hintText.remove(); // Xóa gợi ý
+                                realHeart.style.display = "none"; // Ẩn tim
+
+                                // Hiệu ứng nổ tim
+                                const rect = realHeart.getBoundingClientRect();
+                                for (let i = 0; i < 20; i++) {
+                                     const mini = document.createElement("div");
+                                     mini.className = "flying-heart";
+                                     mini.style.left = (rect.left + rect.width / 2) + "px";
+                                     mini.style.top = (rect.top + rect.height / 2) + "px";
+                                     document.body.appendChild(mini);
+                                     setTimeout(() => mini.remove(), 1500);
                                 }
-                                meter.style.opacity = "0";
-                                meter.style.transform = "translate(-50%, -50%) scale(2)";
-                                setTimeout(() => {
-                                    meter.remove(); showFinalMessage(); 
-                                }, 500);
+
+                                showFinalMessage(); 
                             };
                         }, 800);
                     }, 800);
@@ -362,8 +399,6 @@ function showFinalMessage() {
 
     const nextBtn = document.createElement("button");
     nextBtn.innerText = "Tiếp theo ➡️";
-    
-    // --- [SỬA LẠI] DÙNG CLASS pink-btn ĐỂ GIỐNG NÚT CHAT ---
     nextBtn.className = "pink-btn"; 
     
     nextBtn.style.marginTop = "20px";

@@ -322,7 +322,7 @@ body {
   box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
 }
 
-/* --- [CHỈNH SỬA] NÚT TIẾP HỒNG (DÙNG CHUNG) --- */
+/* --- STYLE NÚT TIẾP HỒNG (DÙNG CHUNG) --- */
 #chat-next-btn, .pink-btn {
   margin: 10px auto 20px;
   padding: 12px 30px;
@@ -375,7 +375,7 @@ body {
   }
 }
 
-/* INTRO LAYOUT (SPLIT) */
+/* INTRO LAYOUT */
 .intro-layout {
   display: flex; width: 100%; max-width: 1000px; height: 80vh;
   align-items: center; justify-content: center; gap: 20px; padding: 0 40px;
@@ -404,15 +404,7 @@ body {
   #chat-container { height: 300px; }
 }
 
-/* TRÁI TIM GIỮA MÀN HÌNH */
-.center-heart-btn {
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-  font-size: 80px; background: none; border: none; cursor: pointer; z-index: 3000;
-  filter: drop-shadow(0 0 20px #ff4d6d); transition: transform 0.5s;
-}
-.center-heart-btn.show { transform: translate(-50%, -50%) scale(1); animation: heartBeat 1.2s infinite; }
-
-/* KHUNG LỜI NHẮN */
+/* KHUNG LỜI NHẮN CUỐI */
 .message-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.8);
   display: flex; justify-content: center; align-items: center;
@@ -428,7 +420,8 @@ body {
 }
 .message-overlay.show .message-paper { transform: translateY(0); }
 
-/* Animation bay vào giữa */
+/* --- CÁC CLASS CHO HIỆU ỨNG BIẾN HÌNH --- */
+/* 1. Bay vào giữa */
 .meter-to-center {
   position: fixed !important; top: 50% !important; left: 50% !important;
   transform: translate(-50%, -50%) !important; width: 250px !important;
@@ -436,7 +429,7 @@ body {
   z-index: 3000 !important;
 }
 
-/* Biến hình thành tròn */
+/* 2. Biến thành tròn */
 .meter-morph {
   border-radius: 50% !important; height: 250px !important;
   background: white !important; display: flex !important;
@@ -444,8 +437,56 @@ body {
   font-size: 80px !important;
 }
 
-/* --- [CHỈNH SỬA] TIM ĐẬP KHI BIẾN HÌNH --- */
-.heart-glow {
+/* --- ANIMATION ĐẬP MẠNH CHO TRÁI TIM CUỐI --- */
+@keyframes superPulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  15% { transform: translate(-50%, -50%) scale(1.15); } 
+  30% { transform: translate(-50%, -50%) scale(1); }    
+  45% { transform: translate(-50%, -50%) scale(1.08); } 
+  60% { transform: translate(-50%, -50%) scale(1); }    
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* --- CLASS QUAN TRỌNG: TRÁI TIM CUỐI CÙNG --- */
+.super-heart-beat {
+  position: fixed !important;
+  top: 50% !important; left: 50% !important;
+  width: 250px !important; height: 250px !important;
+  border-radius: 50% !important;
+  background: white !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  font-size: 80px !important;
+  border: none !important;
   box-shadow: 0 0 50px #ff4d6d, 0 0 100px #ff8fae !important;
-  animation: heartBeat 1.2s infinite !important;
+  transition: none !important; /* Tắt transition để đập mượt */
+  animation: superPulse 1.2s infinite ease-in-out !important;
+  cursor: pointer !important;
+  z-index: 9999 !important;
+}
+
+/* --- ANIMATION CHO DÒNG CHỮ GỢI Ý --- */
+@keyframes textPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.click-hint {
+  position: fixed; z-index: 10000;
+  color: #ff4f81; background: white;
+  font-size: 18px; font-weight: bold;
+  padding: 10px 20px; border-radius: 50px;
+  border: 3px solid #ff4f81;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  animation: textPulse 0.8s infinite ease-in-out;
+  pointer-events: none; white-space: nowrap;
+}
+
+@media (min-width: 769px) {
+  .click-hint { top: 50%; left: calc(50% + 160px); transform-origin: left center; }
+  .click-hint::before { content: "⬅️ "; }
+}
+@media (max-width: 768px) {
+  .click-hint { top: calc(50% + 150px); left: 50%; transform: translate(-50%, 0); }
+  .click-hint::before { content: "⬆️ "; }
 }
