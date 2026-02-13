@@ -69,11 +69,12 @@ musicToggle.addEventListener("click", () => {
 
 // ================= CHAT INTRO LOGIC =================
 const chats = [
-  { text: "Chào em 💖", img: "thinking" },
-  { text: "Anh làm trò chơi nhỏ này cho em nè.", img: "khoanhtay" },
-  { text: "Không phải để thử thách đâu 😅", img: "happy1" },
-  { text: "Chỉ mong em mỉm cười khi chơi thôi 😊", img: "happy1" },
-  { text: "Giờ mình bắt đầu nhé? 💕", img: "heart" }
+  { text: "Há nhô bbi 💖", img: "thinking" },
+  { text: "Anh coá làm cái trò chơi nhỏ này cho thúi nè.", img: "khoanhtay" },
+  { text: "Không phải để thử thách đâu, chỉ mong bé iu mỉm cười khi chơi thui 😅", img: "happy1" },
+  { text: "Dù trả lời có sai cũng hong sao hết á 😊", img: "happy1" },
+  { text: "Anh làm coá gì thiếu sót thì mong em vẫn tận hưởng cái game này nhó💕", img: "thinking" },
+  {text: "Giờ thì bắt đầu thui nào! 🥳", img: "heart" },
 ];
 
 let chatIndex = 0;
@@ -336,7 +337,7 @@ function showLoveQuestion() {
             replyDiv.style.fontWeight = "bold";
             questionEl.appendChild(replyDiv);
 
-            typeText(replyDiv, "Yêu thế cơ á? ❤️ Để anh xem nào...", 50, () => {
+            typeText(replyDiv, "Ỏoooo, yêu thiệc nhóooo ❤️ Vậy thìiii...", 50, () => {
                 setTimeout(() => {
                     const meter = document.getElementById("progress");
                     if (!meter) return;
@@ -377,10 +378,10 @@ function showFinalMessage() {
     content.style.lineHeight = "1.6";
     content.style.color = "#333";
     content.style.marginBottom = "20px";
-    content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2><div id="type-writer-content"></div>`;
+    content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi bbi thúi của anhhh 💌</h2><div id="type-writer-content"></div>`;
 
     const nextBtn = document.createElement("button");
-    nextBtn.innerText = "Tiếp theo ➡️";
+    nextBtn.innerText = "Cuối cùng làaaa... 🥰";
     nextBtn.className = "pink-btn"; 
     nextBtn.style.opacity = "0"; 
     nextBtn.style.transition = "opacity 0.5s";

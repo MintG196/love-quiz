@@ -1,12 +1,6 @@
 const questions = [
   {
     question:
-      "Câu 22: Công nghệ lấy nước trong hình là của quán ăn nào =)) ? <br><img src='assets/images/questpics/nuoc.jpg' class='question-img'>",
-    answers: ["Cơm Vị Nhà", "Mì Cay Seoul", "Tacos Juicy", "Bánh Ép Gia Di"],
-    correct: 3,
-  },
-  {
-    question:
       "Câu 1: Hai đứa mình lần đầu tiên biết đến nhau vào tháng mấy nhò?",
     answers: [
       "Tháng 5 năm 2025",

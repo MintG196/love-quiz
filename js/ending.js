@@ -145,19 +145,11 @@ function showEndingScene() {
 
 // Nội dung lời nhắn (dùng chung)
 const endingMessage = `
-Em à 💖
-
-Cảm ơn em đã chơi hết trò chơi nhỏ này.
-Anh không giỏi nói lời hoa mỹ,
-nhưng từng câu hỏi ở trên đều là thật lòng.
-
-Dù em chọn đáp án nào,
-điều anh chọn vẫn luôn là em.
-
+Shin thúiiii 💖
+Cảm ơn Shin đã chơi hết trò chơi nhỏ này của anh.
+Đây là cái game anh đã ấp ủ từ lâu để dành tặng riêng cho em, nên anh đã cố gắng 
+làm nó thật đặc biệt và ý nghĩa nhất có thể, nên nếu có gì thiếu sót thì mong em vẫn vui vẻ đón nhận và tận hưởng cái game này nhóooo
 Nếu sau này mình có cãi nhau,
-hãy nhớ hôm nay em đã mỉm cười khi chơi game này nhé.
-
-Anh thương em nhiều lắm 💕
-
-– Người làm game này cho em
+hãy nhớ hôm nay em đã mỉm cười khi chơi game này ná.
+Anh thương em nhiều lắm, ngoan xinh iu của anhhh 💕
 `;
