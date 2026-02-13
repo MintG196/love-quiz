@@ -387,7 +387,7 @@ function showFinalMessage() {
     const content = document.createElement("div");
     content.style.fontSize = "1.2rem";
     content.style.lineHeight = "1.6";
-    content.style.color = "#333";
+    content.style.color = "ff4f81"; // tím nhạt hợp nền hồng
     content.style.marginBottom = "20px";
     content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi bbi thúi của anhhh 💌</h2><div id="type-writer-content"></div>`;
 
