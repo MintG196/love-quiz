@@ -84,7 +84,7 @@ body {
 }
 
 /* =========================================
-   UI COMPONENTS (Nút nhạc, Avatar...)
+   UI COMPONENTS (Nút nhạc, Avatar Game...)
    ========================================= */
 .music-btn {
   position: fixed;
@@ -106,16 +106,14 @@ body {
 }
 .music-btn:hover { transform: scale(1.1); }
 
+/* Avatar trong màn chơi chính (Game Screen) */
 #avatar {
-  position: fixed; /* Đổi thành fixed để luôn đứng yên khi cuộn trang */
-  left: 30px;      /* Căn trái */
-  bottom: 50px;    /* Căn dưới */
-  width: 200px;    /* Kích thước cố định vừa vặn với khoảng padding ở trên */
-  
+  position: fixed;
+  left: 30px;      
+  bottom: 50px;    
+  width: 200px;    
   animation: float 2.5s ease-in-out infinite;
   z-index: 10;
-  
-  /* Đảm bảo ảnh không bị méo */
   object-fit: contain; 
 }
 
@@ -128,34 +126,30 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  /* --- THÊM DÒNG NÀY --- */
-  /* Dành khoảng trống 240px bên trái cho Avatar (chỉ tác dụng khi màn hình to) */
+  /* Khoảng trống bên trái cho Avatar Game */
   padding-left: 240px; 
-  box-sizing: border-box; /* Đảm bảo padding không làm vỡ khung */
-
-  
+  box-sizing: border-box; 
 }
 
 /* =========================================
-   KHUNG CÂU HỎI (QUESTION BOX) - Updated
+   KHUNG CÂU HỎI (QUESTION BOX)
    ========================================= */
 .question-box {
   background: #ff8c94;
   padding: 25px 30px;
   border-radius: 20px;
   
-  /* Style mới: Viền trắng + Bóng 3D */
+  /* Viền trắng + Bóng 3D */
   border: 4px solid #ffffff;
   box-shadow: 0 6px 0 #e05e7a, 0 10px 20px rgba(255, 120, 150, 0.35);
 
-  /* Tự động co giãn */
   width: fit-content;
   min-width: 300px;
   max-width: 90%;
   
   margin-bottom: 30px;
   display: flex;
-  flex-direction: column; /* Xếp dọc để ảnh và chữ căn giữa đẹp */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -178,12 +172,12 @@ body {
   width: 100%;
   max-width: 250px;
   border-radius: 16px;
-  margin-bottom: 15px; /* Tăng khoảng cách với chữ */
-  border: 3px solid white; /* Viền ảnh cho đẹp */
+  margin-bottom: 15px;
+  border: 3px solid white;
 }
 
 /* =========================================
-   ĐÁP ÁN (ANSWERS) - Updated
+   ĐÁP ÁN (ANSWERS)
    ========================================= */
 .answers {
   display: grid;
@@ -191,7 +185,7 @@ body {
   width: 100%;
   max-width: 800px;
   z-index: 20;
-  justify-items: center; /* Căn giữa các nút */
+  justify-items: center;
 }
 
 .answers.two, .answers.four {
@@ -207,10 +201,10 @@ body {
   cursor: pointer;
   white-space: normal;
   line-height: 1.2;
-  width: 100%; /* Đầy khung grid */
+  width: 100%;
   max-width: 350px;
 
-  /* Style mới: Viền trắng + Bóng 3D */
+  /* Viền trắng + Bóng 3D */
   border: 3px solid #ffffff;
   box-shadow: 0 5px 0 #d6336c, 0 5px 15px rgba(255, 77, 109, 0.3);
   transition: all 0.1s;
@@ -224,11 +218,11 @@ body {
 
 .answers button:active {
   transform: translateY(5px);
-  box-shadow: 0 0 0 #d6336c !important; /* Mất bóng khi nhấn */
+  box-shadow: 0 0 0 #d6336c !important;
 }
 
 /* =========================================
-   LOVE METER - Updated
+   LOVE METER
    ========================================= */
 #progress {
   position: absolute;
@@ -242,14 +236,13 @@ body {
   font-weight: bold;
   z-index: 100;
   
-  /* Style mới */
   border: 3px solid #ffffff;
   box-shadow: 0 4px 0 #e05e7a, 0 5px 10px rgba(0, 0, 0, 0.15);
   width: fit-content;
 }
 
 /* =========================================
-   INTRO & CHAT SCREENS - Updated
+   SCREENS (INTRO, CHAT, RESULT)
    ========================================= */
 .screen {
   position: fixed;
@@ -284,7 +277,7 @@ body {
   text-align: center;
   color: #d6336c;
   margin-bottom: 30px;
-  text-shadow: 1px 1px 0 #fff; /* Thêm viền trắng nhẹ cho chữ */
+  text-shadow: 1px 1px 0 #fff;
 }
 
 /* NÚT START */
@@ -301,7 +294,6 @@ body {
   line-height: 1;
   animation: heartBeat 2s infinite;
 
-  /* Style mới */
   border: 4px solid #ffffff;
   box-shadow: 0 6px 0 #c22f55, 0 10px 20px rgba(0,0,0,0.2);
   transition: all 0.1s ease;
@@ -317,16 +309,13 @@ body {
   box-shadow: 0 0 0 #c22f55;
 }
 
-/* CHAT BUBBLES */
+/* KHUNG CHAT */
 #chat-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 60vh;
   overflow-y: auto;
   padding: 20px;
-  width: 90%;
-  max-width: 500px;
 }
 #chat-container::-webkit-scrollbar { display: none; }
 
@@ -339,15 +328,13 @@ body {
   line-height: 1.5;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   animation: bubbleIn 0.25s ease;
-  border: 2px solid transparent; /* Giữ chỗ cho viền */
+  border: 2px solid transparent; 
 }
 
 .chat-bubble.me {
   align-self: flex-end;
   background: #ff6f91;
   color: white;
-  
-  /* Style mới */
   border: 3px solid #ffffff;
   box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
 }
@@ -361,8 +348,6 @@ body {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  
-  /* Style mới */
   border: 4px solid #ffffff;
   box-shadow: 0 5px 0 #c22f55, 0 8px 15px rgba(0,0,0,0.15);
   transition: all 0.1s;
@@ -374,9 +359,7 @@ body {
   box-shadow: 0 0 0 #c22f55;
 }
 
-/* =========================================
-   RESULT & RESPONSIVE
-   ========================================= */
+/* RESULT POPUP */
 #result-screen {
   position: fixed;
   inset: 0;
@@ -395,29 +378,26 @@ body {
 .avatar.big { width: 180px; position: static; margin-bottom: 20px; }
 #resultText { font-size: 32px; color: #d6336c; font-weight: bold; }
 
-/* --- RESPONSIVE MOBILE --- */
+/* =========================================
+   RESPONSIVE (GAME MAIN SCREEN)
+   ========================================= */
 @media (max-width: 768px) {
-  /* Trả lại padding về 20px vì điện thoại không cần khoảng trống bên trái */
   #game {
     padding-left: 20px; 
   }
 
   #avatar {
     width: 120px;
-    left: -10px; /* Thụt lùi ra mép một chút cho nghệ */
+    left: -10px;
     bottom: 10px;
-    
-    /* --- QUAN TRỌNG: XỬ LÝ KHI BỊ CHE --- */
-    opacity: 0.25;  /* Làm mờ hẳn đi */
-    z-index: 0;     /* Cho chìm xuống dưới khung câu hỏi */
+    opacity: 0.25;  /* Làm mờ avatar khi vào game trên mobile */
+    z-index: 0; 
     position: fixed;
   }
   
   .question-box {
-    /* Đảm bảo khung câu hỏi nổi lên trên avatar */
     position: relative;
     z-index: 20; 
-    
     width: 95%; 
     max-width: 95%; 
     margin-bottom: 20px; 
@@ -426,72 +406,70 @@ body {
 }
 
 /* =========================================
-   LAYOUT MỚI CHO MÀN HÌNH CHAT (SPLIT SCREEN)
+   LAYOUT MỚI CHO MÀN HÌNH INTRO (SPLIT SCREEN)
    ========================================= */
 
-/* Khung bao quanh để chia cột */
+/* Khung bao quanh chia cột */
 .intro-layout {
   display: flex;
   width: 100%;
-  max-width: 1000px; /* Giới hạn chiều rộng để không bị bè ra quá trên màn to */
-  height: 80vh;      /* Chiếm 80% chiều cao màn hình */
-  align-items: center; /* Căn giữa theo chiều dọc */
+  max-width: 1000px;
+  height: 80vh;      
+  align-items: center;
   justify-content: center;
-  gap: 20px; /* Khoảng cách giữa 2 cột */
+  gap: 20px;
   padding: 0 40px;
 }
 
-/* --- CỘT TRÁI: CHỨA AVATAR --- */
+/* --- CỘT TRÁI: AVATAR INTRO --- */
 .intro-left {
-  flex: 1; /* Chiếm 1 phần không gian */
+  flex: 1;
   display: flex;
-  justify-content: center; /* Căn giữa avatar trong cột trái */
+  justify-content: center;
   align-items: center;
+  height: 300px; /* Chiều cao cố định để căn giữa */
 }
 
 #intro-avatar {
-  /* Reset lại các thuộc tính cũ */
+  /* Fix cứng kích thước vuông vức */
   position: static; 
-  width: 100%;       /* Co giãn theo cột */
-  max-width: 320px;  /* To tối đa 320px (To đẹp như game) */
-  min-width: 200px;  /* Không bé quá */
-  height: auto;
+  width: 220px;  
+  height: 220px;
+  
+  /* Giữ tỉ lệ ảnh, không bị méo */
   object-fit: contain;
   
-  /* Hiệu ứng bay nhẹ */
   animation: float 2.5s ease-in-out infinite;
-  
-  /* Đổ bóng cho nhân vật nổi bật */
   filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
 }
 
-/* --- CỘT PHẢI: CHỨA CHAT --- */
+/* --- CỘT PHẢI: CHAT --- */
 .intro-right {
-  flex: 1.5; /* Chiếm 1.5 phần (Rộng hơn cột trái xíu) */
+  flex: 1.5;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Căn giữa nút bấm và khung chat */
+  align-items: center;
   justify-content: center;
 }
 
-/* Chỉnh lại khung chat cho vừa vặn cột phải */
+/* Khung Chat Intro */
 #chat-container {
   width: 100%; 
-  max-width: 550px; /* Giới hạn độ rộng để dễ đọc */
-  height: 400px;    /* Chiều cao cố định cho đẹp */
+  max-width: 550px;
+  height: 400px; /* Chiều cao cố định */
   margin-bottom: 20px;
   
-  /* Trang trí lại khung chứa chat một chút cho đỡ trống */
-  background: rgba(255, 255, 255, 0.3); /* Nền trắng mờ */
+  /* Style khung mờ */
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 20px;
   border: 4px solid #fff;
   box-shadow: inset 0 0 20px rgba(255, 182, 193, 0.5);
 }
 
-/* --- RESPONSIVE MOBILE (Giao diện điện thoại) --- */
+/* --- RESPONSIVE MOBILE (INTRO) --- */
 @media (max-width: 768px) {
   .intro-layout {
-    flex-direction: column; /* Xếp chồng lên nhau */
+    flex-direction: column;
     height: auto;
     padding: 20px;
     gap: 10px;
@@ -499,13 +477,15 @@ body {
 
   .intro-left {
     flex: none;
-    height: 180px; /* Chiều cao khu vực avatar */
+    height: 160px; /* Giảm chiều cao cột chứa */
     width: 100%;
-    align-items: flex-end; /* Avatar nằm dưới */
+    align-items: flex-end;
   }
 
   #intro-avatar {
-    max-width: 150px; /* Trên đt thì nhỏ lại chút */
+    /* Avatar nhỏ hơn trên mobile */
+    width: 150px;
+    height: 150px;
   }
 
   .intro-right {
@@ -514,6 +494,6 @@ body {
   }
 
   #chat-container {
-    height: 300px; /* Chat ngắn lại chút trên đt */
+    height: 300px; 
   }
 }
