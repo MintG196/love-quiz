@@ -1,6 +1,12 @@
 const questions = [
   {
     question:
+      "Câu 22: Công nghệ lấy nước trong hình là của quán ăn nào =)) ? <br><img src='assets/images/questpics/nuoc.jpg' class='question-img'>",
+    answers: ["Cơm Vị Nhà", "Mì Cay Seoul", "Tacos Juicy", "Bánh Ép Gia Di"],
+    correct: 3,
+  },
+  {
+    question:
       "Câu 1: Hai đứa mình lần đầu tiên biết đến nhau vào tháng mấy nhò?",
     answers: [
       "Tháng 5 năm 2025",
@@ -147,5 +153,59 @@ const questions = [
     correct: ["2", "anhB", "ảnh B", "Ảnh B", "B.jpg", "anhB.jpg"],
   },
 
-  
+  {
+    question:
+      "Câu 17: Baby hãy chọn thứ tự đúng ứng với tên game có trong ảnh ná? <br>" +
+      "<div style='display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px 0;'>" +
+      "<img src='assets/images/questpics/backrooms.jpg' style='width: 30%; max-width: 120px; border-radius: 10px; border: 2px solid white;'>" +
+      "<img src='assets/images/questpics/minecraft.jpg' style='width: 30%; max-width: 120px; border-radius: 10px; border: 2px solid white;'>" +
+      "<img src='assets/images/questpics/pokemon.jpg' style='width: 30%; max-width: 120px; border-radius: 10px; border: 2px solid white;'>" +
+      "<img src='assets/images/questpics/sieuthi.jpg' style='width: 30%; max-width: 120px; border-radius: 10px; border: 2px solid white;'>" +
+      "<img src='assets/images/questpics/grounded1.jpg' style='width: 30%; max-width: 120px; border-radius: 10px; border: 2px solid white;'>" +
+      "</div>",
+    answers: [
+      "Backrooms, Minecraft, Pokemon, Siêu thị, Grounded",
+      "Minecraft, Backrooms, Grounded, Siêu thị, Pokemon",
+      "Siêu thị, Grounded, Backrooms, Minecraft, Pokemon",
+      "Grounded, Backrooms, Minecraft, Pokemon, Siêu thị",
+    ],
+    correct: 0, // Thay số này bằng vị trí đáp án đúng (0 là câu đầu tiên)
+  },
+
+  {
+    question: "Câu 18: Điều gì đã khiến anh suýt không thể vào Huế thăm em?",
+    answers: [
+      "Do anh bị ốm",
+      "Do Lũ lụt",
+      "Do mình cãi nhau",
+      "Do không đặt được vé",
+    ],
+    correct: 2,
+  },
+
+  {
+    question: "Câu 19: Mình gặp nhau ở Huế vào ngày bao nhiu, bbi nhớ hong?",
+    answers: ["21/11/2025", "24/12/2025", "20/11/2025", "1/1/2026"],
+    correct: 0,
+  },
+
+  {
+    question: "Câu 20: Món ăn đầu tiên anh ăn ở Huế là gì?",
+    answers: ["Bánh bèo", "Cơm hến", "Bún bò Huế", "Nem lụi"],
+    correct: 2,
+  },
+
+  {
+    type: "input",
+    question:
+      "Câu 21: Tô trong ảnh có giá là bao nhiu? (Em nhập 10, 20, 30 hoặc 40, 50(k) nha) <br><img src='assets/images/questpics/bunbo.jpg' class='question-img'>",
+    correct: ["20", "20k", "20.000", "20.000đ", "20kđ"],
+  },
+
+  {
+    question:
+      "Câu 22: Công nghệ lấy nước trong hình là của quán ăn nào =)) ? <br><img src='assets/images/questpics/nuoc.jpg' class='question-img'>",
+    answers: ["Cơm Vị Nhà", "Mì Cay Seoul", "Tacos Juicy", "Bánh Ép Gia Di"],
+    correct: 3,
+  },
 ];
