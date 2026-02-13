@@ -253,7 +253,7 @@ function endGame() {
   showLoveQuestion();
 }
 
-// ================= SHOW LOVE QUESTION (ĐÃ FIX LỖI TIM KHÔNG BIẾN MẤT) =================
+// ================= SHOW LOVE QUESTION (FINAL) =================
 function showLoveQuestion() {
     questionEl.innerHTML = "";
     answersEl.innerHTML = "";
@@ -343,10 +343,8 @@ function showLoveQuestion() {
                         
                         // 3. THAY THẾ BẰNG TRÁI TIM MỚI
                         setTimeout(() => {
-                            // --- SỬA Ở ĐÂY: XÓA VĨNH VIỄN THANH CŨ ---
-                            // Lúc trước là meter.style.display = "none"; (Không ẩn được do CSS)
+                            // Xóa thanh cũ đi
                             meter.remove(); 
-                            // -----------------------------------------
 
                             // Tạo nút tim mới
                             const realHeart = document.createElement("button");
@@ -355,21 +353,23 @@ function showLoveQuestion() {
                             document.body.appendChild(realHeart);
 
                             realHeart.onclick = () => {
-                                // Xóa luôn nút tim mới khi bấm
+                                // 1. Xóa nút tim to đi
                                 realHeart.remove(); 
 
-                                // Hiệu ứng nổ tim
-                                const rect = realHeart.getBoundingClientRect();
-                                for (let i = 0; i < 20; i++) {
-                                     const mini = document.createElement("div");
-                                     mini.className = "flying-heart";
-                                     mini.style.left = (rect.left + rect.width / 2) + "px";
-                                     mini.style.top = (rect.top + rect.height / 2) + "px";
-                                     document.body.appendChild(mini);
-                                     setTimeout(() => mini.remove(), 1500);
-                                }
+                                // 2. Tạo MỘT trái tim bay lên từ chính giữa
+                                const soulHeart = document.createElement("div");
+                                soulHeart.className = "flying-heart"; 
+                                soulHeart.style.left = "50%";
+                                soulHeart.style.top = "50%";
+                                soulHeart.style.marginLeft = "-16px"; // Căn giữa chuẩn tim (kích thước 32px)
+                                soulHeart.style.marginTop = "-16px";
+                                
+                                document.body.appendChild(soulHeart);
 
-                                showFinalMessage(); 
+                                // 3. Đợi tim bay lên rồi hiện thư (1s)
+                                setTimeout(() => {
+                                    showFinalMessage(); 
+                                }, 1000);
                             };
                         }, 800);
                     }, 800);
@@ -394,7 +394,7 @@ function showFinalMessage() {
     content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi em yêu 💌</h2><div id="type-writer-content"></div>`;
 
     const nextBtn = document.createElement("button");
-    nextBtn.innerText = "Tiếp theo náaa";
+    nextBtn.innerText = "Tiếp theo ➡️";
     nextBtn.className = "pink-btn"; 
     
     nextBtn.style.marginTop = "20px";
