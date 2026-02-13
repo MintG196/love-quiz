@@ -1,12 +1,6 @@
 const questions = [
   {
     question:
-    "Câu 14: Bức ảnh này được chụp ở đâu nhờ? <img src='assets/images/questpics/hamguixe.jpg' class='question-img'>",
-  answers: ["Hầm gửi xe quán net", "Nhà trọ anh", "Nhà trọ em", "Hầm gửi xe bến xe  "],
-  correct: 0,
-  },
-  {
-    question:
       "Câu 1: Hai đứa mình lần đầu tiên biết đến nhau vào tháng mấy nhò?",
     answers: [
       "Tháng 5 năm 2025",
@@ -117,14 +111,26 @@ const questions = [
 
   {
     question:
-    "Câu 14: Bức ảnh này được chụp ở đâu nhờ? <img src='assets/images/questpics/hamguixe.jpg' class='question-img'>",
-  answers: ["Hầm gửi xe quán net", "Nhà trọ anh", "Nhà trọ em", "Hầm gửi xe bến xe  "],
-  correct: 0,
+      "Câu 14: Bức ảnh này được chụp ở đâu nhờ? <img src='assets/images/questpics/hamguixe.jpg' class='question-img'>",
+    answers: [
+      "Hầm gửi xe quán net",
+      "Nhà trọ anh",
+      "Nhà trọ em",
+      "Hầm gửi xe bến xe  ",
+    ],
+    correct: 0,
   },
 
-    {
-    type: "input", // Đánh dấu loại câu hỏi nhập liệu
-    question: "Câu 14: Kể tên con vật mà em ghét nhất? (Nhập xong ấn Enter ná)",
-    correct: "Con gián", // Đáp án đúng (không phân biệt hoa thường trong code xử lý)
+  {
+    type: "input",
+    question:
+      "Câu 14: Món quà đầu tiên anh tặng cho em là gì nhỉ? (Nhập xong ấn Enter ná)",
+    correct: ["Nước Hoa"],
   },
+
+  {
+    question: "Câu 15: Anh từng bảo anh thích em yêu em là vì cái gì nhờ (Lí do thực sự í)?",
+    answers: ["Vì em xinh", "Vì em ngon", "Vì bản thân, con người của em", "Vì anh thích bừa"],
+    correct: 2,
+  }
 ];
