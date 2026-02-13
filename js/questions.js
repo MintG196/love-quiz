@@ -1,6 +1,12 @@
 const questions = [
   {
     question:
+    "Câu 14: Bức ảnh này được chụp ở đâu nhờ? <img src='assets/images/questpics/hamguixe.jpg' class='question-img'>",
+  answers: ["Hầm gửi xe quán net", "Nhà trọ anh", "Nhà trọ em", "Hầm gửi xe bến xe  "],
+  correct: 0,
+  },
+  {
+    question:
       "Câu 1: Hai đứa mình lần đầu tiên biết đến nhau vào tháng mấy nhò?",
     answers: [
       "Tháng 5 năm 2025",
@@ -107,5 +113,18 @@ const questions = [
       "Câu 13: Món ăn mà mình ăn nhiều nhất trong lần đầu gặp nhau là zì zạ?",
     answers: ["Bánh Đa Trộn", "Cơm Rang Dưa Bò", "Phở Gà", "Mì Cay"],
     correct: 3,
+  },
+
+  {
+    question:
+    "Câu 14: Bức ảnh này được chụp ở đâu nhờ? <img src='assets/images/questpics/hamguixe.jpg' class='question-img'>",
+  answers: ["Hầm gửi xe quán net", "Nhà trọ anh", "Nhà trọ em", "Hầm gửi xe bến xe  "],
+  correct: 0,
+  },
+
+    {
+    type: "input", // Đánh dấu loại câu hỏi nhập liệu
+    question: "Câu 14: Kể tên con vật mà em ghét nhất? (Nhập xong ấn Enter ná)",
+    correct: "Con gián", // Đáp án đúng (không phân biệt hoa thường trong code xử lý)
   },
 ];

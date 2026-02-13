@@ -168,43 +168,83 @@ function loadQuestion() {
     typeText(questionEl, q.question, 40, showAnswers);
   }
 }
-
-// ================= SHOW ANSWERS =================
+// Hàm loại bỏ dấu tiếng Việt, khoảng cách và ký tự đặc biệt
+function cleanText(text) {
+    if (!text) return "";
+    return text
+        .toLowerCase()
+        .normalize("NFD")             // Tách dấu ra khỏi chữ cái
+        .replace(/[\u0300-\u036f]/g, "") // Xóa các dấu vừa tách
+        .replace(/[.,\s]/g, "")        // Xóa dấu phẩy, dấu chấm và khoảng trắng
+        .replace(/đ/g, "d")            // Chuyển đ thành d
+        .trim();
+}
 function showAnswers() {
   const q = questions[currentQuestion];
   answersEl.innerHTML = "";
-  answersEl.style.pointerEvents = "none";
   answersEl.style.opacity = "1";
-  if (q.answers.length === 2) answersEl.className = "answers two";
-  else answersEl.className = "answers four";
+  answersEl.style.pointerEvents = "auto";
 
-  let index = 0;
-  function showNextAnswer() {
-    if (index >= q.answers.length) {
-      answersEl.style.pointerEvents = "auto";
-      return;
-    }
-    const btn = document.createElement("button");
-    btn.innerHTML = q.answers[index];
-    btn.style.opacity = "0";
-    btn.style.transform = "translateY(10px)";
-    btn.style.transition = "all 0.3s ease";
-    const answerIndex = index;
-    btn.addEventListener("click", () => handleAnswer(answerIndex));
-    answersEl.appendChild(btn);
-    setTimeout(() => {
-      btn.style.opacity = "1"; btn.style.transform = "translateY(0)";
-    }, 50);
-    index++;
-    setTimeout(showNextAnswer, 180);
+  // NẾU LÀ LOẠI NHẬP VĂN BẢN
+  if (q.type === "input") {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Nhập câu trả lời ở đây...";
+    input.className = "pixel-box"; // Dùng lại class khung của bạn
+    input.style.width = "80%";
+    input.style.padding = "15px";
+    input.style.fontSize = "18px";
+    input.style.textAlign = "center";
+    input.style.outline = "none";
+    input.style.border = "3px solid #ff7a9e";
+    input.style.borderRadius = "15px";
+
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const userValue = input.value.trim();
+        const q = questions[currentQuestion];
+        
+        // Chuyển đáp án đúng thành mảng nếu nó đang là chuỗi đơn
+        const correctAnswers = Array.isArray(q.correct) ? q.correct : [q.correct];
+        
+        // Kiểm tra xem input của cô ấy có khớp với bất kỳ đáp án nào không
+        const isMatch = correctAnswers.some(ans => cleanText(userValue) === cleanText(ans));
+
+        if (isMatch) {
+            handleAnswer(true); // Gửi tín hiệu đúng
+        } else {
+            handleAnswer(false); // Gửi tín hiệu sai
+        }
+      }
+    });
+    answersEl.appendChild(input);
+    input.focus(); // Tự động chọn ô nhập để gõ luôn
+  } 
+  // NẾU LÀ LOẠI TRẮC NGHIỆM CŨ
+  else {
+    if (q.answers.length === 2) answersEl.className = "answers two";
+    else answersEl.className = "answers four";
+
+    q.answers.forEach((ans, index) => {
+      const btn = document.createElement("button");
+      btn.innerHTML = ans;
+      btn.onclick = () => handleAnswer(index);
+      answersEl.appendChild(btn);
+    });
   }
-  showNextAnswer();
 }
 
 // ================= HANDLE ANSWER =================
-function handleAnswer(selectedIndex) {
+function handleAnswer(result) {
   const q = questions[currentQuestion];
-  const isCorrect = selectedIndex === q.correct;
+  let isCorrect = false;
+
+  if (q.type === "input") {
+    isCorrect = result; // Lấy kết quả trực tiếp từ phép so sánh cleanText
+  } else {
+    isCorrect = result === q.correct; // Logic trắc nghiệm cũ
+  }
+
   updateProgress();
   showResult(isCorrect);
 }
