@@ -328,107 +328,148 @@ function showLoveQuestion() {
   answersEl.innerHTML = "";
   answersEl.className = "answers";
   answersEl.style.position = "relative";
-  answersEl.style.height = "150px";
+  answersEl.style.height = "300px"; // Tăng chiều cao vùng chứa để nút Không có chỗ chạy
+
+  // --- HÀM TẠO STYLE RIÊNG CHO NÚT (ĐỂ NÓ NHỎ LẠI) ---
+  function makeButtonSmall(btn) {
+    btn.style.width = "auto"; // Không chiếm hết chiều ngang
+    btn.style.minWidth = "100px"; // Đủ nhỏ
+    btn.style.padding = "8px 15px"; // Padding nhỏ lại
+    btn.style.fontSize = "1.2rem"; // Chữ vừa phải
+    btn.style.position = "absolute";
+    btn.style.transition = "all 0.2s ease"; // Chuyển động mượt
+  }
 
   // Tạo nút Có
   const yesBtn = document.createElement("button");
   yesBtn.innerText = "Có 💖";
-  yesBtn.style.position = "absolute";
-  yesBtn.style.left = "20%";
+  makeButtonSmall(yesBtn); // Áp dụng style nhỏ
+  
+  // Vị trí ban đầu của nút Có (Cố định 1 chỗ)
+  yesBtn.style.left = "40%"; 
   yesBtn.style.top = "50%";
   yesBtn.style.transform = "translate(-50%, -50%)";
-  yesBtn.style.transition = "all 0.3s ease";
+  yesBtn.style.zIndex = "100"; // Luôn nổi lên trên
 
   // Tạo nút Không
   const noBtn = document.createElement("button");
   noBtn.innerText = "Không 😝";
-  noBtn.style.position = "absolute";
+  makeButtonSmall(noBtn); // Áp dụng style nhỏ
+  
+  // Vị trí ban đầu của nút Không
   noBtn.style.left = "70%";
   noBtn.style.top = "50%";
   noBtn.style.transform = "translate(-50%, -50%)";
-  noBtn.style.transition = "all 0.2s ease";
+  noBtn.style.zIndex = "50";
 
   answersEl.appendChild(yesBtn);
   answersEl.appendChild(noBtn);
 
   let yesScale = 1;
+  let noClickCount = 0;
 
-  // Khi bấm Không
+  // Xử lý khi bấm nút Không
   noBtn.addEventListener("click", () => {
-  const containerRect = answersEl.getBoundingClientRect();
-  const yesRect = yesBtn.getBoundingClientRect();
+    noClickCount++;
 
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
+    // 1. Nút Có to ra (nhưng to chậm thôi để đỡ che màn hình)
+    yesScale += 0.2; 
+    yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
 
-  const maxX = containerRect.width - btnWidth;
-  const maxY = containerRect.height - btnHeight;
+    // 2. Xử lý nút Không biến mất sau 3 lần
+    if (noClickCount >= 3) {
+      noBtn.style.display = "none";
+    } else {
+      // Bé dần đi
+      const currentNoScale = 1 - (noClickCount * 0.2);
+      noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`; // Reset translate để tính toán vị trí cho dễ
 
-  let newX, newY;
-  let safeDistance = 120; // khoảng cách tối thiểu tránh nút Có
+      // --- LOGIC DI CHUYỂN KHÔNG BỊ TRÙNG (QUAN TRỌNG) ---
+      const containerRect = answersEl.getBoundingClientRect();
+      const yesRect = yesBtn.getBoundingClientRect(); // Lấy kích thước hiện tại của nút Có (đã bao gồm scale)
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
 
-  do {
-    newX = Math.random() * maxX;
-    newY = Math.random() * maxY;
+      let newLeft, newTop;
+      let isOverlapping = true;
+      let attempts = 0;
 
-    // Tính vị trí giả lập của nút Không
-    const fakeNoRect = {
-      left: containerRect.left + newX,
-      top: containerRect.top + newY,
-      right: containerRect.left + newX + btnWidth,
-      bottom: containerRect.top + newY + btnHeight,
-    };
+      // Vòng lặp tìm vị trí mới (Thử 50 lần, nếu không tìm được thì thôi chấp nhận đè để đỡ lag)
+      while (isOverlapping && attempts < 50) {
+        attempts++;
 
-    var overlap =
-      !(fakeNoRect.right < yesRect.left ||
-        fakeNoRect.left > yesRect.right ||
-        fakeNoRect.bottom < yesRect.top ||
-        fakeNoRect.top > yesRect.bottom);
+        // Random vị trí trong khung
+        newLeft = Math.random() * (containerRect.width - btnWidth);
+        newTop = Math.random() * (containerRect.height - btnHeight);
 
-  } while (overlap);
-
-  noBtn.style.left = newX + "px";
-  noBtn.style.top = newY + "px";
-
-  // Nút Có to dần
-  yesScale += 0.2;
-  yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
-});
-
-
-  // Khi bấm Có
- yesBtn.addEventListener("click", () => {
-  questionEl.innerHTML = "";
-  answersEl.innerHTML = "";
-
-  typeText(questionEl, "Anh biết mà 😚", 40, () => {
-    setTimeout(() => {
-      // Hiện endingMessage, sau đó hiện nút Tiếp
-      typeText(questionEl, endingMessage, 35, () => {
-        // Thêm nút Tiếp
-        const nextBtn = document.createElement("button");
-        nextBtn.innerText = "Tiếp ➡️";
-        nextBtn.style.marginTop = "30px";
-        nextBtn.style.fontSize = "1.1rem";
-        nextBtn.style.padding = "10px 32px";
-        nextBtn.style.background = "#ffb6c1";
-        nextBtn.style.border = "none";
-        nextBtn.style.borderRadius = "12px";
-        nextBtn.style.color = "#fff";
-        nextBtn.style.cursor = "pointer";
-        nextBtn.style.boxShadow = "0 2px 8px #ffb6c1a0";
-        nextBtn.style.transition = "background 0.2s";
-        nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
-        nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
-        nextBtn.onclick = () => {
-          if (typeof showEndingScene === 'function') showEndingScene();
+        // Tính toán vị trí của nút Không "giả định" trên màn hình
+        const noRect = {
+          left: containerRect.left + newLeft,
+          right: containerRect.left + newLeft + btnWidth,
+          top: containerRect.top + newTop,
+          bottom: containerRect.top + newTop + btnHeight
         };
-        questionEl.appendChild(document.createElement("br"));
-        questionEl.appendChild(nextBtn);
-      });
-    }, 800);
+
+        // Kiểm tra xem hình chữ nhật của nút Không có đè lên nút Có không?
+        // (Cộng thêm 20px khoảng cách an toàn - margin)
+        const safetyMargin = 20;
+        const overlap = !(
+            noRect.right < yesRect.left - safetyMargin || 
+            noRect.left > yesRect.right + safetyMargin || 
+            noRect.bottom < yesRect.top - safetyMargin || 
+            noRect.top > yesRect.bottom + safetyMargin
+        );
+
+        if (!overlap) {
+          isOverlapping = false; // Tìm được chỗ trống rồi!
+        }
+      }
+
+      // Gán vị trí mới
+      noBtn.style.left = newLeft + "px";
+      noBtn.style.top = newTop + "px";
+    }
   });
-});
 
+  // Xử lý khi bấm nút Có (Giữ nguyên logic cũ nhưng style lại nút Tiếp cho đẹp)
+  yesBtn.addEventListener("click", () => {
+    questionEl.innerHTML = "";
+    answersEl.innerHTML = "";
+
+    typeText(questionEl, "Anh biết mà 😚", 50, () => {
+      setTimeout(() => {
+        typeText(questionEl, endingMessage, 35, () => {
+          // Thêm nút Tiếp
+          const nextBtn = document.createElement("button");
+          nextBtn.innerText = "Tiếp ➡️";
+          nextBtn.style.marginTop = "30px";
+          nextBtn.style.fontSize = "1.1rem";
+          nextBtn.style.padding = "10px 32px";
+          
+          // Style 3D giống các nút khác
+          nextBtn.style.background = "#ffb6c1";
+          nextBtn.style.border = "4px solid #fff";
+          nextBtn.style.borderRadius = "12px";
+          nextBtn.style.color = "#fff";
+          nextBtn.style.cursor = "pointer";
+          nextBtn.style.boxShadow = "0 6px 0 #c22f55"; 
+          nextBtn.style.transition = "transform 0.1s";
+          
+          nextBtn.onmouseover = () => nextBtn.style.background = "#ff4f81";
+          nextBtn.onmouseout = () => nextBtn.style.background = "#ffb6c1";
+          nextBtn.onmousedown = () => {
+             nextBtn.style.transform = "translateY(4px)";
+             nextBtn.style.boxShadow = "0 2px 0 #c22f55";
+          };
+          
+          nextBtn.onclick = () => {
+            if (typeof showEndingScene === 'function') showEndingScene();
+          };
+          
+          questionEl.appendChild(document.createElement("br"));
+          questionEl.appendChild(nextBtn);
+        });
+      }, 800);
+    });
+  });
 }
-

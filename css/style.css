@@ -1,4 +1,36 @@
-/* Hiệu ứng trái tim bay cho ending scene */
+/* =========================================
+   RESET & FONTS
+   ========================================= */
+* {
+  box-sizing: border-box;
+  font-family: "PixelVN", sans-serif;
+}
+
+@font-face {
+  font-family: "PixelVN";
+  src: url("../assets/fonts/SVN-Determination Sans.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-y: auto;
+  background-color: #ffb6c1;
+  background-image: url("../assets/images/background/bg1.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =========================================
+   ANIMATIONS (Trái tim bay & Hiệu ứng)
+   ========================================= */
 .flying-heart {
   position: absolute;
   bottom: -40px;
@@ -10,52 +42,50 @@
 }
 
 @keyframes flyHeart {
-  0% {
-    transform: translateY(0) scale(1) rotate(0deg);
-    opacity: 0.7;
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100vh) scale(1.3) rotate(30deg);
-    opacity: 0;
-  }
-}
-* {
-  box-sizing: border-box;
-  font-family: "PixelVN", sans-serif;
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.7; }
+  60% { opacity: 1; }
+  100% { transform: translateY(-100vh) scale(1.3) rotate(30deg); opacity: 0; }
 }
 
-/* Load Font */
-@font-face {
-  font-family: "PixelVN";
-  src: url("../assets/fonts/SVN-Determination Sans.otf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow-y: auto; /* Cho phép cuộn */
-
-  /* --- 1. SỬA LẠI BACKGROUND (TÁCH DÒNG CHO CHẮC ĂN) --- */
-  background-color: #ffb6c1; /* Màu nền dự phòng nếu ảnh lỗi */
-
-  background-image: url("../assets/images/background/bg1.jpg"); /* Đường dẫn gốc của bạn */
-
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed; /* Giữ nền đứng yên */
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- 2. NÚT NHẠC --- */
+@keyframes introFloat {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes logoPop {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes heartBeatText {
+  0% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 100, 150, 0.6); }
+  25% { transform: scale(1.08); text-shadow: 0 0 25px rgba(255, 100, 150, 1), 0 0 15px rgba(255, 150, 180, 0.8); }
+  50% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 100, 150, 0.6); }
+  75% { transform: scale(1.06); text-shadow: 0 0 20px rgba(255, 100, 150, 0.9), 0 0 10px rgba(255, 150, 180, 0.7); }
+  100% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 100, 150, 0.6); }
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.06); }
+  60% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+/* =========================================
+   UI COMPONENTS (Nút nhạc, Avatar...)
+   ========================================= */
 .music-btn {
   position: fixed;
   top: 20px;
@@ -74,11 +104,17 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s;
 }
-.music-btn:hover {
-  transform: scale(1.1);
+.music-btn:hover { transform: scale(1.1); }
+
+#avatar {
+  position: absolute;
+  left: 40px;
+  bottom: 120px;
+  width: 180px;
+  animation: float 2.5s ease-in-out infinite;
+  z-index: 10;
 }
 
-/* --- 3. KHUNG GAME --- */
 #game {
   width: 100%;
   min-height: 100vh;
@@ -86,59 +122,36 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Căn giữa dọc */
+  justify-content: center;
   padding: 20px;
 }
 
-/* --- 4. AVATAR (TRẢ VỀ THÔNG SỐ GỐC CỦA BẠN) --- */
-#avatar {
-  position: absolute;
-  /* Thông số cũ của bạn: left 40px, bottom 120px */
-  left: 40px;
-  bottom: 120px;
-  width: 180px;
-  animation: float 2.5s ease-in-out infinite;
-  z-index: 10; /* Nằm dưới khung câu hỏi nếu lỡ va chạm */
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* --- 5. KHUNG CÂU HỎI --- */
+/* =========================================
+   KHUNG CÂU HỎI (QUESTION BOX) - Updated
+   ========================================= */
 .question-box {
   background: #ff8c94;
   padding: 25px 30px;
-  border-radius: 20px; /* Bo góc ít hơn xíu cho hợp style pixel */
+  border-radius: 20px;
   
-  /* --- THÊM VIỀN & HIỆU ỨNG NỔI --- */
-  border: 4px solid #ffffff; /* Viền trắng */
-  box-shadow: 
-      0 6px 0 #e05e7a, /* Tạo khối 3D giả lập pixel */
-      0 10px 20px rgba(255, 120, 150, 0.35);
+  /* Style mới: Viền trắng + Bóng 3D */
+  border: 4px solid #ffffff;
+  box-shadow: 0 6px 0 #e05e7a, 0 10px 20px rgba(255, 120, 150, 0.35);
 
-  /* --- CHỈNH SỬA ĐỂ TỰ MỞ RỘNG THEO NỘI DUNG --- */
-  width: fit-content; /* Quan trọng: Co giãn theo nội dung */
-  min-width: 300px;   /* Không bé quá */
-  max-width: 90%;     /* Không to quá màn hình */
-  min-height: auto;
+  /* Tự động co giãn */
+  width: fit-content;
+  min-width: 300px;
+  max-width: 90%;
   
   margin-bottom: 30px;
-
   display: flex;
-  flex-direction: column; /* Đổi thành column để ảnh và chữ xếp dọc đẹp hơn */
+  flex-direction: column; /* Xếp dọc để ảnh và chữ căn giữa đẹp */
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 20;
 }
-/* Chữ câu hỏi (Đã fix lỗi dính chữ) */
+
 #question {
   font-family: "PixelVN", "Baloo 2", sans-serif;
   font-size: 26px;
@@ -147,47 +160,87 @@ body {
   color: #ffffff;
   text-align: center;
   margin: 0;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
   letter-spacing: 0.06em;
-
   word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
-/* --- 6. ĐÁP ÁN --- */
+.question-img {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 16px;
+  margin-bottom: 15px; /* Tăng khoảng cách với chữ */
+  border: 3px solid white; /* Viền ảnh cho đẹp */
+}
+
+/* =========================================
+   ĐÁP ÁN (ANSWERS) - Updated
+   ========================================= */
 .answers {
   display: grid;
   gap: 20px;
   width: 100%;
   max-width: 800px;
   z-index: 20;
+  justify-items: center; /* Căn giữa các nút */
 }
 
-.answers.two,
-.answers.four {
+.answers.two, .answers.four {
   grid-template-columns: 1fr 1fr;
 }
 
 .answers button {
   font-size: clamp(16px, 3.5vw, 20px);
-  padding: 16px;
+  padding: 16px 24px;
   border-radius: 99px;
-  border: none;
   background: linear-gradient(135deg, #ff7a9e, #ff4d6d);
   color: white;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
-  transition: transform 0.2s;
   white-space: normal;
   line-height: 1.2;
-}
-.answers button:hover {
-  transform: translateY(-3px);
-  background: linear-gradient(135deg, #ff8fae, #ff5e7d);
+  width: 100%; /* Đầy khung grid */
+  max-width: 350px;
+
+  /* Style mới: Viền trắng + Bóng 3D */
+  border: 3px solid #ffffff;
+  box-shadow: 0 5px 0 #d6336c, 0 5px 15px rgba(255, 77, 109, 0.3);
+  transition: all 0.1s;
 }
 
-/* --- 7. MÀN HÌNH KHÁC --- */
+.answers button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #ff8fae, #ff5e7d);
+  box-shadow: 0 7px 0 #d6336c, 0 8px 20px rgba(255, 77, 109, 0.4);
+}
+
+.answers button:active {
+  transform: translateY(5px);
+  box-shadow: 0 0 0 #d6336c !important; /* Mất bóng khi nhấn */
+}
+
+/* =========================================
+   LOVE METER - Updated
+   ========================================= */
+#progress {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: white;
+  color:  #ff8c94;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 100;
+  
+  /* Style mới */
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 0 #e05e7a, 0 5px 10px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+}
+
+/* =========================================
+   INTRO & CHAT SCREENS - Updated
+   ========================================= */
 .screen {
   position: fixed;
   inset: 0;
@@ -197,9 +250,7 @@ body {
   align-items: center;
   z-index: 999;
 }
-.screen.active {
-  display: flex;
-}
+.screen.active { display: flex; }
 
 #intro-screen {
   background-image: url("../assets/images/background/bg1.jpg");
@@ -207,35 +258,115 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  animation: introFloat 6s ease-in-out infinite;
 }
 
 #intro-screen h1 {
   font-size: clamp(40px, 8vw, 60px);
   color: #d6336c;
   margin-bottom: 10px;
+  animation: logoPop 1.2s ease-out, heartBeatText 1.5s ease-in-out 1.2s infinite;
+  text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
 }
+
 #intro-screen p {
   font-size: 20px;
   text-align: center;
   color: #d6336c;
   margin-bottom: 30px;
-  animation: textWave 2s ease-in-out 1.2s infinite;
+  text-shadow: 1px 1px 0 #fff; /* Thêm viền trắng nhẹ cho chữ */
 }
+
+/* NÚT START */
 #start-btn {
   font-size: 24px;
   padding: 15px 50px;
   border-radius: 99px;
   background: #ff4d6d;
   color: white;
-  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
   line-height: 1;
+  animation: heartBeat 2s infinite;
+
+  /* Style mới */
+  border: 4px solid #ffffff;
+  box-shadow: 0 6px 0 #c22f55, 0 10px 20px rgba(0,0,0,0.2);
+  transition: all 0.1s ease;
+  width: fit-content;
 }
 
+#start-btn:hover {
+  transform: scale(1.05);
+}
+
+#start-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 #c22f55;
+}
+
+/* CHAT BUBBLES */
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+}
+#chat-container::-webkit-scrollbar { display: none; }
+
+.chat-bubble {
+  background: white;
+  border-radius: 16px;
+  padding: 12px 16px;
+  max-width: 80%;
+  font-size: 15px;
+  line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: bubbleIn 0.25s ease;
+  border: 2px solid transparent; /* Giữ chỗ cho viền */
+}
+
+.chat-bubble.me {
+  align-self: flex-end;
+  background: #ff6f91;
+  color: white;
+  
+  /* Style mới */
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
+}
+
+/* NÚT TIẾP (CHAT) */
+#chat-next-btn {
+  margin: 10px auto 20px;
+  padding: 12px 30px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff758f, #ff4d6d);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  
+  /* Style mới */
+  border: 4px solid #ffffff;
+  box-shadow: 0 5px 0 #c22f55, 0 8px 15px rgba(0,0,0,0.15);
+  transition: all 0.1s;
+  width: fit-content;
+}
+
+#chat-next-btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 0 0 #c22f55;
+}
+
+/* =========================================
+   RESULT & RESPONSIVE
+   ========================================= */
 #result-screen {
   position: fixed;
   inset: 0;
@@ -249,210 +380,13 @@ body {
   opacity: 0;
   pointer-events: none;
 }
-#result-screen:not(.hidden) {
-  opacity: 1;
-  pointer-events: auto;
-}
+#result-screen:not(.hidden) { opacity: 1; pointer-events: auto; }
 
-.avatar.big {
-  width: 180px;
-  position: static;
-  margin-bottom: 20px;
-}
-#resultText {
-  font-size: 32px;
-  color: #d6336c;
-  font-weight: bold;
-}
+.avatar.big { width: 180px; position: static; margin-bottom: 20px; }
+#resultText { font-size: 32px; color: #d6336c; font-weight: bold; }
 
-/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 768px) {
-  /* Trên điện thoại: Cho Avatar nhỏ lại và mờ đi chút để không che chữ */
-  #avatar {
-    width: 100px;
-    left: 10px;
-    bottom: 10px;
-    opacity: 0.4;
-  }
-  .answers.four {
-    grid-template-columns: 1fr;
-  }
-  .question-box {
-    margin-bottom: 20px;
-    padding: 10px 12px;
-    width: 95vw;
-    max-width: calc(100vw - 20px);
-    min-height: auto;
-    max-height: 45vh;
-  }
-}
-
-#progress {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.85);
-  padding: 10px 18px;
-  border-radius: 20px;
-  font-size: 18px;
-  color: #d6336c;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  z-index: 100;
-}
-
-/* ===== CHAT INTRO ===== */
-#chat-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 60vh;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-/* Hide scrollbar but keep scrolling usable */
-#chat-container {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-#chat-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.chat-bubble {
-  background: white;
-  border-radius: 16px;
-  padding: 12px 16px;
-  max-width: 80%;
-  font-size: 15px;
-  line-height: 1.5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: bubbleIn 0.25s ease;
-}
-
-.chat-bubble.me {
-  align-self: flex-end;
-  background: #ff6f91;
-  color: white;
-}
-
-#chat-next-btn {
-  margin: 10px auto 20px;
-  padding: 12px 24px;
-  border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, #ff758f, #ff4d6d);
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-@keyframes bubbleIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes introFloat {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-#intro-screen {
-  animation: introFloat 6s ease-in-out infinite;
-}
-
-#intro-screen h1 {
-  animation:
-    logoPop 1.2s ease-out,
-    heartBeatText 1.5s ease-in-out 1.2s infinite;
-  text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
-}
-
-@keyframes logoPop {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes heartBeatText {
-  0% {
-    transform: scale(1);
-    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
-  }
-  25% {
-    transform: scale(1.08);
-    text-shadow:
-      0 0 25px rgba(255, 100, 150, 1),
-      0 0 15px rgba(255, 150, 180, 0.8);
-  }
-  50% {
-    transform: scale(1);
-    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
-  }
-  75% {
-    transform: scale(1.06);
-    text-shadow:
-      0 0 20px rgba(255, 100, 150, 0.9),
-      0 0 10px rgba(255, 150, 180, 0.7);
-  }
-  100% {
-    transform: scale(1);
-    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6);
-  }
-}
-
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  30% {
-    transform: scale(1.06);
-  }
-  60% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-#start-btn {
-  animation: heartBeat 2s infinite;
-}
-
-#start-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 20px rgba(255, 100, 150, 0.6);
-}
-
-.question-img {
-  width: 100%;
-  max-width: 250px;
-  border-radius: 16px;
-  margin-bottom: 10px;
-}
-
-.answer-img {
-  width: 80px;
-  border-radius: 12px;
-  margin-bottom: 5px;
+  #avatar { width: 100px; left: 10px; bottom: 10px; opacity: 0.4; }
+  .answers.four { grid-template-columns: 1fr; }
+  .question-box { width: 95%; max-width: 95%; margin-bottom: 20px; padding: 20px; }
 }
