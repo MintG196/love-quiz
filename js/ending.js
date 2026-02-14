@@ -123,12 +123,9 @@ function showEndingScene() {
     replayBtn.innerText = "Bbi ấn vô đây để chơi lại nàa";
     replayBtn.className = "pink-btn"; // Dùng class nút hồng
     
+   // SỬA ĐOẠN NÀY:
     replayBtn.onclick = () => {
-        if (typeof restartGame === 'function') {
-            restartGame(); // Gọi hàm reset bên game.js
-        } else {
-            location.reload(); // Phòng hờ reload trang
-        }
+        location.reload(); // Load lại trang ngay lập tức
     };
     // -------------------------
 

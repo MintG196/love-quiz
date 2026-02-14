@@ -464,17 +464,15 @@ function showFinalMessage() {
 }
 
 function restartGame() {
-    // 1. Reset các biến số
+    // 1. Reset các biến đếm và màn hình
     currentQuestion = 0;
     chatIndex = 0;
     correctCount = 0;
-
-    // 2. Chuyển đổi màn hình
     gameScreen.classList.remove("active");
     introScreen.classList.add("active");
     messageScreen.classList.remove("active");
 
-    // 3. Reset NHẠC về bài ban đầu
+    // 2. RESET NHẠC (về bài bg.mp3)
     const bgMusic = document.getElementById("bgMusic");
     if (bgMusic) {
         bgMusic.pause();
@@ -483,27 +481,43 @@ function restartGame() {
         bgMusic.play().catch(() => {});
     }
 
-    // 4. KHÔI PHỤC STYLE cho khung câu hỏi (Quan trọng nhất)
-    const questionBox = questionEl.parentElement; // Đây là class .question-box
+    // 3. SỬA LỖI KHUNG CÂU TRẢ LỜI (QUAN TRỌNG)
+    // Xóa sạch các style (flex, height...) do màn hình tỏ tình để lại
+    // để trả về định dạng Grid mặc định của CSS
+    answersEl.removeAttribute("style"); 
+    answersEl.className = "answers"; // Reset class
+
+    // 4. KHÔI PHỤC THANH LOVE METER (QUAN TRỌNG)
+    // Kiểm tra xem thanh Love Meter có còn trên màn hình không
+    let meter = document.getElementById("progress");
+    if (!meter) {
+        // Nếu bị xóa rồi (do ending) thì gắn lại biến progressEl cũ vào đầu game
+        // Vì biến progressEl vẫn lưu giữ cái div đó trong bộ nhớ
+        const gameDiv = document.getElementById("game");
+        if (gameDiv && progressEl) {
+            gameDiv.prepend(progressEl); // Gắn lại vào vị trí đầu tiên
+            progressEl.style.display = "block"; // Đảm bảo nó hiện lên
+        }
+    }
+    updateProgress(); // Reset về 0%
+
+    // 5. KHÔI PHỤC KHUNG CÂU HỎI HỒNG
+    const questionBox = questionEl.parentElement; 
     if (questionBox) {
-        questionBox.style.background = "#ff8c94"; // Màu hồng gốc
-        questionBox.style.boxShadow = "0 6px 0 #e05e7a, 0 10px 20px rgba(255, 120, 150, 0.35)";
-        questionBox.style.border = "4px solid #ffffff";
-        questionBox.style.padding = "25px 30px";
-        questionBox.style.display = "flex"; // Hiện lại khung
+        questionBox.removeAttribute("style"); // Xóa style transparent của ending
     }
 
-    // 5. Khôi phục nhân vật và căn lề
+    // 6. KHÔI PHỤC NHÂN VẬT & CĂN LỀ
     if (avatar) {
-        avatar.style.display = "block";
+        avatar.removeAttribute("style");
         avatar.src = "assets/images/avatar/thinking.png";
     }
-    const gameEl = document.getElementById("game");
-    if (gameEl) {
-        gameEl.style.paddingLeft = "240px"; // Trả lại khoảng cách cho nhân vật
+    const gameContainer = document.getElementById("game");
+    if (gameContainer) {
+        gameContainer.removeAttribute("style");
     }
 
-    // 6. Xóa các tàn dư của Ending (Trái tim bay, Overlay)
+    // 7. DỌN DẸP
     document.querySelectorAll(".message-overlay").forEach(el => el.remove());
     if (window._heartInterval) {
         clearInterval(window._heartInterval);
@@ -512,9 +526,5 @@ function restartGame() {
     const heartsContainer = document.getElementById("hearts-container");
     if (heartsContainer) heartsContainer.remove();
 
-    // 7. Làm sạch chat container
     chatContainer.innerHTML = "";
-    
-    // 8. Cập nhật lại thanh Love Meter về 0%
-    updateProgress();
 }
