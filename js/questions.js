@@ -174,7 +174,7 @@ const questions = [
       "Do mình cãi nhau",
       "Do không đặt được vé",
     ],
-    correct: 2,
+    correct: 1,
   },
 
   {
@@ -201,5 +201,16 @@ const questions = [
       "Câu 22: Công nghệ lấy nước trong hình là của quán ăn nào =)) ? <br><img src='assets/images/questpics/nuoc.jpg' class='question-img'>",
     answers: ["Cơm Vị Nhà", "Mì Cay Seoul", "Tacos Juicy", "Bánh Ép Gia Di"],
     correct: 3,
+  },
+
+  {
+  question:
+  "Câu 23: Năm 2025 em đón sinh nhật với ai zậyy taaaa? <img src='assets/images/questpics/sinhnhat.jpg' class='question-img'>",
+    answers: [
+      "Với gia đình",
+      "Với chị",
+      "Với anhhhh iuuuu ;3",
+      "Một mình em :<"],
+    correct: 2,
   },
 ];

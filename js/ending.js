@@ -120,7 +120,7 @@ function showEndingScene() {
 
     // --- THÊM NÚT CHƠI LẠI ---
     const replayBtn = document.createElement("button");
-    replayBtn.innerText = "Chơi lại từ đầu 🔄";
+    replayBtn.innerText = "Bbi ấn vô đây để chơi lại nàa";
     replayBtn.className = "pink-btn"; // Dùng class nút hồng
     
     replayBtn.onclick = () => {
