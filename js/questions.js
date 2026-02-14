@@ -8,7 +8,7 @@ const questions = [
       "Tháng 7 năm 2025",
       "Tháng 8 năm 2025",
     ],
-    correct: 0,
+    correct: 1,
   },
   {
     question: "Câu 2: Mình quen nhau qua game gì ó?",
