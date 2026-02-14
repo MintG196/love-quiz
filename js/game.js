@@ -35,14 +35,14 @@ musicToggle.innerText = "🔊";
 
 // --- CHUẨN HÓA VĂN BẢN (Dùng cho loại Input) ---
 function cleanText(text) {
-    if (!text) return "";
-    return text
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[.,\s]/g, "")
-        .replace(/đ/g, "d")
-        .trim();
+  if (!text) return "";
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.,\s]/g, "")
+    .replace(/đ/g, "d")
+    .trim();
 }
 
 function startMusicOnUserInteraction() {
@@ -71,10 +71,16 @@ musicToggle.addEventListener("click", () => {
 const chats = [
   { text: "Há nhô bbi 💖", img: "thinking" },
   { text: "Anh coá làm cái trò chơi nhỏ này cho thúi nè.", img: "khoanhtay" },
-  { text: "Không phải để thử thách đâu, chỉ mong bé iu mỉm cười khi chơi thui 😅", img: "happy1" },
+  {
+    text: "Không phải để thử thách đâu, chỉ mong bé iu mỉm cười khi chơi thui 😅",
+    img: "happy1",
+  },
   { text: "Dù trả lời có sai cũng hong sao hết á 😊", img: "happy1" },
-  { text: "Anh làm coá gì thiếu sót thì mong em vẫn tận hưởng cái game này nhó💕", img: "thinking" },
-  {text: "Giờ thì bắt đầu thui nào! 🥳", img: "heart" },
+  {
+    text: "Anh làm coá gì thiếu sót thì mong em vẫn tận hưởng cái game này nhó💕",
+    img: "thinking",
+  },
+  { text: "Giờ thì bắt đầu thui nào! 🥳", img: "heart" },
 ];
 
 let chatIndex = 0;
@@ -122,11 +128,15 @@ chatNextBtn.addEventListener("click", () => {
 
 // ================= GAME LOGIC =================
 function startGame() {
-  if (typeof questions === "undefined" || !Array.isArray(questions) || questions.length === 0) {
+  if (
+    typeof questions === "undefined" ||
+    !Array.isArray(questions) ||
+    questions.length === 0
+  ) {
     questionEl.innerHTML = "Lỗi: Kiểm tra questions.js";
     return;
   }
-  progressEl.style.display = "block"; 
+  progressEl.style.display = "block";
   currentQuestion = 0;
   loadQuestion();
 }
@@ -156,7 +166,7 @@ function loadQuestion() {
   if (q.question.includes("<")) {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = q.question;
-    
+
     // --- [SỬA LỖI HIỂN THỊ NHIỀU ẢNH] ---
     const imgs = tempDiv.querySelectorAll("img");
     const imgContainer = document.createElement("div");
@@ -164,8 +174,8 @@ function loadQuestion() {
     imgContainer.style.justifyContent = "center";
     imgContainer.style.gap = "10px";
     imgContainer.style.flexWrap = "wrap";
-    
-    imgs.forEach(img => imgContainer.appendChild(img));
+
+    imgs.forEach((img) => imgContainer.appendChild(img));
     questionEl.appendChild(imgContainer);
 
     const text = tempDiv.textContent.trim();
@@ -197,8 +207,12 @@ function showAnswers() {
     input.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         const userValue = input.value.trim();
-        const correctAnswers = Array.isArray(q.correct) ? q.correct : [q.correct];
-        const isMatch = correctAnswers.some(ans => cleanText(userValue) === cleanText(ans));
+        const correctAnswers = Array.isArray(q.correct)
+          ? q.correct
+          : [q.correct];
+        const isMatch = correctAnswers.some(
+          (ans) => cleanText(userValue) === cleanText(ans),
+        );
         handleAnswer(isMatch);
       }
     });
@@ -220,7 +234,7 @@ function showAnswers() {
 
 function handleAnswer(result) {
   const q = questions[currentQuestion];
-  let isCorrect = (q.type === "input") ? result : (result === q.correct);
+  let isCorrect = q.type === "input" ? result : result === q.correct;
   showResult(isCorrect);
 }
 
@@ -267,166 +281,240 @@ function endGame() {
 
 // ================= MÀN HÌNH "EM CÓ YÊU ANH KHÔNG" (KHÔI PHỤC BẢN GỐC) =================
 function showLoveQuestion() {
-    questionEl.innerHTML = "";
-    answersEl.innerHTML = "";
-    
-    // Reset lại style cho khung answers để nút chạy nhảy được
-    answersEl.className = "answers";
-    answersEl.style.display = "flex"; 
-    answersEl.style.justifyContent = "center";
-    answersEl.style.position = "relative";
-    answersEl.style.height = "300px"; 
-    answersEl.style.marginTop = "20px"; 
+  questionEl.innerHTML = "";
+  answersEl.innerHTML = "";
 
-    typeText(questionEl, "Câu hỏi cuối cùng náaa: Em có yêu anh nhìu nhìu hông? 💌", 50, () => {
-        
-        function makeButtonSmall(btn) {
-            btn.style.width = "auto"; btn.style.minWidth = "100px";
-            btn.style.padding = "10px 20px"; btn.style.fontSize = "1.2rem";
-            btn.style.position = "absolute"; btn.style.transition = "all 0.2s ease";
-            btn.style.boxShadow = "0 4px 0 #c22f55"; btn.style.border = "2px solid #fff";
-            btn.className = "pink-btn"; // Dùng style nút hồng
+  // Reset lại style cho khung answers để nút chạy nhảy được
+  answersEl.className = "answers";
+  answersEl.style.display = "flex";
+  answersEl.style.justifyContent = "center";
+  answersEl.style.position = "relative";
+  answersEl.style.height = "300px";
+  answersEl.style.marginTop = "20px";
+
+  typeText(
+    questionEl,
+    "Câu hỏi cuối cùng náaa: Em có yêu anh nhìu nhìu hông? 💌",
+    50,
+    () => {
+      function makeButtonSmall(btn) {
+        btn.style.width = "auto";
+        btn.style.minWidth = "100px";
+        btn.style.padding = "10px 20px";
+        btn.style.fontSize = "1.2rem";
+        btn.style.position = "absolute";
+        btn.style.transition = "all 0.2s ease";
+        btn.style.boxShadow = "0 4px 0 #c22f55";
+        btn.style.border = "2px solid #fff";
+        btn.className = "pink-btn"; // Dùng style nút hồng
+      }
+
+      const yesBtn = document.createElement("button");
+      yesBtn.innerText = "Có 💖";
+      makeButtonSmall(yesBtn);
+      yesBtn.style.left = "35%";
+      yesBtn.style.top = "40%";
+      yesBtn.style.transform = "translate(-50%, -50%)";
+      yesBtn.style.zIndex = "100";
+
+      const noBtn = document.createElement("button");
+      noBtn.innerText = "Không 😝";
+      makeButtonSmall(noBtn);
+      noBtn.style.left = "65%";
+      noBtn.style.top = "40%";
+      noBtn.style.transform = "translate(-50%, -50%)";
+      noBtn.style.zIndex = "50";
+
+      answersEl.appendChild(yesBtn);
+      answersEl.appendChild(noBtn);
+
+      // Hiệu ứng nút Không chạy trốn
+      let yesScale = 1;
+      let noClickCount = 0;
+      noBtn.addEventListener("click", () => {
+        noClickCount++;
+        yesScale += 0.2;
+        yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+
+        if (noClickCount >= 5) {
+          noBtn.style.display = "none";
+        } else {
+          const currentNoScale = 1 - noClickCount * 0.15;
+          noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`;
+          const containerRect = answersEl.getBoundingClientRect();
+          const btnWidth = noBtn.offsetWidth * currentNoScale;
+          const btnHeight = noBtn.offsetHeight * currentNoScale;
+          const newLeft =
+            Math.random() * (containerRect.width - btnWidth - 40) + 20;
+          const newTop =
+            Math.random() * (containerRect.height - btnHeight - 40) + 20;
+          noBtn.style.left = newLeft + "px";
+          noBtn.style.top = newTop + "px";
         }
+      });
 
-        const yesBtn = document.createElement("button");
-        yesBtn.innerText = "Có 💖";
-        makeButtonSmall(yesBtn);
-        yesBtn.style.left = "35%"; yesBtn.style.top = "40%"; 
-        yesBtn.style.transform = "translate(-50%, -50%)"; yesBtn.style.zIndex = "100";
+      // Xử lý khi ấn CÓ
+      yesBtn.addEventListener("click", () => {
+        noBtn.style.display = "none";
+        yesBtn.style.display = "none";
+        questionEl.innerHTML = "";
 
-        const noBtn = document.createElement("button");
-        noBtn.innerText = "Không 😝";
-        makeButtonSmall(noBtn);
-        noBtn.style.left = "65%"; noBtn.style.top = "40%";
-        noBtn.style.transform = "translate(-50%, -50%)"; noBtn.style.zIndex = "50";
-
-        answersEl.appendChild(yesBtn);
-        answersEl.appendChild(noBtn);
-
-        // Hiệu ứng nút Không chạy trốn
-        let yesScale = 1;
-        let noClickCount = 0;
-        noBtn.addEventListener("click", () => {
-            noClickCount++;
-            yesScale += 0.2; 
-            yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
-            
-            if (noClickCount >= 5) {
-                noBtn.style.display = "none";
-            } else {
-                const currentNoScale = 1 - (noClickCount * 0.15);
-                noBtn.style.transform = `translate(0, 0) scale(${currentNoScale})`;
-                const containerRect = answersEl.getBoundingClientRect();
-                const btnWidth = noBtn.offsetWidth * currentNoScale; 
-                const btnHeight = noBtn.offsetHeight * currentNoScale;
-                const newLeft = Math.random() * (containerRect.width - btnWidth - 40) + 20; 
-                const newTop = Math.random() * (containerRect.height - btnHeight - 40) + 20;
-                noBtn.style.left = newLeft + "px"; noBtn.style.top = newTop + "px";
-            }
-        });
-
-        // Xử lý khi ấn CÓ
-        yesBtn.addEventListener("click", () => {
-            noBtn.style.display = "none"; 
-            yesBtn.style.display = "none";
-            questionEl.innerHTML = "";
-
-            // --- THÊM ĐOẠN NÀY: Đẩy Love Meter lên 100% ngay lập tức ---
-            const meter = document.getElementById("progress");
-            if (meter) {
-                meter.innerHTML = `
+        // --- THÊM ĐOẠN NÀY: Đẩy Love Meter lên 100% ngay lập tức ---
+        const meter = document.getElementById("progress");
+        if (meter) {
+          meter.innerHTML = `
                     <div style="margin-bottom:5px;">❤️ Love Meter: 100%</div>
                     <div style="width:160px; height:12px; background:#ffd6e0; border-radius:10px; overflow:hidden; margin:0 auto;">
                         <div style="width:100%; height:100%; background:linear-gradient(90deg,#ff4d6d,#ff8fae); transition:width 0.4s ease;"></div>
                     </div>
                 `;
-            }
-            
-            const replyDiv = document.createElement("div");
-            replyDiv.style.fontSize = "24px";
-            replyDiv.style.color = "#fff";
-            replyDiv.style.fontWeight = "bold";
-            questionEl.appendChild(replyDiv);
+        }
 
-            typeText(replyDiv, "Ỏoooo, yêu thiệc nhóooo ❤️ Vậy thìiii...", 50, () => {
+        const replyDiv = document.createElement("div");
+        replyDiv.style.fontSize = "24px";
+        replyDiv.style.color = "#fff";
+        replyDiv.style.fontWeight = "bold";
+        questionEl.appendChild(replyDiv);
+
+        typeText(
+          replyDiv,
+          "Ỏoooo, yêu thiệc nhóooo ❤️ Vậy thìiii...",
+          50,
+          () => {
+            setTimeout(() => {
+              const meter = document.getElementById("progress");
+              if (!meter) return;
+
+              meter.classList.add("meter-to-center");
+              meter.innerHTML = "⏳";
+
+              setTimeout(() => {
+                meter.classList.add("meter-morph");
                 setTimeout(() => {
-                    const meter = document.getElementById("progress");
-                    if (!meter) return;
-
-                    meter.classList.add("meter-to-center");
-                    meter.innerHTML = "⏳"; 
-
-                    setTimeout(() => {
-                        meter.classList.add("meter-morph");
-                        setTimeout(() => {
-                            meter.innerHTML = "💖";
-                            meter.className = "super-heart-beat"; 
-                            meter.onclick = () => {
-                                meter.remove();
-                                const soulHeart = document.createElement("div");
-                                soulHeart.className = "flying-heart";
-                                soulHeart.style.left = "50%"; soulHeart.style.top = "50%";
-                                soulHeart.style.marginLeft = "-16px"; soulHeart.style.marginTop = "-16px";
-                                document.body.appendChild(soulHeart);
-                                setTimeout(() => showFinalMessage(), 1000);
-                            };
-                        }, 800);
-                    }, 800);
-                }, 500);
-            });
-        });
-    });
+                  meter.innerHTML = "💖";
+                  meter.className = "super-heart-beat";
+                  meter.onclick = () => {
+                    meter.remove();
+                    // --- ĐOẠN MÃ ĐỔI NHẠC ENDING ---
+                    const bgMusic = document.getElementById("bgMusic");
+                    if (bgMusic) {
+                      bgMusic.pause(); // Tạm dừng nhạc cũ
+                      bgMusic.src = "assets/music/ending.mp3"; // Đổi sang file nhạc ending
+                      bgMusic.load(); // Tải lại file mới
+                      bgMusic
+                        .play()
+                        .catch((e) => console.log("Lỗi phát nhạc:", e)); // Phát nhạc
+                    }
+                    // ------------------------------
+                    const soulHeart = document.createElement("div");
+                    soulHeart.className = "flying-heart";
+                    soulHeart.style.left = "50%";
+                    soulHeart.style.top = "50%";
+                    soulHeart.style.marginLeft = "-16px";
+                    soulHeart.style.marginTop = "-16px";
+                    document.body.appendChild(soulHeart);
+                    setTimeout(() => showFinalMessage(), 1000);
+                  };
+                }, 800);
+              }, 800);
+            }, 500);
+          },
+        );
+      });
+    },
+  );
 }
 
 function showFinalMessage() {
-    const overlay = document.createElement("div");
-    overlay.className = "message-overlay show";
-    const paper = document.createElement("div");
-    paper.className = "message-paper";
-    
-    const content = document.createElement("div");
-    content.style.fontSize = "1.2rem";
-    content.style.lineHeight = "1.6";
-    content.style.color = "ff4f81"; // tím nhạt hợp nền hồng
-    content.style.marginBottom = "20px";
-    content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi bbi thúi của anhhh 💌</h2><div id="type-writer-content"></div>`;
+  const overlay = document.createElement("div");
+  overlay.className = "message-overlay show";
+  const paper = document.createElement("div");
+  paper.className = "message-paper";
 
-    const nextBtn = document.createElement("button");
-    nextBtn.innerText = "Cuối cùng làaaa... 🥰";
-    nextBtn.className = "pink-btn"; 
-    nextBtn.style.opacity = "0"; 
-    nextBtn.style.transition = "opacity 0.5s";
-    
-    nextBtn.onclick = () => {
-        overlay.classList.remove("show");
-        setTimeout(() => {
-            overlay.remove();
-            if (typeof showEndingScene === 'function') showEndingScene();
-        }, 500);
-    };
+  const content = document.createElement("div");
+  content.style.fontSize = "1.2rem";
+  content.style.lineHeight = "1.6";
+  content.style.color = "ff4f81"; // tím nhạt hợp nền hồng
+  content.style.marginBottom = "20px";
+  content.innerHTML = `<h2 style="color:#ff4f81; margin-top:0">Gửi bbi thúi của anhhh 💌</h2><div id="type-writer-content"></div>`;
 
-    paper.appendChild(content); paper.appendChild(nextBtn);
-    overlay.appendChild(paper); document.body.appendChild(overlay);
+  const nextBtn = document.createElement("button");
+  nextBtn.innerText = "Cuối cùng làaaa... 🥰";
+  nextBtn.className = "pink-btn";
+  nextBtn.style.opacity = "0";
+  nextBtn.style.transition = "opacity 0.5s";
 
-    const typeContainer = paper.querySelector("#type-writer-content");
-    typeText(typeContainer, endingMessage, 40, () => {
-        nextBtn.style.opacity = "1";
-    });
+  nextBtn.onclick = () => {
+    overlay.classList.remove("show");
+    setTimeout(() => {
+      overlay.remove();
+      if (typeof showEndingScene === "function") showEndingScene();
+    }, 500);
+  };
+
+  paper.appendChild(content);
+  paper.appendChild(nextBtn);
+  overlay.appendChild(paper);
+  document.body.appendChild(overlay);
+
+  const typeContainer = paper.querySelector("#type-writer-content");
+  typeText(typeContainer, endingMessage, 40, () => {
+    nextBtn.style.opacity = "1";
+  });
 }
 
 function restartGame() {
+    // 1. Reset các biến số
     currentQuestion = 0;
     chatIndex = 0;
+    correctCount = 0;
+
+    // 2. Chuyển đổi màn hình
     gameScreen.classList.remove("active");
-    document.querySelectorAll(".message-overlay").forEach(el => el.remove());
-    if (window._heartInterval) { clearInterval(window._heartInterval); window._heartInterval = null; }
-    const heartsContainer = document.getElementById("hearts-container");
-    if (heartsContainer) heartsContainer.remove();
-    
-    chatContainer.innerHTML = "";
+    introScreen.classList.add("active");
+    messageScreen.classList.remove("active");
+
+    // 3. Reset NHẠC về bài ban đầu
+    const bgMusic = document.getElementById("bgMusic");
+    if (bgMusic) {
+        bgMusic.pause();
+        bgMusic.src = "assets/music/bg.mp3";
+        bgMusic.load();
+        bgMusic.play().catch(() => {});
+    }
+
+    // 4. KHÔI PHỤC STYLE cho khung câu hỏi (Quan trọng nhất)
+    const questionBox = questionEl.parentElement; // Đây là class .question-box
+    if (questionBox) {
+        questionBox.style.background = "#ff8c94"; // Màu hồng gốc
+        questionBox.style.boxShadow = "0 6px 0 #e05e7a, 0 10px 20px rgba(255, 120, 150, 0.35)";
+        questionBox.style.border = "4px solid #ffffff";
+        questionBox.style.padding = "25px 30px";
+        questionBox.style.display = "flex"; // Hiện lại khung
+    }
+
+    // 5. Khôi phục nhân vật và căn lề
     if (avatar) {
-        avatar.style.display = "block"; 
+        avatar.style.display = "block";
         avatar.src = "assets/images/avatar/thinking.png";
     }
-    introScreen.classList.add("active");
+    const gameEl = document.getElementById("game");
+    if (gameEl) {
+        gameEl.style.paddingLeft = "240px"; // Trả lại khoảng cách cho nhân vật
+    }
+
+    // 6. Xóa các tàn dư của Ending (Trái tim bay, Overlay)
+    document.querySelectorAll(".message-overlay").forEach(el => el.remove());
+    if (window._heartInterval) {
+        clearInterval(window._heartInterval);
+        window._heartInterval = null;
+    }
+    const heartsContainer = document.getElementById("hearts-container");
+    if (heartsContainer) heartsContainer.remove();
+
+    // 7. Làm sạch chat container
+    chatContainer.innerHTML = "";
+    
+    // 8. Cập nhật lại thanh Love Meter về 0%
+    updateProgress();
 }
